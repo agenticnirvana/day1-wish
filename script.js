@@ -8,9 +8,11 @@ const CONFIG = {
   nickname: "Ms.whywhywhy",
   password: "ms.maybe",
   date: "August 17, 2026",
+  finaleWrong: "ms confusing",
   finaleWord: "ms.maybe",
   musicVolume: 0.45,
-  bonusMusic: "assets/ishq-mubarak.mp3"
+  bonusMusic: "assets/ishq-mubarak.mp3",
+  bonusMusicStart: 15
 };
 
 const screens = {
@@ -41,12 +43,13 @@ const particlesCanvas = document.getElementById("particles");
 const nicknameBadge = document.getElementById("nickname-badge");
 const nicknameWhisper = document.getElementById("nickname-whisper");
 const finalGreeting = document.getElementById("final-greeting");
-const finalOldText = document.getElementById("final-old-text");
-const finalSlash = document.getElementById("final-slash");
+const finalConfusing = document.getElementById("final-confusing");
 const finalTypewriter = document.getElementById("final-typewriter");
 const finalEyebrow = document.getElementById("final-eyebrow");
 const finalNote = document.getElementById("final-note");
 const finalStar = document.getElementById("final-star");
+const finalChocolates = document.getElementById("final-chocolates");
+const finalGirlScene = document.getElementById("final-girl-scene");
 
 let currentScreen = "landing";
 let particleBoost = 1;
@@ -155,16 +158,18 @@ function replayLandingAnimations() {
 
 function resetFinalState() {
   if (finalEyebrow) finalEyebrow.classList.remove("is-visible");
-  if (finalOldText) {
-    finalOldText.classList.remove("is-visible", "is-cut");
-    finalOldText.hidden = false;
+  if (finalConfusing) {
+    finalConfusing.textContent = "";
+    finalConfusing.hidden = true;
+    finalConfusing.classList.remove("is-struck", "is-faded");
   }
-  if (finalSlash) finalSlash.classList.remove("is-active");
   if (finalTypewriter) {
     finalTypewriter.textContent = "";
     finalTypewriter.hidden = true;
     finalTypewriter.classList.remove("is-done");
   }
+  if (finalGirlScene) finalGirlScene.classList.remove("is-visible");
+  if (finalChocolates) finalChocolates.innerHTML = "";
   [finalGreeting, finalNote, finalStar, btnReplay].forEach((el) => {
     if (el) {
       el.hidden = true;
@@ -175,18 +180,23 @@ function resetFinalState() {
 
 async function runFinalSequence() {
   resetFinalState();
+  initFinalChocolates();
 
   if (finalEyebrow) finalEyebrow.classList.add("is-visible");
   await delay(prefersReducedMotion ? 150 : 600);
 
-  if (finalOldText) finalOldText.classList.add("is-visible");
-  await delay(prefersReducedMotion ? 300 : 2000);
+  if (finalGirlScene) finalGirlScene.classList.add("is-visible");
 
-  if (finalSlash) finalSlash.classList.add("is-active");
-  if (finalOldText) finalOldText.classList.add("is-cut");
-  await delay(prefersReducedMotion ? 200 : 650);
+  if (finalConfusing) {
+    finalConfusing.hidden = false;
+    await typeText(finalConfusing, CONFIG.finaleWrong || "ms confusing", false, true);
+    await delay(prefersReducedMotion ? 300 : 1200);
+    finalConfusing.classList.add("is-struck");
+    await delay(prefersReducedMotion ? 200 : 700);
+    finalConfusing.classList.add("is-faded");
+    await delay(prefersReducedMotion ? 200 : 500);
+  }
 
-  if (finalOldText) finalOldText.hidden = true;
   if (finalTypewriter) {
     finalTypewriter.hidden = false;
     await typeText(finalTypewriter, CONFIG.finaleWord || "ms.maybe", false, true);
@@ -201,6 +211,28 @@ async function runFinalSequence() {
     el.hidden = false;
     await delay(prefersReducedMotion ? 80 : 450);
     el.classList.add("is-visible");
+  }
+}
+
+function initFinalChocolates() {
+  if (!finalChocolates || prefersReducedMotion) return;
+
+  finalChocolates.innerHTML = "";
+  const icons = ["🍫", "🍬", "🍫", "🍩", "🍫", "✨"];
+  const count = Math.min(28, Math.floor(window.innerWidth / 22));
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("span");
+    el.className = "choco-float";
+    el.textContent = icons[i % icons.length];
+    el.style.left = `${Math.random() * 100}%`;
+    el.style.setProperty("--fall-dur", `${5 + Math.random() * 7}s`);
+    el.style.setProperty("--fall-delay", `-${Math.random() * 8}s`);
+    el.style.setProperty("--drift", `${(Math.random() - 0.5) * 60}px`);
+    el.style.setProperty("--spin", `${(Math.random() - 0.5) * 40}deg`);
+    el.style.fontSize = `${0.75 + Math.random() * 0.9}rem`;
+    el.style.opacity = `${0.35 + Math.random() * 0.45}`;
+    finalChocolates.appendChild(el);
   }
 }
 
@@ -548,9 +580,14 @@ function updateMusicBtnState() {
   musicBtn.title = musicEl.paused ? "Play Gehra Hua" : "Pause music";
 }
 
-async function switchToTrack(src, autoplay = true) {
+async function switchToTrack(src, autoplay = true, startAt = 0) {
   const current = musicEl.currentSrc || musicEl.src || "";
-  if (current.includes(src)) {
+  const isSameTrack = current.includes(src);
+
+  if (isSameTrack) {
+    if (startAt > 0 && musicEl.duration && startAt < musicEl.duration) {
+      musicEl.currentTime = startAt;
+    }
     if (autoplay && musicEl.paused) await musicEl.play().catch(() => {});
     return;
   }
@@ -560,6 +597,20 @@ async function switchToTrack(src, autoplay = true) {
   musicEl.src = src;
   currentTrack = src;
   musicEl.load();
+
+  if (startAt > 0) {
+    await new Promise((resolve) => {
+      if (musicEl.readyState >= HTMLMediaElement.HAVE_METADATA) {
+        resolve();
+        return;
+      }
+      musicEl.addEventListener("loadedmetadata", resolve, { once: true });
+      musicEl.addEventListener("error", resolve, { once: true });
+    });
+    if (musicEl.duration && startAt < musicEl.duration) {
+      musicEl.currentTime = startAt;
+    }
+  }
 
   if (autoplay || wasPlaying) {
     try {
@@ -573,6 +624,12 @@ async function switchToTrack(src, autoplay = true) {
   updateMusicBtnState();
 }
 
+function seekMusicTo(seconds) {
+  if (musicEl.duration && seconds < musicEl.duration) {
+    musicEl.currentTime = seconds;
+  }
+}
+
 async function playBonusTrack() {
   bonusMusicPlayed = true;
   try {
@@ -580,7 +637,8 @@ async function playBonusTrack() {
     if (!res.ok) return;
   } catch { /* still try */ }
 
-  await switchToTrack(BONUS_MUSIC_SRC, true);
+  const startAt = CONFIG.bonusMusicStart ?? 15;
+  await switchToTrack(BONUS_MUSIC_SRC, true, startAt);
   musicBtn.title = "Playing Ishq Mubarak";
 }
 
