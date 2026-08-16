@@ -9,7 +9,8 @@ const CONFIG = {
   password: "ms.maybe",
   date: "August 17, 2026",
   finaleWord: "ms.maybe",
-  musicVolume: 0.45
+  musicVolume: 0.45,
+  bonusMusic: "assets/ishq-mubarak.mp3"
 };
 
 const screens = {
@@ -121,6 +122,13 @@ function resetAllScreens() {
 
   btnLastThing.hidden = false;
   btnLastThing.style.opacity = "1";
+  btnLastThing.style.transition = "";
+  btnLastThing.classList.remove("is-clicked");
+
+  if (bonusMusicPlayed) {
+    bonusMusicPlayed = false;
+    switchToTrack(MUSIC_SRC, false);
+  }
 
   resetRevealLines(screens.message);
   resetRevealLines(screens.wish);
@@ -337,10 +345,12 @@ async function runRevealSequence(screen) {
    ============================================ */
 
 btnLastThing.addEventListener("click", async () => {
+  btnLastThing.classList.add("is-clicked");
   btnLastThing.style.opacity = "0";
   btnLastThing.style.transition = "opacity 0.4s";
   setTimeout(() => { btnLastThing.hidden = true; }, 400);
 
+  playBonusTrack();
   burstConfetti();
   memoryCard.hidden = false;
   requestAnimationFrame(() => memoryCard.classList.add("is-visible"));
@@ -498,10 +508,13 @@ function burstConfetti() {
    ============================================ */
 
 const MUSIC_SRC = "assets/gehra-hua.mp3";
+const BONUS_MUSIC_SRC = CONFIG.bonusMusic || "assets/ishq-mubarak.mp3";
 
 let musicAvailable = false;
 let musicStarted = false;
 let musicInitDone = false;
+let bonusMusicPlayed = false;
+let currentTrack = MUSIC_SRC;
 
 musicEl.volume = CONFIG.musicVolume ?? 0.45;
 
@@ -535,8 +548,45 @@ function updateMusicBtnState() {
   musicBtn.title = musicEl.paused ? "Play Gehra Hua" : "Pause music";
 }
 
+async function switchToTrack(src, autoplay = true) {
+  const current = musicEl.currentSrc || musicEl.src || "";
+  if (current.includes(src)) {
+    if (autoplay && musicEl.paused) await musicEl.play().catch(() => {});
+    return;
+  }
+
+  const wasPlaying = !musicEl.paused;
+  musicEl.pause();
+  musicEl.src = src;
+  currentTrack = src;
+  musicEl.load();
+
+  if (autoplay || wasPlaying) {
+    try {
+      await musicEl.play();
+      musicStarted = true;
+      musicBtn.classList.add("is-playing");
+      musicBtn.classList.remove("music-btn--hint");
+    } catch { /* needs gesture on some browsers */ }
+  }
+
+  updateMusicBtnState();
+}
+
+async function playBonusTrack() {
+  bonusMusicPlayed = true;
+  try {
+    const res = await fetch(BONUS_MUSIC_SRC, { method: "HEAD" });
+    if (!res.ok) return;
+  } catch { /* still try */ }
+
+  await switchToTrack(BONUS_MUSIC_SRC, true);
+  musicBtn.title = "Playing Ishq Mubarak";
+}
+
 async function initMusic() {
   musicEl.src = MUSIC_SRC;
+  currentTrack = MUSIC_SRC;
 
   try {
     const res = await fetch(MUSIC_SRC, { method: "HEAD" });

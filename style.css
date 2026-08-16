@@ -618,6 +618,99 @@ body {
   animation: btn-glow 2.5s var(--ease-in-out) infinite;
 }
 
+/* ---- "One last thing" — can't-miss-it button ---- */
+.btn--last-thing {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 1rem 1.6rem 1.35rem;
+  border-radius: 100px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  color: white;
+  min-height: 56px;
+  min-width: min(100%, 320px);
+  flex-direction: column;
+  gap: 0.15rem;
+  box-shadow:
+    0 0 0 0 rgba(255, 157, 184, 0.55),
+    0 8px 32px rgba(139, 92, 246, 0.35);
+  animation: last-thing-bounce 1.8s var(--ease-in-out) infinite, last-thing-ring 2.2s var(--ease-out) infinite;
+  transform: rotate(-2deg);
+}
+
+.btn--last-thing__bg {
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  background: linear-gradient(
+    120deg,
+    #8B5CF6 0%,
+    #FF9DB8 25%,
+    #F7C978 50%,
+    #7EC8E3 75%,
+    #8B5CF6 100%
+  );
+  background-size: 300% 100%;
+  animation: last-thing-slide 2.5s linear infinite;
+}
+
+.btn--last-thing__text {
+  font-family: var(--font-hand);
+  font-size: clamp(1.35rem, 4.8vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 0 1px 8px rgba(74, 61, 92, 0.25);
+}
+
+.btn--last-thing__nudge {
+  font-family: var(--font-cursive);
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-weight: 600;
+  opacity: 0.92;
+  animation: last-thing-nudge 1.2s var(--ease-in-out) infinite;
+}
+
+.btn--last-thing:hover,
+.btn--last-thing:focus-visible {
+  transform: rotate(0deg) scale(1.05);
+  outline: none;
+  animation: last-thing-shake 0.5s var(--ease-in-out);
+  box-shadow: 0 12px 40px rgba(255, 157, 184, 0.45);
+}
+
+.btn--last-thing.is-clicked {
+  animation: none;
+  transform: scale(0.92) rotate(0deg);
+}
+
+@keyframes last-thing-slide {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+@keyframes last-thing-bounce {
+  0%, 100% { transform: rotate(-2deg) translateY(0); }
+  50% { transform: rotate(-1deg) translateY(-6px); }
+}
+
+@keyframes last-thing-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 157, 184, 0.5), 0 8px 32px rgba(139, 92, 246, 0.35); }
+  50% { box-shadow: 0 0 0 10px rgba(255, 157, 184, 0), 0 10px 36px rgba(139, 92, 246, 0.45); }
+}
+
+@keyframes last-thing-nudge {
+  0%, 100% { transform: translateX(0); opacity: 0.85; }
+  50% { transform: translateX(4px); opacity: 1; }
+}
+
+@keyframes last-thing-shake {
+  0%, 100% { transform: rotate(0deg) scale(1.05); }
+  20% { transform: rotate(-3deg) scale(1.06); }
+  40% { transform: rotate(3deg) scale(1.06); }
+  60% { transform: rotate(-2deg) scale(1.05); }
+  80% { transform: rotate(2deg) scale(1.05); }
+}
+
 @keyframes btn-glow {
   0%, 100% { box-shadow: 0 0 0 rgba(139, 92, 246, 0); }
   50% { box-shadow: 0 0 28px rgba(139, 92, 246, 0.18); }
@@ -725,6 +818,31 @@ body {
 .message-lines, .wish-lines {
   display: flex; flex-direction: column;
   gap: 0.85rem; width: 100%;
+}
+
+#screen-message .heading,
+#screen-wish .heading {
+  font-family: var(--font-hand);
+  font-size: clamp(1.85rem, 6.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--accent-purple);
+}
+
+#screen-message .reveal-line,
+#screen-wish .reveal-line {
+  font-family: var(--font-hand);
+  font-size: clamp(1.2rem, 4.2vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+#screen-message .reveal-line--accent,
+#screen-wish .reveal-line--accent {
+  font-family: var(--font-cursive);
+  font-size: clamp(1.45rem, 5vw, 1.75rem);
+  color: var(--accent-purple);
 }
 
 .reveal-line {
@@ -1204,7 +1322,7 @@ body {
     transition-duration: 0.01ms !important;
   }
 
-  .bg-blob, .glow-text, .final-star, .btn--pulse, .btn--dance, .btn--dance-sway, .music-btn--hint,
+  .bg-blob, .glow-text, .final-star, .btn--pulse, .btn--dance, .btn--dance-sway, .btn--last-thing, .btn--last-thing__bg, .btn--last-thing__nudge, .music-btn--hint,
   .landing-hero__svg, .landing-hero__shimmer, .orbit-item, .float-icon, .landing-spark,
   .hero-sun-rise, .hero-sun, .hero-sun-glow, .hero-sun-rays, .hero-sky-warm,
   .hero-girl-track, .hero-girl-scale, .hero-girl__figure, .hero-girl__shadow, .hero-girl__leg--a, .hero-girl__leg--b,
