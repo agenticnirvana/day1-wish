@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>A New Chapter</title>
   <meta name="description" content="Something special for Day 1." />
-  <meta name="theme-color" content="#FFF9F8" />
+  <meta name="theme-color" content="#F6F0FF" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
@@ -13,16 +13,16 @@
 </head>
 <body>
 
-  <!-- Ambient layers -->
   <div class="ambient" aria-hidden="true">
     <canvas id="particles-canvas"></canvas>
     <div class="ambient__cloud ambient__cloud--1"></div>
     <div class="ambient__cloud ambient__cloud--2"></div>
-    <div class="ambient__cloud ambient__cloud--3"></div>
-    <div class="paper-plane" id="paper-plane">✈</div>
+    <div class="paper-plane">✈</div>
   </div>
 
-  <button class="music-btn" id="music-btn" aria-label="Toggle music" title="Toggle music">
+  <div class="sun-icon" aria-hidden="true">☀</div>
+
+  <button class="music-btn" id="music-btn" aria-label="Toggle music">
     <span class="music-btn__note" aria-hidden="true">♪</span>
   </button>
   <audio id="music" preload="none" loop>
@@ -32,33 +32,14 @@
   <main id="app" class="app">
 
     <!-- 1. LANDING -->
-    <section class="screen screen--active" id="screen-landing" data-screen="landing">
-      <div class="hero-art" aria-hidden="true">
-        <svg class="hero-svg" viewBox="0 0 800 420" preserveAspectRatio="xMidYMax slice">
-          <defs>
-            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#EEF5FF"/>
-              <stop offset="40%" stop-color="#F6F0FF"/>
-              <stop offset="75%" stop-color="#FFF1E8"/>
-              <stop offset="100%" stop-color="#FFF9F8"/>
-            </linearGradient>
-          </defs>
-          <rect width="800" height="420" fill="url(#skyGrad)"/>
-          <circle cx="680" cy="75" r="40" fill="#F7C978" opacity="0.85"/>
-          <circle cx="680" cy="75" r="58" fill="#F7C978" opacity="0.2"/>
-          <ellipse class="hero-cloud" cx="100" cy="85" rx="75" ry="28" fill="white" opacity="0.7"/>
-          <ellipse class="hero-cloud" cx="500" cy="105" rx="90" ry="32" fill="white" opacity="0.55"/>
-          <rect x="470" y="195" width="55" height="85" fill="#c4b5d8" rx="2"/>
-          <rect x="540" y="175" width="65" height="105" fill="#b8a8cc" rx="2"/>
-          <polygon points="572,175 572,155 605,175" fill="#a898c0"/>
-          <circle cx="340" cy="245" r="26" fill="#a8d5b5" opacity="0.75"/>
-          <rect x="336" y="245" width="8" height="28" fill="#86b894"/>
-          <rect x="0" y="305" width="800" height="115" fill="#E9DEFF" opacity="0.6"/>
-          <ellipse cx="270" cy="262" rx="20" ry="24" fill="#5c4033"/>
-          <path d="M250 288 Q270 275 290 288 L296 330 Q270 338 244 330 Z" fill="#FFF9F8"/>
-          <rect x="256" y="326" width="28" height="32" fill="#9ca3af" rx="3"/>
-          <rect x="278" y="295" width="16" height="24" fill="#b0b8c4" rx="3" transform="rotate(12 286 307)"/>
-        </svg>
+    <section class="screen screen--active" id="screen-landing">
+      <div class="hero-wrap" aria-hidden="true">
+        <div class="hero-img"></div>
+        <div class="hero-leaves">
+          <span class="leaf leaf--1">🍃</span>
+          <span class="leaf leaf--2">🍃</span>
+          <span class="leaf leaf--3">🍃</span>
+        </div>
       </div>
       <div class="screen__inner screen__inner--landing">
         <p class="eyebrow reveal-up" style="--d:0.2s">A little something for your Day 1…</p>
@@ -76,12 +57,15 @@
     </section>
 
     <!-- 2. PASSWORD -->
-    <section class="screen screen--cream" id="screen-password" data-screen="password" hidden>
+    <section class="screen screen--unlock" id="screen-password" hidden>
+      <div class="unlock-clouds" aria-hidden="true"></div>
+      <div class="unlock-deco unlock-deco--star">✦</div>
+      <div class="unlock-deco unlock-deco--plane">✈</div>
       <div class="screen__inner">
-        <div class="card">
+        <div class="card card--unlock">
           <p class="nickname-whisper" id="nickname-whisper"></p>
-          <div class="lock-wrap" id="lock-icon" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none" width="52" height="52">
+          <div class="lock-wrap" id="lock-icon">
+            <svg viewBox="0 0 48 48" fill="none" width="56" height="56">
               <rect x="10" y="22" width="28" height="20" rx="4" fill="#E9DEFF" stroke="#B58AEF" stroke-width="2"/>
               <path d="M16 22V16a8 8 0 0 1 16 0v6" stroke="#B58AEF" stroke-width="2.5" stroke-linecap="round" class="lock-shackle"/>
             </svg>
@@ -89,8 +73,13 @@
           <h2 class="heading">This is just between us.</h2>
           <p class="subtitle subtitle--tight">You know the password.</p>
           <form id="password-form" autocomplete="off">
-            <div class="input-wrap">
+            <div class="input-wrap input-wrap--lock">
               <label for="password-input" class="sr-only">Password</label>
+              <span class="input-lock-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+                  <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                </svg>
+              </span>
               <input type="password" id="password-input" class="input" placeholder="••••"
                 autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text"
                 aria-describedby="password-error" />
@@ -102,27 +91,18 @@
       </div>
     </section>
 
-    <!-- 3. DAY 1 REVEAL -->
-    <section class="screen screen--sky" id="screen-day1" data-screen="day1" hidden>
-      <div class="screen__inner screen__inner--center">
-        <p class="eyebrow" id="day1-date"></p>
-        <h2 class="day1-title" id="day1-heading">Day 1.</h2>
-        <div class="day1-lines" id="day1-lines">
-          <p class="day1-line" id="day1-line-1"></p>
-          <p class="day1-line" id="day1-line-2"></p>
-          <p class="day1-line day1-line--accent" id="day1-line-3"></p>
-        </div>
-        <div class="shooting-star-bg" aria-hidden="true"></div>
-      </div>
-    </section>
-
-    <!-- 4. STARS -->
-    <section class="screen screen--lavender" id="screen-stars" data-screen="stars" hidden>
+    <!-- 3. STARS -->
+    <section class="screen screen--lavender" id="screen-stars" hidden>
       <div class="screen__inner">
         <p class="section-label" id="stars-label">A few wishes for your new chapter…</p>
         <h2 class="heading heading--center">Tap a star to reveal a wish ✨</h2>
-        <p class="subtitle subtitle--center subtitle--tight">Each one is for you.</p>
-        <div class="stars-field" id="stars-field" role="group" aria-label="Wish stars"></div>
+        <div class="stars-hint" aria-hidden="true">〜</div>
+        <div class="stars-arc" id="stars-arc" role="group" aria-label="Wish stars"></div>
+        <p class="stars-footer">
+          <span class="leaf-deco" aria-hidden="true">🌿</span>
+          Each one is for you.
+          <span class="leaf-deco" aria-hidden="true">🌿</span>
+        </p>
         <p class="stars-complete" id="stars-complete" hidden>You found them all ✨</p>
         <button class="btn btn--primary" id="btn-stars-continue" hidden>Continue <span aria-hidden="true">→</span></button>
       </div>
@@ -132,94 +112,98 @@
     <div class="modal" id="wish-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wish-modal-text">
       <div class="modal__card">
         <button class="modal__close" id="modal-close" aria-label="Close">&times;</button>
-        <div class="modal__icon" id="wish-modal-icon" aria-hidden="true"></div>
+        <div class="modal__star" aria-hidden="true">★</div>
         <p class="modal__wish" id="wish-modal-text"></p>
         <p class="modal__tag">Keep shining ✨</p>
+        <div class="modal__flowers" aria-hidden="true"><span>🌸</span><span>🌷</span></div>
       </div>
     </div>
 
-    <!-- 5. ENCOURAGEMENT -->
-    <section class="screen screen--cream" id="screen-encourage" data-screen="encourage" hidden>
-      <div class="screen__inner screen__inner--center">
-        <h2 class="heading reveal-msg" data-msg="0">And one more thing…</h2>
-        <div class="msg-lines" id="encourage-lines">
-          <p class="reveal-msg" data-msg="1">I hope you never feel like you have to have everything figured out from Day 1.</p>
-          <p class="reveal-msg" data-msg="2">It's okay to be nervous.</p>
-          <p class="reveal-msg" data-msg="3">It's okay to get lost.</p>
-          <p class="reveal-msg" data-msg="4">It's okay if things don't go exactly as planned.</p>
-          <p class="reveal-msg reveal-msg--emphasis" data-msg="5">You're there to experience it all.</p>
-          <p class="reveal-msg reveal-msg--emphasis" data-msg="6">Just keep moving forward.</p>
-        </div>
-        <button class="btn btn--primary" id="btn-encourage-continue" hidden>Continue <span aria-hidden="true">→</span></button>
+    <!-- 4. WISH LIST -->
+    <section class="screen screen--white" id="screen-wishlist" hidden>
+      <div class="screen__inner screen__inner--scroll">
+        <p class="section-label">And more wishes…</p>
+        <ul class="wish-list" id="wish-list"></ul>
+        <button class="btn btn--text" id="btn-and-more">And more… <span aria-hidden="true">∨</span></button>
       </div>
     </section>
 
-    <!-- 6. MOST IMPORTANT -->
-    <section class="screen screen--sunrise" id="screen-important" data-screen="important" hidden>
+    <!-- 5. MOST IMPORTANT -->
+    <section class="screen screen--important" id="screen-important" hidden>
       <div class="screen__inner screen__inner--center">
         <p class="section-label">And most importantly…</p>
-        <div class="shooting-star-lg" aria-hidden="true">★</div>
-        <div class="important-lines" id="important-lines">
-          <p class="reveal-msg" data-msg="0">I hope this journey gives you</p>
-          <p class="reveal-msg" data-msg="1">a thousand little moments</p>
-          <p class="reveal-msg" data-msg="2">that make you stop and think…</p>
-          <p class="reveal-msg reveal-msg--peak" data-msg="3"><em>Yeah, I'm exactly where I'm supposed to be.</em></p>
+        <div class="shooting-star-wrap" aria-hidden="true">
+          <div class="shooting-star-trail"></div>
+          <div class="shooting-star-head">★</div>
         </div>
-        <button class="btn btn--primary" id="btn-important-continue" hidden>Continue <span aria-hidden="true">→</span></button>
+        <blockquote class="important-quote" id="important-quote">
+          I hope this journey gives you a thousand little moments that make you think —
+          <em>yeah, I'm exactly where I'm supposed to be.</em>
+        </blockquote>
+        <button class="btn btn--primary" id="btn-important-continue">Continue <span aria-hidden="true">→</span></button>
       </div>
+      <div class="important-clouds" aria-hidden="true"></div>
     </section>
 
-    <!-- 7. JOURNEY -->
-    <section class="screen" id="screen-journey" data-screen="journey" hidden>
-      <div class="journey-art" aria-hidden="true">
-        <svg viewBox="0 0 800 360" preserveAspectRatio="xMidYMax slice" class="journey-svg">
-          <defs>
-            <linearGradient id="jSky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#EEF5FF"/>
-              <stop offset="100%" stop-color="#FFF1E8"/>
-            </linearGradient>
-          </defs>
-          <rect width="800" height="360" fill="url(#jSky)"/>
-          <path d="M0 300 Q400 280 800 300 L800 360 L0 360Z" fill="#E9DEFF"/>
-          <rect x="350" y="180" width="100" height="90" fill="#c4b5d8" rx="2"/>
-          <polygon points="400,180 400,155 425,180" fill="#b8a8cc"/>
-          <circle cx="160" cy="260" r="24" fill="#a8d5b5" opacity="0.7"/>
-          <circle cx="640" cy="255" r="22" fill="#a8d5b5" opacity="0.65"/>
-          <ellipse cx="430" cy="275" rx="12" ry="14" fill="#5c4033"/>
-          <path d="M418 288 Q430 280 442 288 L446 315 Q430 322 414 315 Z" fill="#FFF9F8"/>
-          <rect x="422" y="312" width="16" height="20" fill="#9ca3af" rx="2"/>
-        </svg>
-      </div>
-      <div class="screen__inner screen__inner--journey">
-        <p class="journey-line reveal-up" style="--d:0.1s">New beginning.</p>
-        <p class="journey-line reveal-up" style="--d:0.25s">New journey.</p>
-        <p class="journey-line reveal-up" style="--d:0.4s">Infinite possibilities.</p>
-        <h2 class="heading heading--serif reveal-up" style="--d:0.6s">
-          Go make this chapter <span class="serif-accent">your own story</span>.
-        </h2>
-        <button class="btn btn--primary reveal-up" style="--d:0.9s" id="btn-all-best">
-          All the best <span aria-hidden="true">→</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- 8. FINALE -->
-    <section class="screen screen--sunrise" id="screen-finale" data-screen="finale" hidden>
-      <div class="screen__inner screen__inner--center">
-        <p class="eyebrow reveal-up" style="--d:0.1s">Chapter 01</p>
-        <h2 class="finale-title reveal-up" style="--d:0.35s">Go make it yours.</h2>
-        <p class="finale-sub reveal-up" style="--d:0.6s" id="finale-greeting">Happy First Day :)</p>
-        <p class="finale-note reveal-up" style="--d:0.85s">Now go be the main character.</p>
-        <div class="finale-star reveal-up" style="--d:1.1s" aria-hidden="true">✦</div>
-        <button class="btn btn--text reveal-up" style="--d:1.4s" id="btn-replay">Replay the journey ↻</button>
+    <!-- 6. FINAL (split layout) -->
+    <section class="screen screen--final" id="screen-final" hidden>
+      <div class="final-split">
+        <div class="final-art" aria-hidden="true">
+          <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" class="final-svg">
+            <defs>
+              <linearGradient id="fSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#EEF5FF"/>
+                <stop offset="50%" stop-color="#F6F0FF"/>
+                <stop offset="100%" stop-color="#FFF1E8"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="500" fill="url(#fSky)"/>
+            <circle cx="320" cy="70" r="35" fill="#F7C978" opacity="0.8"/>
+            <path d="M0 420 Q200 400 400 420 L400 500 L0 500Z" fill="#E9DEFF"/>
+            <circle cx="80" cy="360" r="28" fill="#a8d5b5" opacity="0.7"/>
+            <rect x="76" y="360" width="8" height="35" fill="#86b894"/>
+            <circle cx="320" cy="355" r="26" fill="#a8d5b5" opacity="0.65"/>
+            <rect x="316" y="355" width="8" height="32" fill="#86b894"/>
+            <rect x="170" y="250" width="90" height="80" fill="#c4b5d8" rx="2"/>
+            <polygon points="215,250 215,225 240,250" fill="#b8a8cc"/>
+            <ellipse cx="210" cy="395" rx="14" ry="16" fill="#5c4033"/>
+            <path d="M196 410 Q210 400 224 410 L228 440 Q210 448 192 440 Z" fill="#FFF9F8"/>
+            <rect x="202" y="436" width="16" height="22" fill="#9ca3af" rx="2"/>
+            <path d="M280 120 L295 128 L285 132 L288 145 L270 130 Z" fill="none" stroke="#B58AEF" stroke-width="1.5" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="final-content">
+          <p class="journey-line reveal-up" style="--d:0.1s">New beginning.</p>
+          <p class="journey-line reveal-up" style="--d:0.2s">New journey.</p>
+          <p class="journey-line reveal-up" style="--d:0.3s">Infinite possibilities.</p>
+          <h2 class="heading heading--serif reveal-up" style="--d:0.45s">
+            Go make this chapter<br><span class="serif-accent">your own story</span>.
+          </h2>
+          <button class="btn btn--primary reveal-up" style="--d:0.65s" id="btn-all-best">
+            All the best! <span aria-hidden="true">→</span>
+          </button>
+          <p class="finale-extra reveal-up" style="--d:0.85s" id="finale-extra" hidden>
+            <span class="eyebrow">Chapter 01</span><br>
+            <strong class="finale-title-sm">Go make it yours.</strong><br>
+            <span id="finale-greeting">Happy First Day :)</span><br>
+            <em class="finale-note">Now go be the main character.</em>
+          </p>
+          <button class="btn btn--text reveal-up" style="--d:1.05s" id="btn-replay">Replay the journey ↻</button>
+        </div>
       </div>
     </section>
 
   </main>
 
   <footer class="site-footer" id="site-footer" hidden>
-    <p class="footer-hand">Day 1 is just the beginning.<br>The best stories are the ones you write.</p>
-    <p class="footer-cheer" id="footer-cheer">I'm cheering for you, always.</p>
+    <div class="footer-left">
+      <span class="footer-plane" aria-hidden="true">✈</span>
+      <span>Day 1 is just the beginning. The best stories are the ones you write.</span>
+    </div>
+    <div class="footer-right">
+      <span class="footer-cheer" id="footer-cheer">I'm cheering for you, always.</span>
+      <span class="footer-swoosh" aria-hidden="true">〜</span>
+    </div>
   </footer>
 
   <div class="unlock-flash" id="unlock-flash" aria-hidden="true"></div>
