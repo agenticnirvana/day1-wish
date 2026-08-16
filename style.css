@@ -708,17 +708,30 @@ body {
   min-height: 48px; min-width: 160px;
 }
 
-.btn--primary:hover, .btn--primary:focus-visible {
+.btn--primary:hover, .btn--primary:focus-visible, .btn--primary:active {
   transform: translateY(-2px) rotate(-1deg);
   box-shadow: 0 8px 32px rgba(139, 92, 246, 0.45);
   outline: none;
   animation: none;
+  opacity: 1;
+}
+
+#btn-open.landing-anim.is-landed,
+#btn-open.landing-anim:hover,
+#btn-open.landing-anim:focus-visible,
+#btn-open.landing-anim:active {
+  opacity: 1;
 }
 
 #btn-open.landing-anim:hover,
 #btn-open.landing-anim:focus-visible {
   animation: none;
   transform: translateY(-3px) rotate(-2deg) scale(1.04);
+}
+
+#btn-open.landing-anim:active {
+  animation: none;
+  transform: translateY(0) rotate(-7deg) scale(0.98);
 }
 
 .btn--slide-tilt {
@@ -2103,6 +2116,7 @@ body {
   .hero-night, .hero-stars, .hero-moon, .hero-cloud,
   .landing-greet, .landing-greet__arm--l, .landing-greet__arm--r,
   .landing-body, .landing-anim, .btn-arrow, #btn-open, .btn--slide-tilt { animation: none; transform: none; opacity: 1; }
+  #btn-open.landing-anim { opacity: 1; }
   .reveal-line, .reveal-line.is-visible { filter: none; opacity: 1; transform: none; animation: none; }
   .reveal-line.is-visible .line-icon { animation: none; }
   .password-spark, .lock-icon, .lock-shackle, .lock-glow, .lock-keyhole,
@@ -2115,12 +2129,78 @@ body {
 @media (max-width: 480px) {
   .landing-hero { height: clamp(200px, 40vh, 320px); }
   .landing-body { margin-top: -18px; border-radius: 22px 22px 0 0; }
+  .screen__inner--landing {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
   .reveal-line { font-size: 0.92rem; }
-  .landing-greet__girl { width: clamp(58px, 18vw, 72px); }
-  .landing-btn-zone { min-height: 8rem; gap: 0.05rem; margin-bottom: 1.35rem; }
+  .landing-btn-zone {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: auto;
+    gap: 0.7rem;
+    margin-bottom: 1.35rem;
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 0.15rem;
+  }
+  .landing-greet {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    gap: 0.2rem;
+  }
+  .landing-greet__girl {
+    width: clamp(50px, 15vw, 62px);
+    margin-left: 0;
+  }
+  .landing-greet__hi {
+    min-width: 0;
+    flex: 1 1 auto;
+    max-width: min(14.5rem, calc(100vw - 5.5rem));
+    font-size: clamp(0.98rem, 3.6vw, 1.2rem);
+    padding: 0.4rem 0.65rem;
+  }
+  .landing-btn-zone .btn--primary {
+    width: 100%;
+    max-width: min(100%, 19.5rem);
+    min-width: 0;
+    padding: 0.82rem 1.15rem;
+    font-size: clamp(0.86rem, 3.4vw, 1rem);
+    transform: rotate(-4deg);
+  }
+  #btn-open.landing-anim.is-landed,
+  #btn-open.landing-anim:hover,
+  #btn-open.landing-anim:focus-visible,
+  #btn-open.landing-anim:active {
+    transform: rotate(-4deg);
+  }
+  #btn-open.landing-anim:hover,
+  #btn-open.landing-anim:focus-visible {
+    transform: translateY(-3px) rotate(-4deg) scale(1.03);
+  }
+  #btn-open.landing-anim:active {
+    transform: translateY(0) rotate(-5deg) scale(0.98);
+  }
 }
 
 @media (max-width: 380px) {
+  .screen__inner--landing {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+  .landing-greet__hi {
+    max-width: min(12.5rem, calc(100vw - 4.75rem));
+    font-size: 0.95rem;
+    padding: 0.35rem 0.55rem;
+  }
+  .landing-greet__girl { width: 48px; }
+  .landing-btn-zone .btn--primary {
+    max-width: 100%;
+    padding: 0.78rem 0.95rem;
+    font-size: 0.84rem;
+  }
   .password-form { flex-direction: column; }
   .password-input { max-width: 100%; }
 }

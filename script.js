@@ -169,7 +169,11 @@ function replayLandingAnimations() {
 }
 
 function kickLandingAnimations() {
-  if (prefersReducedMotion) return;
+  if (prefersReducedMotion) {
+    btnOpen?.classList.add("is-landed");
+    return;
+  }
+  btnOpen?.classList.remove("is-landed");
   const resetEls = screens.landing.querySelectorAll(
     ".landing-anim, .landing-greet, .landing-greet__arm--l, .landing-greet__arm--r, .hero-night, .hero-stars, .hero-moon, .hero-sun-rise, .hero-cloud"
   );
@@ -178,6 +182,10 @@ function kickLandingAnimations() {
     void el.offsetHeight;
     el.style.animation = "";
   });
+}
+
+function markBtnOpenLanded() {
+  btnOpen?.classList.add("is-landed");
 }
 
 function resetLandingGreet() {
@@ -1265,6 +1273,14 @@ function applyPersonalization() {
 btnOpen.addEventListener("click", () => {
   tryStartMusicOnGesture();
   showScreen("password");
+});
+
+btnOpen?.addEventListener("animationend", (e) => {
+  if (e.animationName === "btn-fall-bounce") markBtnOpenLanded();
+});
+
+btnOpen?.addEventListener("animationstart", () => {
+  btnOpen?.classList.remove("is-landed");
 });
 btnReplay.addEventListener("click", resetAllScreens);
 
