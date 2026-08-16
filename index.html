@@ -34,26 +34,53 @@
 
     <!-- 1. LANDING -->
     <section class="screen screen--active" id="screen-landing">
-      <div class="hero-wrap" aria-hidden="true">
-        <div class="hero-img"></div>
-        <div class="hero-leaves">
-          <span class="leaf leaf--1">🍃</span>
-          <span class="leaf leaf--2">🍃</span>
-          <span class="leaf leaf--3">🍃</span>
+      <div class="landing-layout">
+        <div class="hero-wrap" aria-hidden="true">
+          <svg class="hero-svg" viewBox="0 0 800 420" preserveAspectRatio="xMidYMax slice">
+            <defs>
+              <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#EEF5FF"/>
+                <stop offset="40%" stop-color="#F6F0FF"/>
+                <stop offset="75%" stop-color="#FFF1E8"/>
+                <stop offset="100%" stop-color="#FFF9F8"/>
+              </linearGradient>
+            </defs>
+            <rect width="800" height="420" fill="url(#skyGrad)"/>
+            <circle cx="680" cy="75" r="40" fill="#F7C978" opacity="0.85"/>
+            <circle cx="680" cy="75" r="58" fill="#F7C978" opacity="0.18"/>
+            <ellipse cx="100" cy="85" rx="75" ry="28" fill="white" opacity="0.65"/>
+            <ellipse cx="500" cy="105" rx="90" ry="32" fill="white" opacity="0.5"/>
+            <rect x="470" y="195" width="55" height="85" fill="#c4b5d8" rx="2"/>
+            <rect x="540" y="175" width="65" height="105" fill="#b8a8cc" rx="2"/>
+            <polygon points="572,175 572,155 605,175" fill="#a898c0"/>
+            <circle cx="340" cy="245" r="26" fill="#a8d5b5" opacity="0.75"/>
+            <rect x="336" y="245" width="8" height="28" fill="#86b894"/>
+            <rect x="0" y="305" width="800" height="115" fill="#E9DEFF" opacity="0.55"/>
+            <ellipse cx="270" cy="262" rx="20" ry="24" fill="#5c4033"/>
+            <path d="M250 288 Q270 275 290 288 L296 330 Q270 338 244 330 Z" fill="#FFF9F8"/>
+            <rect x="256" y="326" width="28" height="32" fill="#9ca3af" rx="3"/>
+            <rect x="278" y="295" width="16" height="24" fill="#b0b8c4" rx="3" transform="rotate(12 286 307)"/>
+          </svg>
+          <div class="hero-leaves">
+            <span class="leaf leaf--1">🍃</span>
+            <span class="leaf leaf--2">🍃</span>
+          </div>
         </div>
-      </div>
-      <div class="screen__inner screen__inner--landing">
-        <p class="eyebrow reveal-up" style="--d:0.2s">A little something for your Day 1…</p>
-        <p class="nickname-badge reveal-up" id="nickname-badge" style="--d:0.35s"></p>
-        <h1 class="hero-title reveal-up" style="--d:0.5s">
-          Ready for a<br><span class="serif-accent">new chapter?</span>
-        </h1>
-        <p class="subtitle reveal-up" style="--d:0.9s">
-          Before you step into your new journey,<br>there's something waiting for you.
-        </p>
-        <button class="btn btn--primary reveal-up breathe" style="--d:1.3s" id="btn-open">
-          Open it <span aria-hidden="true">→</span>
-        </button>
+        <div class="landing-panel">
+          <div class="screen__inner screen__inner--landing">
+            <p class="eyebrow reveal-up" style="--d:0.2s">A little something for your Day 1…</p>
+            <p class="nickname-badge reveal-up" id="nickname-badge" style="--d:0.35s"></p>
+            <h1 class="hero-title reveal-up" style="--d:0.5s">
+              Ready for a<br><span class="serif-accent">new chapter?</span>
+            </h1>
+            <p class="subtitle subtitle--landing reveal-up" style="--d:0.9s">
+              Before you step into your new journey, there's something waiting for you.
+            </p>
+            <button class="btn btn--primary reveal-up breathe" style="--d:1.3s" id="btn-open">
+              Open it <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
