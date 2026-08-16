@@ -1282,15 +1282,47 @@ body {
   100% { transform: translateY(115vh) translateX(var(--drift, 24px)) rotate(var(--spin, 180deg)) scale(1); opacity: 0; }
 }
 
+/* Chocolates caught in bucket or eaten */
+.choco-catch {
+  position: absolute;
+  top: -2%;
+  z-index: 5;
+  pointer-events: none;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(92, 64, 51, 0.3));
+}
+
+.choco-catch--bucket {
+  animation: choco-to-bucket 1.05s var(--ease-in) forwards;
+}
+
+.choco-catch--mouth {
+  animation: choco-to-mouth 0.95s var(--ease-in) forwards;
+}
+
+@keyframes choco-to-bucket {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+  12% { opacity: 1; }
+  75% { transform: translate(calc(-1 * var(--catch-dx, 120px)), 82vh) rotate(240deg) scale(0.55); opacity: 1; }
+  100% { transform: translate(calc(-1 * var(--catch-dx, 120px)), 84vh) rotate(280deg) scale(0.15); opacity: 0; }
+}
+
+@keyframes choco-to-mouth {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+  12% { opacity: 1; }
+  70% { transform: translate(calc(-1 * var(--catch-dx, 80px)), 72vh) rotate(160deg) scale(0.45); opacity: 1; }
+  100% { transform: translate(calc(-1 * var(--catch-dx, 80px)), 74vh) rotate(200deg) scale(0.1); opacity: 0; }
+}
+
 .final-girl-scene {
   position: absolute;
   bottom: max(0.75rem, env(safe-area-inset-bottom));
   left: max(0.5rem, env(safe-area-inset-left));
   transform: translateY(24px);
-  width: min(200px, 46vw);
+  width: min(220px, 50vw);
   opacity: 0;
   transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
-  z-index: 1;
+  z-index: 6;
   pointer-events: none;
 }
 
@@ -1313,19 +1345,66 @@ body {
 }
 
 .final-girl {
-  transform: translate(108px, 108px);
+  transform: translate(118px, 118px);
   transform-box: fill-box;
   transform-origin: 0 0;
   animation: final-girl-happy 2s var(--ease-in-out) infinite;
 }
 
-.final-girl__arm {
-  transform-origin: 14px 8px;
-  animation: final-girl-eat 1.1s var(--ease-in-out) infinite;
+.final-girl__bucket-arm {
+  transform-origin: -20px 14px;
+  animation: final-girl-bucket-sway 2.4s var(--ease-in-out) infinite;
+}
+
+.final-girl-scene.is-catching .final-girl__bucket-arm {
+  animation: final-girl-bucket-catch 0.55s var(--ease-out);
+}
+
+.final-girl__bucket {
+  filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.25));
+}
+
+.final-bucket-choco {
+  opacity: 0;
+  transform-origin: center;
+}
+
+.final-bucket-choco--1 { animation: bucket-fill 2s var(--ease-out) 0.3s infinite; }
+.final-bucket-choco--2 { animation: bucket-fill 2s var(--ease-out) 0.8s infinite; }
+.final-bucket-choco--3 { animation: bucket-fill 2s var(--ease-out) 1.3s infinite; }
+.final-bucket-choco--4 { animation: bucket-fill 2s var(--ease-out) 1.8s infinite; }
+
+@keyframes bucket-fill {
+  0%, 35% { opacity: 0; transform: translateY(-8px) scale(0.6); }
+  55%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.final-girl__eat-arm {
+  transform-origin: 14px 10px;
+  animation: final-girl-eat 1.2s var(--ease-in-out) infinite;
+}
+
+.final-girl-scene.is-eating .final-girl__eat-arm {
+  animation: final-girl-eat-bite 0.5s var(--ease-out);
+}
+
+.final-girl__choco-bite {
+  transform-origin: 38px 9px;
+  animation: choco-bite-shrink 1.2s var(--ease-in-out) infinite;
+}
+
+.final-girl-caption {
+  font-family: var(--font-hand);
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  color: var(--text-subtle);
+  text-align: center;
+  margin-top: 0.15rem;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
 }
 
 .final-girl__smile {
-  transform-origin: 0 -2px;
+  transform-origin: 0 -3px;
   animation: final-girl-smile 2s var(--ease-in-out) infinite;
 }
 
@@ -1334,15 +1413,37 @@ body {
 }
 
 @keyframes final-girl-happy {
-  0%, 100% { transform: translate(108px, 108px) rotate(0deg); }
-  50% { transform: translate(108px, 104px) rotate(-1.5deg); }
+  0%, 100% { transform: translate(118px, 118px) rotate(0deg); }
+  50% { transform: translate(118px, 114px) rotate(-1.5deg); }
+}
+
+@keyframes final-girl-bucket-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-6deg) translateY(-1px); }
+}
+
+@keyframes final-girl-bucket-catch {
+  0% { transform: rotate(0deg); }
+  40% { transform: rotate(-22deg) translateY(3px); }
+  100% { transform: rotate(-4deg); }
 }
 
 @keyframes final-girl-eat {
   0%, 100% { transform: rotate(0deg) translateY(0); }
-  35% { transform: rotate(-28deg) translateY(-2px); }
-  55% { transform: rotate(-32deg) translateY(-3px); }
-  75% { transform: rotate(-8deg) translateY(0); }
+  35% { transform: rotate(-30deg) translateY(-3px); }
+  55% { transform: rotate(-34deg) translateY(-4px); }
+  75% { transform: rotate(-10deg) translateY(0); }
+}
+
+@keyframes final-girl-eat-bite {
+  0% { transform: rotate(-10deg); }
+  45% { transform: rotate(-38deg) translateY(-2px); }
+  100% { transform: rotate(-8deg); }
+}
+
+@keyframes choco-bite-shrink {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.75); opacity: 0.85; }
 }
 
 @keyframes final-girl-smile {
@@ -1578,7 +1679,8 @@ body {
   }
 
   .bg-blob, .glow-text, .final-star, .btn--pulse, .btn--dance, .btn--dance-sway, .btn--last-thing, .btn--last-thing__bg, .btn--last-thing__nudge, .music-btn--hint,
-  .choco-float, .final-girl, .final-girl__arm, .final-girl__cheek, .final-girl-scene,
+  .choco-float, .choco-catch, .final-girl, .final-girl__bucket-arm, .final-girl__eat-arm,
+  .final-girl__cheek, .final-bucket-choco, .final-girl-scene,
   .landing-hero__svg, .landing-hero__shimmer, .orbit-item, .float-icon, .landing-spark,
   .hero-sun-rise, .hero-sun, .hero-sun-glow, .hero-sun-rays, .hero-sky-warm,
   .hero-night, .hero-stars, .hero-moon, .hero-cloud,

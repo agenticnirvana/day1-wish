@@ -54,6 +54,8 @@ const finalStar = document.getElementById("final-star");
 const finalChocolates = document.getElementById("final-chocolates");
 const finalGirlScene = document.getElementById("final-girl-scene");
 
+let finalChocoCatchTimer = null;
+
 let currentScreen = "landing";
 let particleBoost = 1;
 let confettiCanvas = null;
@@ -202,6 +204,7 @@ function resetFinalState() {
     finalChocolates.innerHTML = "";
     finalChocolates.classList.remove("is-active");
   }
+  stopFinalChocoCatch();
   [finalGreeting, finalNote, finalStar, btnReplay].forEach((el) => {
     if (el) {
       el.hidden = true;
@@ -218,6 +221,7 @@ async function runFinalSequence() {
   await delay(prefersReducedMotion ? 150 : 600);
 
   if (finalGirlScene) finalGirlScene.classList.add("is-visible");
+  startFinalChocoCatch();
 
   if (finalConfusing) {
     finalConfusing.hidden = false;
@@ -275,6 +279,49 @@ function initFinalChocolates() {
 
     el.style.opacity = `${0.55 + Math.random() * 0.4}`;
     finalChocolates.appendChild(el);
+  }
+}
+
+function stopFinalChocoCatch() {
+  if (finalChocoCatchTimer) {
+    clearInterval(finalChocoCatchTimer);
+    finalChocoCatchTimer = null;
+  }
+  if (finalChocolates) {
+    finalChocolates.querySelectorAll(".choco-catch").forEach((el) => el.remove());
+  }
+}
+
+function startFinalChocoCatch() {
+  stopFinalChocoCatch();
+  if (!finalChocolates || prefersReducedMotion) return;
+
+  finalChocoCatchTimer = setInterval(spawnCaughtChoco, 900);
+  for (let i = 0; i < 4; i++) {
+    setTimeout(spawnCaughtChoco, i * 350);
+  }
+}
+
+function spawnCaughtChoco() {
+  if (!finalChocolates || !finalChocolates.classList.contains("is-active")) return;
+
+  const toMouth = Math.random() > 0.55;
+  const el = document.createElement("span");
+  el.className = `choco-catch choco-catch--${toMouth ? "mouth" : "bucket"}`;
+  el.textContent = Math.random() > 0.5 ? "🍫" : "🍬";
+
+  const leftPct = 15 + Math.random() * 70;
+  el.style.left = `${leftPct}%`;
+  el.style.fontSize = `${0.85 + Math.random() * 0.5}rem`;
+  el.style.setProperty("--catch-dx", `${(leftPct / 100) * window.innerWidth - (window.innerWidth * 0.14)}px`);
+
+  el.addEventListener("animationend", () => el.remove(), { once: true });
+  finalChocolates.appendChild(el);
+
+  if (finalGirlScene) {
+    finalGirlScene.classList.remove("is-catching", "is-eating");
+    void finalGirlScene.offsetWidth;
+    finalGirlScene.classList.add(toMouth ? "is-eating" : "is-catching");
   }
 }
 
