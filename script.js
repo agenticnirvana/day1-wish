@@ -8,60 +8,45 @@ const CONFIG = {
   nickname: "Ms.whywhywhy",
   password: "ms.maybe",
   date: "August 17, 2026",
-  chocolateMessage: "Day 1 survival kit: backpack ✓ notes ✓ confidence ✓",
-  chocolateSub: "And chocolate. Always chocolate. Non-negotiable. 🍫"
+  chocolateMessage: "Day 1 survival kit: curiosity ✓ courage ✓ chocolate ✓",
+  chocolateSub: "The third one is non-negotiable. 🍫"
 };
 
 const WISHES = [
-  { text: "May you grow, learn, explore,<br>and still remain <em>completely yourself</em>." },
-  { text: "May you meet people who make this new place feel like home." },
-  { text: "May you find friendships that turn into your favourite memories." },
-  { text: "May you have the courage to try new things,<br>even when they feel a little scary." },
-  { text: "May you have more reasons to laugh than to worry." }
-];
-
-const BONUS_WISH = {
-  text: "May every wrong turn lead you to an unexpected story worth remembering.",
-  icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>`
-};
-
-const WISH_ICONS = [
-  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
-  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
-  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`,
-  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`
-];
-
-/* Surprise beats during wish parade */
-const SURPRISES = {
-  afterWish2: {
-    tag: "Party pooper moment",
-    emoji: "😭",
-    text: "Quick reality check: Day 1 is basically Tuesday… but with a cuter outfit and more confusion.",
-    sub: "Anyway — back to the good stuff ✨"
+  {
+    text: "May you walk into every room knowing you <em>belong</em> there.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`
   },
-  afterWish4: {
-    tag: "Plot twist",
-    emoji: "🎬",
-    text: "Plot twist: you're the main character and literally nobody else got the script either.",
-    sub: "You're doing fine. Keep going."
+  {
+    text: "May you find people who laugh at the same random things you do.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+  },
+  {
+    text: "May the confusing days teach you something the easy days never could.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`
+  },
+  {
+    text: "May you grow without losing the parts of you that make you <em>you</em>.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
+  },
+  {
+    text: "May this chapter become a story you're quietly proud to tell.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
+  },
+  {
+    text: CONFIG.chocolateMessage,
+    tag: CONFIG.chocolateSub,
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M9 8v10M15 8v10M3 13h18"/></svg>`,
+    isBonus: true
   }
-};
-
-const TOASTS = [
-  "Okay this is getting emotional 🥹",
-  "Don't cry yet — we're only halfway!",
-  "Someone made this whole thing for YOU btw ✦",
-  "Almost there… hang on"
 ];
 
 const screens = {
   landing: document.getElementById("screen-landing"),
   password: document.getElementById("screen-password"),
-  stars: document.getElementById("screen-stars"),
-  wishlist: document.getElementById("screen-wishlist"),
-  important: document.getElementById("screen-important"),
+  day1: document.getElementById("screen-day1"),
+  wishes: document.getElementById("screen-wishes"),
+  letter: document.getElementById("screen-letter"),
   final: document.getElementById("screen-final")
 };
 
@@ -72,67 +57,45 @@ const els = {
   passwordError: document.getElementById("password-error"),
   lockIcon: document.getElementById("lock-icon"),
   unlockFlash: document.getElementById("unlock-flash"),
-  constellation: document.getElementById("constellation"),
-  starsHeading: document.getElementById("stars-heading"),
-  starsSub: document.getElementById("stars-sub"),
-  btnReleaseWishes: document.getElementById("btn-release-wishes"),
-  btnSkipParade: document.getElementById("btn-skip-parade"),
-  wishProgress: document.getElementById("wish-progress"),
-  wishProgressBar: document.getElementById("wish-progress-bar"),
-  wishProgressLabel: document.getElementById("wish-progress-label"),
-  starsComplete: document.getElementById("stars-complete"),
-  btnStarsContinue: document.getElementById("btn-stars-continue"),
-  wishParade: document.getElementById("wish-parade"),
-  wishParadeCard: document.getElementById("wish-parade-card"),
-  wishParadeStar: document.getElementById("wish-parade-star"),
-  wishParadeNum: document.getElementById("wish-parade-num"),
-  wishParadeText: document.getElementById("wish-parade-text"),
-  surpriseOverlay: document.getElementById("surprise-overlay"),
-  surpriseEmoji: document.getElementById("surprise-emoji"),
-  surpriseTag: document.getElementById("surprise-tag"),
-  surpriseText: document.getElementById("surprise-text"),
-  surpriseSub: document.getElementById("surprise-sub"),
-  surpriseDismiss: document.getElementById("surprise-dismiss"),
-  day1Burst: document.getElementById("day1-burst"),
-  burstDate: document.getElementById("burst-date"),
-  toastContainer: document.getElementById("toast-container"),
-  wishList: document.getElementById("wish-list"),
-  btnAndMore: document.getElementById("btn-and-more"),
-  importantQuote: document.getElementById("important-quote"),
-  btnImportantContinue: document.getElementById("btn-important-continue"),
-  btnAllBest: document.getElementById("btn-all-best"),
-  finaleExtra: document.getElementById("finale-extra"),
+  day1Date: document.getElementById("day1-date"),
+  btnDay1Continue: document.getElementById("btn-day1-continue"),
+  wishesLabel: document.getElementById("wishes-label"),
+  wishDeckStage: document.getElementById("wish-deck-stage"),
+  wishDots: document.getElementById("wish-dots"),
+  btnWishPrev: document.getElementById("btn-wish-prev"),
+  btnWishNext: document.getElementById("btn-wish-next"),
+  btnWishesDone: document.getElementById("btn-wishes-done"),
+  btnLetterContinue: document.getElementById("btn-letter-continue"),
+  btnSendoff: document.getElementById("btn-sendoff"),
+  finaleNoteCard: document.getElementById("finale-note-card"),
   finaleGreeting: document.getElementById("finale-greeting"),
+  finaleMessage: document.getElementById("finale-message"),
   btnReplay: document.getElementById("btn-replay"),
   siteFooter: document.getElementById("site-footer"),
   footerCheer: document.getElementById("footer-cheer"),
   nicknameBadge: document.getElementById("nickname-badge"),
   nicknameWhisper: document.getElementById("nickname-whisper"),
-  starsLabel: document.getElementById("stars-label"),
+  journeyBar: document.getElementById("journey-bar"),
   musicBtn: document.getElementById("music-btn"),
   musicEl: document.getElementById("music"),
   particlesCanvas: document.getElementById("particles-canvas"),
-  burstCanvas: document.getElementById("burst-canvas"),
-  confettiCanvas: document.getElementById("confetti-canvas"),
-  chocolateField: document.getElementById("chocolate-field"),
-  chocolateMoment: document.getElementById("chocolate-moment"),
-  chocolateRain: document.getElementById("chocolate-rain"),
-  chocolateMessage: document.getElementById("chocolate-message"),
-  chocolateSub: document.getElementById("chocolate-sub"),
-  chocolateDismiss: document.getElementById("chocolate-dismiss")
+  confettiCanvas: document.getElementById("confetti-canvas")
 };
 
 let currentScreen = "landing";
+let wishIndex = 0;
+let wishCardsBuilt = false;
 let timers = [];
-let paradeRunning = false;
-let paradeSkipped = false;
-let paradeResolve = null;
 let confettiPieces = [];
 let confettiAnimating = false;
-let chocolateShown = false;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const CHOCO_SVG = `<svg viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" fill="#5D3A1A"/><rect x="4" y="8" width="24" height="16" rx="3" fill="#8B5E3C" opacity="0.85"/><path d="M12 8v16M20 8v16M4 16h24" stroke="#3D2510" stroke-width="1" opacity="0.4"/></svg>`;
+const JOURNEY_MAP = {
+  day1: "open",
+  wishes: "wishes",
+  letter: "letter",
+  final: "finale"
+};
 
 /* ============================================
    Navigation
@@ -146,73 +109,83 @@ function showSection(name) {
   if (prev) {
     prev.classList.add("is-leaving");
     prev.classList.remove("screen--active");
-    setTimeout(() => { prev.hidden = true; prev.classList.remove("is-leaving"); }, 750);
+    setTimeout(() => {
+      prev.hidden = true;
+      prev.classList.remove("is-leaving");
+    }, 700);
   }
 
   next.hidden = false;
   requestAnimationFrame(() => next.classList.add("screen--active"));
   currentScreen = name;
 
+  updateJourneyBar(name);
+
   if (name !== "landing" && name !== "password") {
     els.siteFooter.hidden = false;
   }
 
   switch (name) {
-    case "wishlist": buildWishList(); break;
-    case "important": revealImportant(); break;
-    case "final": replayFinalAnimations(); break;
+    case "wishes":
+      if (!wishCardsBuilt) buildWishDeck();
+      updateWishView(false);
+      break;
+    case "day1":
+      replayScreenAnimations(screens.day1);
+      break;
+    case "final":
+      replayScreenAnimations(screens.final);
+      break;
   }
+}
+
+function updateJourneyBar(screenName) {
+  const step = JOURNEY_MAP[screenName];
+  if (!step) {
+    els.journeyBar.hidden = screenName === "landing" || screenName === "password";
+    return;
+  }
+
+  els.journeyBar.hidden = false;
+  const order = ["open", "wishes", "letter", "finale"];
+  const currentIdx = order.indexOf(step);
+
+  els.journeyBar.querySelectorAll(".journey-bar__step").forEach((el) => {
+    const idx = order.indexOf(el.dataset.step);
+    el.classList.toggle("is-done", idx < currentIdx);
+    el.classList.toggle("is-active", idx === currentIdx);
+  });
 }
 
 function resetExperience() {
   clearAllTimers();
-  closeParade();
-  closeSurprise();
   stopConfetti();
-  paradeRunning = false;
-  paradeSkipped = false;
+  wishIndex = 0;
 
   Object.values(screens).forEach((s) => {
     s.hidden = s !== screens.landing;
-    s.classList.remove("screen--active", "is-leaving", "is-shaking");
+    s.classList.remove("screen--active", "is-leaving");
   });
+
   screens.landing.classList.add("screen--active");
   screens.landing.hidden = false;
   currentScreen = "landing";
 
+  els.journeyBar.hidden = true;
   els.siteFooter.hidden = true;
   els.passwordInput.value = "";
   els.passwordError.textContent = "";
   els.passwordError.classList.remove("is-visible");
   els.lockIcon.classList.remove("is-unlocked");
 
-  els.constellation.classList.remove("is-active");
-  els.btnReleaseWishes.hidden = false;
-  els.btnSkipParade.hidden = true;
-  els.wishProgress.hidden = true;
-  els.wishProgress.classList.remove("is-visible");
-  els.starsComplete.hidden = true;
-  els.starsComplete.classList.remove("is-visible");
-  els.btnStarsContinue.hidden = true;
-  els.btnStarsContinue.classList.remove("is-visible");
-  els.starsHeading.textContent = "Something's about to happen ✨";
-  els.starsSub.textContent = "Hold on — this is going to be fun.";
-  els.wishList.innerHTML = "";
-  els.importantQuote.classList.remove("is-visible");
-  els.finaleExtra.hidden = true;
-  els.day1Burst.classList.remove("is-open");
-  els.day1Burst.hidden = true;
-  els.toastContainer.innerHTML = "";
-  chocolateShown = false;
-  els.chocolateMoment.classList.remove("is-open");
-  els.chocolateMoment.hidden = true;
-  if (els.chocolateRain) els.chocolateRain.innerHTML = "";
+  els.btnWishPrev.hidden = true;
+  els.btnWishNext.hidden = false;
+  els.btnWishesDone.hidden = true;
+  els.finaleNoteCard.hidden = true;
+  els.btnSendoff.disabled = false;
+  els.btnSendoff.textContent = "All the best →";
 
-  els.btnAllBest.textContent = "All the best! →";
-  els.btnAllBest.disabled = false;
-  els.btnAllBest.style.opacity = "";
-
-  replayLandingAnimations();
+  replayScreenAnimations(screens.landing);
 }
 
 function clearAllTimers() {
@@ -221,43 +194,17 @@ function clearAllTimers() {
 }
 
 function wait(ms) {
-  return new Promise((resolve) => { timers.push(setTimeout(resolve, ms)); });
-}
-
-function replayLandingAnimations() {
-  screens.landing.querySelectorAll(".reveal-up").forEach((el) => {
-    el.style.animation = "none"; el.offsetHeight; el.style.animation = "";
+  return new Promise((resolve) => {
+    timers.push(setTimeout(resolve, ms));
   });
 }
 
-function replayFinalAnimations() {
-  screens.final.querySelectorAll(".reveal-up").forEach((el) => {
-    el.style.animation = "none"; el.offsetHeight; el.style.animation = "";
+function replayScreenAnimations(screen) {
+  screen.querySelectorAll(".reveal-up").forEach((el) => {
+    el.style.animation = "none";
+    el.offsetHeight;
+    el.style.animation = "";
   });
-}
-
-function screenShake() {
-  if (reducedMotion) return;
-  const active = document.querySelector(".screen--active");
-  if (active) {
-    active.classList.add("is-shaking");
-    setTimeout(() => active.classList.remove("is-shaking"), 500);
-  }
-}
-
-/* ============================================
-   Toasts
-   ============================================ */
-
-function showToast(msg, duration = 2500) {
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.textContent = msg;
-  els.toastContainer.appendChild(t);
-  timers.push(setTimeout(() => {
-    t.classList.add("is-out");
-    setTimeout(() => t.remove(), 400);
-  }, duration));
 }
 
 /* ============================================
@@ -265,30 +212,15 @@ function showToast(msg, duration = 2500) {
    ============================================ */
 
 async function unlockExperience() {
-  screenShake();
   els.lockIcon.classList.add("is-unlocked");
   els.unlockFlash.classList.add("is-active");
-  fireConfetti(80);
-  createBurst(window.innerWidth / 2, window.innerHeight / 2, 60);
+  fireConfetti(18);
 
-  await wait(reducedMotion ? 300 : 900);
+  await wait(reducedMotion ? 300 : 700);
   els.unlockFlash.classList.remove("is-active");
 
-  await showDay1Burst();
-  showSection("stars");
-}
-
-async function showDay1Burst() {
-  els.burstDate.textContent = CONFIG.date;
-  els.day1Burst.hidden = false;
-  requestAnimationFrame(() => els.day1Burst.classList.add("is-open"));
-  fireConfetti(50);
-  screenShake();
-
-  await wait(reducedMotion ? 800 : 2800);
-  els.day1Burst.classList.remove("is-open");
-  await wait(500);
-  els.day1Burst.hidden = true;
+  els.day1Date.textContent = CONFIG.date;
+  showSection("day1");
 }
 
 els.passwordForm.addEventListener("submit", (e) => {
@@ -299,7 +231,7 @@ els.passwordForm.addEventListener("submit", (e) => {
     els.passwordError.classList.remove("is-visible");
     unlockExperience();
   } else {
-    els.passwordError.textContent = "Hmm… I think you know this one ;)";
+    els.passwordError.textContent = "Close — you know this one.";
     els.passwordError.classList.add("is-visible");
     els.passwordInput.classList.add("shake");
     setTimeout(() => els.passwordInput.classList.remove("shake"), 400);
@@ -311,268 +243,80 @@ els.passwordInput.addEventListener("input", () => {
 });
 
 /* ============================================
-   Wish parade (auto flow — no boring taps!)
+   Wish deck
    ============================================ */
 
-els.btnReleaseWishes.addEventListener("click", startWishParade);
+function buildWishDeck() {
+  WISHES.forEach((wish, i) => {
+    const card = document.createElement("article");
+    card.className = `wish-card wish-card--${i + 1}`;
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="wish-card__icon" aria-hidden="true">${wish.icon}</div>
+      <p class="wish-card__num">${wish.isBonus ? "One more thing" : `Wish ${i + 1}`}</p>
+      <p class="wish-card__text">${wish.text}</p>
+      ${wish.tag ? `<p class="wish-card__tag">${wish.tag}</p>` : ""}
+    `;
+    els.wishDeckStage.appendChild(card);
 
-els.btnSkipParade.addEventListener("click", () => {
-  paradeSkipped = true;
-  if (paradeResolve) paradeResolve();
-  closeParade();
-  finishParade();
-});
-
-async function startWishParade() {
-  if (paradeRunning) return;
-  paradeRunning = true;
-  paradeSkipped = false;
-
-  els.btnReleaseWishes.hidden = true;
-  els.starsHeading.textContent = "Here they come… ✨";
-  els.starsSub.textContent = "Sit back. Let it happen.";
-  els.constellation.classList.add("is-active");
-  els.btnSkipParade.hidden = false;
-  els.wishProgress.hidden = false;
-  requestAnimationFrame(() => els.wishProgress.classList.add("is-visible"));
-
-  fireConfetti(40);
-  await wait(reducedMotion ? 200 : 900);
-
-  openParade();
-
-  for (let i = 0; i < WISHES.length; i++) {
-    if (paradeSkipped) break;
-
-    updateProgress(i + 1, WISHES.length);
-    await showWishInParade(i);
-
-    if (paradeSkipped) break;
-
-    if (i === 1 && SURPRISES.afterWish2) {
-      closeParade();
-      await showSurprise(SURPRISES.afterWish2);
-      openParade();
-    }
-    if (i === 3 && SURPRISES.afterWish4) {
-      closeParade();
-      await showSurprise(SURPRISES.afterWish4);
-      openParade();
-    }
-    if (i === 2) showToast(TOASTS[0]);
-    if (i === 4) showToast(TOASTS[1]);
-  }
-
-  closeParade();
-  finishParade();
-}
-
-function updateProgress(current, total) {
-  const pct = (current / total) * 100;
-  els.wishProgressBar.style.setProperty("--pct", `${pct}%`);
-  els.wishProgressLabel.textContent = `Wish ${current} of ${total}`;
-}
-
-function openParade() {
-  els.wishParade.hidden = false;
-  requestAnimationFrame(() => els.wishParade.classList.add("is-open"));
-}
-
-function closeParade() {
-  els.wishParade.classList.remove("is-open");
-  setTimeout(() => { els.wishParade.hidden = true; }, 350);
-}
-
-function showWishInParade(index) {
-  return new Promise((resolve) => {
-    paradeResolve = resolve;
-    const colors = ["#FF9DB8", "#F7C978", "#7EC8E3", "#C4A0F0", "#FFD54F"];
-
-    els.wishParadeCard.classList.remove("is-in", "is-out");
-    els.wishParadeStar.style.color = colors[index];
-    els.wishParadeNum.textContent = `Wish ${index + 1}`;
-    els.wishParadeText.innerHTML = WISHES[index].text;
-
-    fireConfetti(25);
-    createBurst(window.innerWidth / 2, window.innerHeight / 2, 30);
-
-    requestAnimationFrame(() => {
-      els.wishParadeCard.classList.add("is-in");
-    });
-
-    const autoAdvance = reducedMotion ? 2000 : 3200;
-
-    function advance() {
-      els.wishParade.removeEventListener("click", advance);
-      els.wishParadeCard.classList.remove("is-in");
-      els.wishParadeCard.classList.add("is-out");
-      timers.push(setTimeout(() => {
-        paradeResolve = null;
-        resolve();
-      }, reducedMotion ? 100 : 350));
-    }
-
-    els.wishParade.addEventListener("click", advance);
-    timers.push(setTimeout(advance, autoAdvance));
+    const dot = document.createElement("span");
+    dot.className = "wish-dot";
+    dot.dataset.index = i;
+    els.wishDots.appendChild(dot);
   });
+
+  wishCardsBuilt = true;
 }
 
-function finishParade() {
-  paradeRunning = false;
-  els.btnSkipParade.hidden = true;
-  els.constellation.classList.remove("is-active");
-  els.starsHeading.textContent = "That was a lot ✨";
-  els.starsSub.textContent = "In a good way.";
+function updateWishView(animate = true) {
+  const cards = els.wishDeckStage.querySelectorAll(".wish-card");
+  const dots = els.wishDots.querySelectorAll(".wish-dot");
 
-  fireConfetti(100);
-  screenShake();
-  showToast(TOASTS[3], 3000);
-
-  els.starsComplete.hidden = false;
-  requestAnimationFrame(() => els.starsComplete.classList.add("is-visible"));
-
-  showChocolateMoment().then(() => {
-    els.btnStarsContinue.hidden = false;
-    requestAnimationFrame(() => els.btnStarsContinue.classList.add("is-visible"));
+  cards.forEach((card, i) => {
+    card.classList.remove("is-active", "is-prev", "is-next");
+    if (i === wishIndex) card.classList.add("is-active");
+    else if (i < wishIndex) card.classList.add("is-prev");
+    else if (i === wishIndex + 1) card.classList.add("is-next");
   });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("is-active", i === wishIndex);
+    dot.classList.toggle("is-done", i < wishIndex);
+  });
+
+  els.btnWishPrev.hidden = wishIndex === 0;
+  const isLast = wishIndex === WISHES.length - 1;
+  els.btnWishNext.hidden = isLast;
+  els.btnWishesDone.hidden = !isLast;
+  els.btnWishNext.textContent = isLast ? "Continue →" : "Next wish →";
 }
+
+function goToWish(index) {
+  if (index < 0 || index >= WISHES.length) return;
+  wishIndex = index;
+  updateWishView();
+}
+
+els.btnWishNext.addEventListener("click", () => goToWish(wishIndex + 1));
+els.btnWishPrev.addEventListener("click", () => goToWish(wishIndex - 1));
+els.btnWishesDone.addEventListener("click", () => showSection("letter"));
+
+/* Swipe support on wish deck */
+let touchStartX = 0;
+
+els.wishDeckStage.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+els.wishDeckStage.addEventListener("touchend", (e) => {
+  const diff = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(diff) < 50) return;
+  if (diff < 0 && wishIndex < WISHES.length - 1) goToWish(wishIndex + 1);
+  if (diff > 0 && wishIndex > 0) goToWish(wishIndex - 1);
+}, { passive: true });
 
 /* ============================================
-   Surprise overlay
-   ============================================ */
-
-function showSurprise(data) {
-  return new Promise((resolve) => {
-    els.surpriseEmoji.textContent = data.emoji;
-    els.surpriseTag.textContent = data.tag;
-    els.surpriseText.textContent = data.text;
-    els.surpriseSub.textContent = data.sub || "";
-
-    els.surpriseOverlay.hidden = false;
-    requestAnimationFrame(() => els.surpriseOverlay.classList.add("is-open"));
-    screenShake();
-    showToast("Wait wait wait — 😂", 2000);
-
-    function dismiss() {
-      els.surpriseDismiss.removeEventListener("click", dismiss);
-      els.surpriseOverlay.classList.remove("is-open");
-      setTimeout(() => {
-        els.surpriseOverlay.hidden = true;
-        resolve();
-      }, 400);
-    }
-
-    els.surpriseDismiss.addEventListener("click", dismiss);
-    timers.push(setTimeout(dismiss, reducedMotion ? 2500 : 5000));
-  });
-}
-
-function closeSurprise() {
-  els.surpriseOverlay.classList.remove("is-open");
-  els.surpriseOverlay.hidden = true;
-}
-
-/* ============================================
-   Chocolate — floating bg + surprise moment
-   ============================================ */
-
-function initFloatingChocolate() {
-  if (!els.chocolateField || reducedMotion) return;
-
-  for (let i = 1; i <= 6; i++) {
-    const el = document.createElement("div");
-    el.className = `choco-float choco-float--${i} is-spin`;
-    el.innerHTML = CHOCO_SVG;
-    el.setAttribute("aria-hidden", "true");
-    els.chocolateField.appendChild(el);
-  }
-}
-
-function spawnChocolateRain(count = 20) {
-  if (!els.chocolateRain || reducedMotion) return;
-
-  for (let i = 0; i < count; i++) {
-    const piece = document.createElement("div");
-    piece.className = "choco-rain-piece";
-    piece.innerHTML = CHOCO_SVG;
-    piece.style.left = `${Math.random() * 100}%`;
-    piece.style.width = `${14 + Math.random() * 18}px`;
-    piece.style.height = piece.style.width;
-    piece.style.setProperty("--fall-dur", `${2 + Math.random() * 2.5}s`);
-    piece.style.animationDelay = `${Math.random() * 1.5}s`;
-    els.chocolateRain.appendChild(piece);
-    timers.push(setTimeout(() => piece.remove(), 5000));
-  }
-}
-
-function showChocolateMoment() {
-  if (chocolateShown) return Promise.resolve();
-  chocolateShown = true;
-
-  return new Promise((resolve) => {
-    els.chocolateMessage.textContent = CONFIG.chocolateMessage;
-    els.chocolateSub.textContent = CONFIG.chocolateSub;
-
-    els.chocolateMoment.hidden = false;
-    requestAnimationFrame(() => els.chocolateMoment.classList.add("is-open"));
-
-    spawnChocolateRain(25);
-    fireConfetti(30);
-    showToast("🍫 Chocolate break incoming…", 2200);
-
-    function dismiss() {
-      els.chocolateDismiss.removeEventListener("click", dismiss);
-      els.chocolateMoment.classList.remove("is-open");
-      setTimeout(() => {
-        els.chocolateMoment.hidden = true;
-        if (els.chocolateRain) els.chocolateRain.innerHTML = "";
-        resolve();
-      }, 450);
-    }
-
-    els.chocolateDismiss.addEventListener("click", dismiss);
-    timers.push(setTimeout(dismiss, reducedMotion ? 3000 : 7000));
-  });
-}
-
-/* ============================================
-   Wish list
-   ============================================ */
-
-function buildWishList() {
-  if (els.wishList.children.length > 0) return;
-
-  const all = [...WISHES.map((w, i) => ({ ...w, icon: WISH_ICONS[i] })), BONUS_WISH];
-
-  all.forEach((wish, i) => {
-    const li = document.createElement("li");
-    li.className = "wish-item";
-    const plain = wish.text.replace(/<br>/g, " ").replace(/<\/?em>/g, "");
-    li.innerHTML = `<span class="wish-icon" aria-hidden="true">${wish.icon}</span><span>${plain}</span>`;
-    els.wishList.appendChild(li);
-    timers.push(setTimeout(() => {
-      li.classList.add("is-visible", "is-pop");
-      if (i % 2 === 0) createBurst(
-        window.innerWidth * 0.3 + Math.random() * window.innerWidth * 0.4,
-        window.innerHeight * 0.4,
-        12
-      );
-    }, reducedMotion ? i * 80 : 200 + i * 350));
-  });
-
-  fireConfetti(30);
-}
-
-async function revealImportant() {
-  fireConfetti(40);
-  screenShake();
-  await wait(reducedMotion ? 100 : 500);
-  els.importantQuote.classList.add("is-visible");
-  showToast("Okay THIS one hits different ✦", 3000);
-}
-
-/* ============================================
-   Confetti system
+   Confetti (used sparingly)
    ============================================ */
 
 function fireConfetti(count) {
@@ -583,18 +327,18 @@ function fireConfetti(count) {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const colors = ["#B58AEF", "#FF9DB8", "#F7C978", "#7EC8E3", "#FFD54F", "#E9DEFF"];
+  const colors = ["#B58AEF", "#FF9DB8", "#F7C978", "#7EC8E3", "#E9DEFF"];
   for (let i = 0; i < count; i++) {
     confettiPieces.push({
       x: Math.random() * canvas.width,
-      y: -10 - Math.random() * 100,
-      w: 4 + Math.random() * 6,
-      h: 8 + Math.random() * 8,
+      y: -10 - Math.random() * 80,
+      w: 4 + Math.random() * 5,
+      h: 7 + Math.random() * 7,
       color: colors[Math.floor(Math.random() * colors.length)],
-      vx: (Math.random() - 0.5) * 3,
-      vy: 2 + Math.random() * 4,
+      vx: (Math.random() - 0.5) * 2,
+      vy: 1.5 + Math.random() * 3,
       rot: Math.random() * Math.PI * 2,
-      vr: (Math.random() - 0.5) * 0.2,
+      vr: (Math.random() - 0.5) * 0.15,
       life: 1
     });
   }
@@ -610,9 +354,9 @@ function animateConfetti(ctx, canvas) {
   confettiPieces = confettiPieces.filter((p) => {
     p.x += p.vx;
     p.y += p.vy;
-    p.vy += 0.08;
+    p.vy += 0.06;
     p.rot += p.vr;
-    p.life -= 0.004;
+    p.life -= 0.005;
 
     if (p.y > canvas.height + 20 || p.life <= 0) return false;
 
@@ -644,7 +388,7 @@ function stopConfetti() {
 }
 
 /* ============================================
-   Burst particles
+   Ambient particles
    ============================================ */
 
 function createParticles() {
@@ -660,13 +404,14 @@ function createParticles() {
   }
 
   function spawn() {
-    const count = Math.min(55, Math.floor((w * h) / 16000));
+    const count = Math.min(40, Math.floor((w * h) / 20000));
     particles = Array.from({ length: count }, () => ({
-      x: Math.random() * w, y: Math.random() * h,
-      r: Math.random() * 1.6 + 0.3,
-      vx: (Math.random() - 0.5) * 0.1,
-      vy: -(Math.random() * 0.15 + 0.03),
-      a: Math.random() * 0.35 + 0.1,
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.4 + 0.3,
+      vx: (Math.random() - 0.5) * 0.08,
+      vy: -(Math.random() * 0.12 + 0.02),
+      a: Math.random() * 0.25 + 0.08,
       tw: Math.random() * Math.PI * 2
     }));
   }
@@ -674,8 +419,13 @@ function createParticles() {
   function draw() {
     ctx.clearRect(0, 0, w, h);
     particles.forEach((p) => {
-      p.x += p.vx; p.y += p.vy; p.tw += 0.018;
-      if (p.y < 0) { p.y = h; p.x = Math.random() * w; }
+      p.x += p.vx;
+      p.y += p.vy;
+      p.tw += 0.015;
+      if (p.y < 0) {
+        p.y = h;
+        p.x = Math.random() * w;
+      }
       const alpha = p.a * (0.5 + 0.5 * Math.sin(p.tw));
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -686,51 +436,9 @@ function createParticles() {
   }
 
   window.addEventListener("resize", () => { resize(); spawn(); });
-  resize(); spawn();
+  resize();
+  spawn();
   if (!reducedMotion) draw();
-}
-
-function createBurst(x, y, count) {
-  if (reducedMotion) return;
-  const canvas = els.burstCanvas;
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const colors = ["#B58AEF", "#FF9DB8", "#F7C978", "#FFD54F", "#7EC8E3"];
-  const pieces = Array.from({ length: count }, (_, i) => {
-    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-    const speed = 2 + Math.random() * 5;
-    return {
-      x, y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - 2,
-      r: 2 + Math.random() * 4,
-      color: colors[i % colors.length],
-      life: 1,
-      decay: 0.012 + Math.random() * 0.012
-    };
-  });
-
-  let frame = 0;
-  function anim() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
-    pieces.forEach((p) => {
-      if (p.life <= 0) return;
-      alive = true;
-      p.x += p.vx; p.y += p.vy; p.vy += 0.06; p.life -= p.decay;
-      ctx.globalAlpha = Math.max(0, p.life);
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    frame++;
-    if (alive && frame < 100) requestAnimationFrame(anim);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  anim();
 }
 
 /* ============================================
@@ -746,16 +454,19 @@ function applyPersonalization() {
   if (els.nicknameWhisper && CONFIG.nickname) {
     els.nicknameWhisper.textContent = `Hey, ${CONFIG.nickname}.`;
   }
-  if (els.starsLabel && CONFIG.nickname) {
-    els.starsLabel.textContent = `A few wishes for ${CONFIG.nickname}'s new chapter…`;
+  if (els.wishesLabel && CONFIG.nickname) {
+    els.wishesLabel.textContent = `Wishes for ${CONFIG.nickname}'s new chapter`;
   }
   if (CONFIG.name !== "FRIEND_NAME") {
     const eyebrow = screens.landing.querySelector(".eyebrow");
-    if (eyebrow) eyebrow.textContent = `A little something for your Day 1, ${CONFIG.name}…`;
+    if (eyebrow) eyebrow.textContent = `Made with care, ${CONFIG.name}`;
     if (els.finaleGreeting) els.finaleGreeting.textContent = `Happy First Day, ${CONFIG.name} :)`;
   }
   if (els.footerCheer && display !== "FRIEND_NAME") {
     els.footerCheer.textContent = `I'm cheering for you, ${display}. Always.`;
+  }
+  if (els.finaleMessage && display !== "FRIEND_NAME") {
+    els.finaleMessage.textContent = `However today goes — showing up already counts. I'm cheering for you, ${display}.`;
   }
 }
 
@@ -795,23 +506,17 @@ els.musicBtn.addEventListener("click", async () => {
    ============================================ */
 
 els.btnOpen.addEventListener("click", () => showSection("password"));
-els.btnStarsContinue.addEventListener("click", () => showSection("wishlist"));
-els.btnAndMore.addEventListener("click", () => showSection("important"));
-els.btnImportantContinue.addEventListener("click", () => showSection("final"));
+els.btnDay1Continue.addEventListener("click", () => showSection("wishes"));
+els.btnLetterContinue.addEventListener("click", () => showSection("final"));
 
-els.btnAllBest.addEventListener("click", () => {
-  fireConfetti(120);
-  createBurst(window.innerWidth / 2, window.innerHeight / 2, 70);
-  screenShake();
-  els.finaleExtra.hidden = false;
-  document.querySelector(".final-content")?.classList.add("is-celebrating");
-  els.btnAllBest.textContent = "You've got this ✨";
-  els.btnAllBest.disabled = true;
-  showToast("Now go be legendary ✦", 3500);
+els.btnSendoff.addEventListener("click", () => {
+  fireConfetti(55);
+  els.finaleNoteCard.hidden = false;
+  els.btnSendoff.textContent = "You've got this ✦";
+  els.btnSendoff.disabled = true;
 });
 
 els.btnReplay.addEventListener("click", resetExperience);
 
 applyPersonalization();
 createParticles();
-initFloatingChocolate();
