@@ -1,17 +1,16 @@
 # Day 1 Wish — A New Chapter
 
-A cinematic, single-page personal website for a friend's first day of college. Soft lavender Ghibli-inspired design with interactive star wishes — built with plain HTML, CSS, and vanilla JavaScript.
+A light, dreamy, interactive first-day-of-college surprise website. Built with HTML, CSS, and vanilla JavaScript — no build step required.
+
+**Live site:** https://agenticnirvana.github.io/day1-wish/
 
 ## Run locally
 
-1. Clone or download this repository.
-2. Open `index.html` in your browser (double-click, or use a local server).
-
-Optional local server:
+Open `index.html` in your browser, or:
 
 ```bash
 python3 -m http.server 8080
-# Then visit http://localhost:8080
+# visit http://localhost:8080
 ```
 
 ## Personalize
@@ -20,50 +19,61 @@ Edit the top of `script.js`:
 
 ```javascript
 const CONFIG = {
-  name: "FRIEND_NAME",   // Your friend's name
-  password: "ms.maybe",          // Secret unlock password
-  date: "August 17, 2026"
+  name: "FRIEND_NAME",       // Friend's name
+  nickname: "Ms.whywhywhy",   // Fun nickname shown in UI
+  password: "ms.maybe",       // Unlock password (never shown on screen)
+  date: "August 17, 2026"     // Day 1 date
 };
 ```
 
-When you set her name, the landing line and footer cheer message personalize automatically.
+### Change wishes
+
+Edit the `WISHES` array in `script.js`. Each wish has `text` (HTML allowed for `<em>` emphasis) and an `icon` (inline SVG).
 
 ### Add music
 
-Place an MP3 at `assets/music.mp3`. The ♪ button plays/pauses it (never autoplays). Works fine without the file.
-
-## Deploy on GitHub Pages
-
-Already configured for [agenticnirvana/day1-wish](https://github.com/agenticnirvana/day1-wish).
-
-Live site: **https://agenticnirvana.github.io/day1-wish/**
-
-To push updates:
-
-```bash
-git add .
-git commit -m "Your message"
-git push
-```
+Place an MP3 at `assets/music.mp3`. The ♪ button in the corner plays/pauses it. Never autoplays. Works fine without the file.
 
 ## Experience flow
 
-1. **Landing** — Hero illustration, "Ready for a new chapter?"
-2. **Password** — Unlock with the secret password
-3. **Stars** — Tap each star to reveal a personal wish
-4. **Wish list** — All wishes with icons, "And more…"
-5. **Most important** — The heartfelt quote
-6. **Final** — "Go make this chapter your own story" + replay
+1. Landing — morning hero, "Ready for a new chapter?"
+2. Password — unlock the secret
+3. Day 1 reveal — date, "Day 1.", typewriter lines
+4. Stars — tap 7 stars to reveal wishes one at a time
+5. Encouragement — reassuring friend messages
+6. Most important — emotional peak quote
+7. Journey — "Go make this chapter your own story"
+8. Finale — "Happy First Day :)" + replay
+
+## Deploy to GitHub Pages
+
+```bash
+git add .
+git commit -m "Update site"
+git push origin main
+```
+
+Site auto-deploys from the `main` branch at:
+
+```
+https://YOUR_USERNAME.github.io/day1-wish/
+```
 
 ## File structure
 
 ```
-day1wish/
-├── index.html
-├── style.css
-├── script.js
-├── assets/
-│   ├── music.mp3        (optional)
-│   └── mockup-reference.png
-└── README.md
+index.html
+style.css
+script.js
+assets/
+  music.mp3          (optional)
+  mockup-reference.png
+README.md
 ```
+
+## Design notes
+
+- Light, airy palette — no dark theme
+- Friendly and uplifting — not romantic (no hearts, love symbols, or couple imagery)
+- Mobile-first, respects `prefers-reduced-motion`
+- Stars, sparkles, paper planes, clouds, flowers — journey metaphors only

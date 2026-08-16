@@ -5,17 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>A New Chapter</title>
   <meta name="description" content="Something special for Day 1." />
-  <meta name="theme-color" content="#e8dff5" />
+  <meta name="theme-color" content="#FFF9F8" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Music toggle -->
+  <!-- Ambient layers -->
+  <div class="ambient" aria-hidden="true">
+    <canvas id="particles-canvas"></canvas>
+    <div class="ambient__cloud ambient__cloud--1"></div>
+    <div class="ambient__cloud ambient__cloud--2"></div>
+    <div class="ambient__cloud ambient__cloud--3"></div>
+    <div class="paper-plane" id="paper-plane">✈</div>
+  </div>
+
   <button class="music-btn" id="music-btn" aria-label="Toggle music" title="Toggle music">
-    <span aria-hidden="true">♪</span>
+    <span class="music-btn__note" aria-hidden="true">♪</span>
   </button>
   <audio id="music" preload="none" loop>
     <source src="assets/music.mp3" type="audio/mpeg" />
@@ -23,268 +31,199 @@
 
   <main id="app" class="app">
 
-    <!-- SCREEN 1 — Landing -->
+    <!-- 1. LANDING -->
     <section class="screen screen--active" id="screen-landing" data-screen="landing">
       <div class="hero-art" aria-hidden="true">
         <svg class="hero-svg" viewBox="0 0 800 420" preserveAspectRatio="xMidYMax slice">
           <defs>
             <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#c4b5fd"/>
-              <stop offset="45%" stop-color="#ddd6fe"/>
-              <stop offset="75%" stop-color="#fde68a" stop-opacity="0.7"/>
-              <stop offset="100%" stop-color="#fbcfe8" stop-opacity="0.5"/>
-            </linearGradient>
-            <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#d4c4e8"/>
-              <stop offset="100%" stop-color="#e9d5ff"/>
+              <stop offset="0%" stop-color="#EEF5FF"/>
+              <stop offset="40%" stop-color="#F6F0FF"/>
+              <stop offset="75%" stop-color="#FFF1E8"/>
+              <stop offset="100%" stop-color="#FFF9F8"/>
             </linearGradient>
           </defs>
           <rect width="800" height="420" fill="url(#skyGrad)"/>
-          <!-- Sun -->
-          <circle cx="680" cy="80" r="36" fill="#fde68a" opacity="0.85"/>
-          <circle cx="680" cy="80" r="50" fill="#fde68a" opacity="0.2"/>
-          <!-- Clouds -->
-          <ellipse cx="120" cy="90" rx="70" ry="28" fill="white" opacity="0.55"/>
-          <ellipse cx="180" cy="82" rx="50" ry="22" fill="white" opacity="0.45"/>
-          <ellipse cx="520" cy="110" rx="80" ry="30" fill="white" opacity="0.4"/>
-          <!-- Campus buildings -->
-          <rect x="480" y="200" width="60" height="90" fill="#9b8ab8" rx="2"/>
-          <rect x="550" y="180" width="70" height="110" fill="#8b7aa8" rx="2"/>
-          <polygon points="585,180 585,160 620,180" fill="#7c6b98"/>
-          <rect x="630" y="210" width="55" height="80" fill="#9b8ab8" rx="2"/>
-          <rect x="400" y="220" width="50" height="70" fill="#a898c0" rx="2"/>
-          <!-- Trees -->
-          <circle cx="350" cy="250" r="28" fill="#86b894" opacity="0.7"/>
-          <rect x="346" y="250" width="8" height="30" fill="#6b9478"/>
-          <circle cx="720" cy="260" r="22" fill="#86b894" opacity="0.65"/>
-          <rect x="717" y="260" width="6" height="25" fill="#6b9478"/>
-          <!-- Stone ledge -->
-          <rect x="0" y="310" width="800" height="110" fill="url(#pathGrad)"/>
-          <rect x="0" y="300" width="800" height="18" fill="#c4b5d8" rx="0"/>
-          <!-- Girl silhouette -->
-          <ellipse cx="280" cy="268" rx="22" ry="26" fill="#5c4033"/>
-          <path d="M258 295 Q280 280 302 295 L310 340 Q280 350 250 340 Z" fill="#f5f0e8"/>
-          <rect x="265" y="335" width="30" height="35" fill="#6b7280" rx="3"/>
-          <rect x="290" y="300" width="18" height="28" fill="#9ca3af" rx="4" transform="rotate(15 299 314)"/>
-          <!-- Paper plane doodle -->
-          <path d="M600 60 L620 70 L605 75 L610 90 L590 72 Z" fill="none" stroke="#9575cd" stroke-width="1.5" opacity="0.6"/>
-          <!-- Sparkle -->
-          <text x="60" y="55" fill="#9575cd" font-size="18" opacity="0.5">✦</text>
+          <circle cx="680" cy="75" r="40" fill="#F7C978" opacity="0.85"/>
+          <circle cx="680" cy="75" r="58" fill="#F7C978" opacity="0.2"/>
+          <ellipse class="hero-cloud" cx="100" cy="85" rx="75" ry="28" fill="white" opacity="0.7"/>
+          <ellipse class="hero-cloud" cx="500" cy="105" rx="90" ry="32" fill="white" opacity="0.55"/>
+          <rect x="470" y="195" width="55" height="85" fill="#c4b5d8" rx="2"/>
+          <rect x="540" y="175" width="65" height="105" fill="#b8a8cc" rx="2"/>
+          <polygon points="572,175 572,155 605,175" fill="#a898c0"/>
+          <circle cx="340" cy="245" r="26" fill="#a8d5b5" opacity="0.75"/>
+          <rect x="336" y="245" width="8" height="28" fill="#86b894"/>
+          <rect x="0" y="305" width="800" height="115" fill="#E9DEFF" opacity="0.6"/>
+          <ellipse cx="270" cy="262" rx="20" ry="24" fill="#5c4033"/>
+          <path d="M250 288 Q270 275 290 288 L296 330 Q270 338 244 330 Z" fill="#FFF9F8"/>
+          <rect x="256" y="326" width="28" height="32" fill="#9ca3af" rx="3"/>
+          <rect x="278" y="295" width="16" height="24" fill="#b0b8c4" rx="3" transform="rotate(12 286 307)"/>
         </svg>
       </div>
-      <div class="screen__content screen__content--landing">
-        <p class="eyebrow fade-in" style="--delay: 0.2s">A little something for your Day 1…</p>
-        <p class="nickname-badge fade-in" id="nickname-badge" style="--delay: 0.35s"></p>
-        <h1 class="title fade-in" style="--delay: 0.5s">
-          Ready for a <em class="title-accent">new chapter</em>?
+      <div class="screen__inner screen__inner--landing">
+        <p class="eyebrow reveal-up" style="--d:0.2s">A little something for your Day 1…</p>
+        <p class="nickname-badge reveal-up" id="nickname-badge" style="--d:0.35s"></p>
+        <h1 class="hero-title reveal-up" style="--d:0.5s">
+          Ready for a<br><span class="serif-accent">new chapter?</span>
         </h1>
-        <p class="subtitle fade-in" style="--delay: 0.9s">
-          Before you step into your new journey, there's something waiting for you.
+        <p class="subtitle reveal-up" style="--d:0.9s">
+          Before you step into your new journey,<br>there's something waiting for you.
         </p>
-        <button class="btn btn--primary fade-in" style="--delay: 1.3s" id="btn-open">
+        <button class="btn btn--primary reveal-up breathe" style="--d:1.3s" id="btn-open">
           Open it <span aria-hidden="true">→</span>
         </button>
       </div>
     </section>
 
-    <!-- SCREEN 2 — Password -->
-    <section class="screen screen--lavender" id="screen-password" data-screen="password" hidden>
-      <div class="screen__content">
-        <div class="card card--unlock">
+    <!-- 2. PASSWORD -->
+    <section class="screen screen--cream" id="screen-password" data-screen="password" hidden>
+      <div class="screen__inner">
+        <div class="card">
           <p class="nickname-whisper" id="nickname-whisper"></p>
-          <div class="lock-icon" id="lock-icon" aria-hidden="true">
-            <svg viewBox="0 0 48 48" fill="none">
-              <rect x="10" y="22" width="28" height="20" rx="4" fill="#9575cd" opacity="0.15" stroke="#9575cd" stroke-width="2"/>
-              <path d="M16 22V16a8 8 0 0 1 16 0v6" stroke="#9575cd" stroke-width="2.5" stroke-linecap="round" class="lock-shackle"/>
-              <circle cx="24" cy="32" r="3" fill="#9575cd"/>
+          <div class="lock-wrap" id="lock-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" width="52" height="52">
+              <rect x="10" y="22" width="28" height="20" rx="4" fill="#E9DEFF" stroke="#B58AEF" stroke-width="2"/>
+              <path d="M16 22V16a8 8 0 0 1 16 0v6" stroke="#B58AEF" stroke-width="2.5" stroke-linecap="round" class="lock-shackle"/>
             </svg>
           </div>
           <h2 class="heading">This is just between us.</h2>
-          <p class="subtitle">You know the password.</p>
-          <form class="password-form" id="password-form" autocomplete="off">
-            <div class="password-field">
+          <p class="subtitle subtitle--tight">You know the password.</p>
+          <form id="password-form" autocomplete="off">
+            <div class="input-wrap">
               <label for="password-input" class="sr-only">Password</label>
-              <input
-                type="password"
-                id="password-input"
-                class="password-input"
-                placeholder="••••"
-                autocapitalize="off"
-                autocorrect="off"
-                spellcheck="false"
-                inputmode="text"
-                aria-describedby="password-error"
-              />
-              <span class="password-field__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18">
-                  <rect x="5" y="11" width="14" height="10" rx="2"/>
-                  <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-                </svg>
-              </span>
+              <input type="password" id="password-input" class="input" placeholder="••••"
+                autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text"
+                aria-describedby="password-error" />
             </div>
-            <button type="submit" class="btn btn--primary btn--full" id="btn-unlock">Unlock</button>
+            <button type="submit" class="btn btn--primary btn--block" id="btn-unlock">Unlock</button>
           </form>
-          <p class="password-error" id="password-error" role="alert" aria-live="polite"></p>
+          <p class="error-msg" id="password-error" role="alert" aria-live="polite"></p>
         </div>
       </div>
     </section>
 
-    <!-- SCREEN 3 — Tap a Star -->
+    <!-- 3. DAY 1 REVEAL -->
+    <section class="screen screen--sky" id="screen-day1" data-screen="day1" hidden>
+      <div class="screen__inner screen__inner--center">
+        <p class="eyebrow" id="day1-date"></p>
+        <h2 class="day1-title" id="day1-heading">Day 1.</h2>
+        <div class="day1-lines" id="day1-lines">
+          <p class="day1-line" id="day1-line-1"></p>
+          <p class="day1-line" id="day1-line-2"></p>
+          <p class="day1-line day1-line--accent" id="day1-line-3"></p>
+        </div>
+        <div class="shooting-star-bg" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- 4. STARS -->
     <section class="screen screen--lavender" id="screen-stars" data-screen="stars" hidden>
-      <div class="screen__content">
-        <p class="section-label">A few wishes for your new chapter…</p>
+      <div class="screen__inner">
+        <p class="section-label" id="stars-label">A few wishes for your new chapter…</p>
         <h2 class="heading heading--center">Tap a star to reveal a wish ✨</h2>
-        <p class="subtitle subtitle--center">Each one is for you.</p>
-
-        <div class="stars-arc" id="stars-arc" role="group" aria-label="Wish stars">
-          <!-- Stars injected by JS -->
-        </div>
-
-        <button class="btn btn--primary btn--continue" id="btn-stars-continue" hidden>
-          Continue <span aria-hidden="true">→</span>
-        </button>
+        <p class="subtitle subtitle--center subtitle--tight">Each one is for you.</p>
+        <div class="stars-field" id="stars-field" role="group" aria-label="Wish stars"></div>
+        <p class="stars-complete" id="stars-complete" hidden>You found them all ✨</p>
+        <button class="btn btn--primary" id="btn-stars-continue" hidden>Continue <span aria-hidden="true">→</span></button>
       </div>
-      <!-- Decorative doodles -->
-      <div class="doodle doodle--plane" aria-hidden="true">✈</div>
-      <div class="doodle doodle--swirl" aria-hidden="true">〜</div>
     </section>
 
-    <!-- Wish Modal -->
-    <div class="modal-overlay" id="wish-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wish-modal-text">
-      <div class="modal-card">
-        <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
-        <div class="modal-star" aria-hidden="true">★</div>
-        <p class="modal-wish" id="wish-modal-text"></p>
-        <p class="modal-footer">Keep shining ✨</p>
-        <div class="modal-flowers" aria-hidden="true">
-          <span>🌸</span><span>🌷</span>
-        </div>
+    <!-- WISH MODAL -->
+    <div class="modal" id="wish-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wish-modal-text">
+      <div class="modal__card">
+        <button class="modal__close" id="modal-close" aria-label="Close">&times;</button>
+        <div class="modal__icon" id="wish-modal-icon" aria-hidden="true"></div>
+        <p class="modal__wish" id="wish-modal-text"></p>
+        <p class="modal__tag">Keep shining ✨</p>
       </div>
     </div>
 
-    <!-- SCREEN 4 — Wish List -->
-    <section class="screen screen--white" id="screen-wishlist" data-screen="wishlist" hidden>
-      <div class="screen__content screen__content--scroll">
-        <p class="section-label">And more wishes…</p>
-        <ul class="wish-list" id="wish-list">
-          <li class="wish-item reveal-item" data-reveal="0">
-            <span class="wish-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </span>
-            <span>May you meet people who make this new place feel like home.</span>
-          </li>
-          <li class="wish-item reveal-item" data-reveal="1">
-            <span class="wish-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </span>
-            <span>May you find friendships that turn into your favourite memories.</span>
-          </li>
-          <li class="wish-item reveal-item" data-reveal="2">
-            <span class="wish-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-            </span>
-            <span>May you have the courage to try new things, even when they feel scary.</span>
-          </li>
-          <li class="wish-item reveal-item" data-reveal="3">
-            <span class="wish-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-            </span>
-            <span>May you have more reasons to laugh than to worry.</span>
-          </li>
-          <li class="wish-item reveal-item" data-reveal="4">
-            <span class="wish-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-            </span>
-            <span>May every wrong turn lead you to an unexpected story worth remembering.</span>
-          </li>
-        </ul>
-        <button class="btn btn--text" id="btn-and-more">
-          And more… <span aria-hidden="true">∨</span>
-        </button>
+    <!-- 5. ENCOURAGEMENT -->
+    <section class="screen screen--cream" id="screen-encourage" data-screen="encourage" hidden>
+      <div class="screen__inner screen__inner--center">
+        <h2 class="heading reveal-msg" data-msg="0">And one more thing…</h2>
+        <div class="msg-lines" id="encourage-lines">
+          <p class="reveal-msg" data-msg="1">I hope you never feel like you have to have everything figured out from Day 1.</p>
+          <p class="reveal-msg" data-msg="2">It's okay to be nervous.</p>
+          <p class="reveal-msg" data-msg="3">It's okay to get lost.</p>
+          <p class="reveal-msg" data-msg="4">It's okay if things don't go exactly as planned.</p>
+          <p class="reveal-msg reveal-msg--emphasis" data-msg="5">You're there to experience it all.</p>
+          <p class="reveal-msg reveal-msg--emphasis" data-msg="6">Just keep moving forward.</p>
+        </div>
+        <button class="btn btn--primary" id="btn-encourage-continue" hidden>Continue <span aria-hidden="true">→</span></button>
       </div>
     </section>
 
-    <!-- SCREEN 5 — Most Important -->
-    <section class="screen screen--gradient" id="screen-important" data-screen="important" hidden>
-      <div class="screen__content">
+    <!-- 6. MOST IMPORTANT -->
+    <section class="screen screen--sunrise" id="screen-important" data-screen="important" hidden>
+      <div class="screen__inner screen__inner--center">
         <p class="section-label">And most importantly…</p>
-        <div class="shooting-star" aria-hidden="true">★</div>
-        <blockquote class="important-quote fade-in" style="--delay: 0.3s">
-          I hope this journey gives you a thousand little moments that make you think —
-          <em>yeah, I'm exactly where I'm supposed to be.</em>
-        </blockquote>
-        <button class="btn btn--primary fade-in" style="--delay: 0.8s" id="btn-to-final">
-          Continue <span aria-hidden="true">→</span>
-        </button>
+        <div class="shooting-star-lg" aria-hidden="true">★</div>
+        <div class="important-lines" id="important-lines">
+          <p class="reveal-msg" data-msg="0">I hope this journey gives you</p>
+          <p class="reveal-msg" data-msg="1">a thousand little moments</p>
+          <p class="reveal-msg" data-msg="2">that make you stop and think…</p>
+          <p class="reveal-msg reveal-msg--peak" data-msg="3"><em>Yeah, I'm exactly where I'm supposed to be.</em></p>
+        </div>
+        <button class="btn btn--primary" id="btn-important-continue" hidden>Continue <span aria-hidden="true">→</span></button>
       </div>
     </section>
 
-    <!-- SCREEN 6 — Final -->
-    <section class="screen" id="screen-final" data-screen="final" hidden>
-      <div class="final-art" aria-hidden="true">
-        <svg class="final-svg" viewBox="0 0 800 380" preserveAspectRatio="xMidYMax slice">
+    <!-- 7. JOURNEY -->
+    <section class="screen" id="screen-journey" data-screen="journey" hidden>
+      <div class="journey-art" aria-hidden="true">
+        <svg viewBox="0 0 800 360" preserveAspectRatio="xMidYMax slice" class="journey-svg">
           <defs>
-            <linearGradient id="finalSky" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#ddd6fe"/>
-              <stop offset="60%" stop-color="#e9d5ff"/>
-              <stop offset="100%" stop-color="#fbcfe8" stop-opacity="0.4"/>
+            <linearGradient id="jSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#EEF5FF"/>
+              <stop offset="100%" stop-color="#FFF1E8"/>
             </linearGradient>
           </defs>
-          <rect width="800" height="380" fill="url(#finalSky)"/>
-          <!-- Path -->
-          <path d="M0 340 Q200 320 400 330 T800 340 L800 380 L0 380Z" fill="#c4b5d8"/>
-          <path d="M200 340 L600 340" stroke="#b8a8cc" stroke-width="3" stroke-dasharray="8 6" opacity="0.5"/>
-          <!-- Trees lining path -->
-          <circle cx="150" cy="290" r="30" fill="#86b894" opacity="0.65"/>
-          <rect x="146" y="290" width="8" height="35" fill="#6b9478"/>
-          <circle cx="650" cy="285" r="28" fill="#86b894" opacity="0.6"/>
-          <rect x="646" y="285" width="8" height="32" fill="#6b9478"/>
-          <!-- College building ahead -->
-          <rect x="340" y="200" width="120" height="100" fill="#9b8ab8" rx="3"/>
-          <polygon points="400,200 400,170 430,200" fill="#7c6b98"/>
-          <rect x="370" y="240" width="25" height="35" fill="#ddd6fe" opacity="0.6" rx="1"/>
-          <rect x="405" y="240" width="25" height="35" fill="#ddd6fe" opacity="0.6" rx="1"/>
-          <!-- Girl walking away -->
-          <ellipse cx="420" cy="295" rx="14" ry="16" fill="#5c4033"/>
-          <path d="M406 310 Q420 300 434 310 L438 340 Q420 348 402 340 Z" fill="#f5f0e8"/>
-          <rect x="412" y="338" width="16" height="22" fill="#6b7280" rx="2"/>
-          <!-- Paper plane -->
-          <path d="M550 100 L570 112 L558 118 L562 135 L540 115 Z" fill="none" stroke="#9575cd" stroke-width="1.5" opacity="0.5"/>
+          <rect width="800" height="360" fill="url(#jSky)"/>
+          <path d="M0 300 Q400 280 800 300 L800 360 L0 360Z" fill="#E9DEFF"/>
+          <rect x="350" y="180" width="100" height="90" fill="#c4b5d8" rx="2"/>
+          <polygon points="400,180 400,155 425,180" fill="#b8a8cc"/>
+          <circle cx="160" cy="260" r="24" fill="#a8d5b5" opacity="0.7"/>
+          <circle cx="640" cy="255" r="22" fill="#a8d5b5" opacity="0.65"/>
+          <ellipse cx="430" cy="275" rx="12" ry="14" fill="#5c4033"/>
+          <path d="M418 288 Q430 280 442 288 L446 315 Q430 322 414 315 Z" fill="#FFF9F8"/>
+          <rect x="422" y="312" width="16" height="20" fill="#9ca3af" rx="2"/>
         </svg>
       </div>
-      <div class="screen__content screen__content--final">
-        <p class="section-label fade-in" style="--delay: 0.1s">Go make it yours</p>
-        <p class="final-lines fade-in" style="--delay: 0.3s">
-          New beginning. New journey. Infinite possibilities.
-        </p>
-        <h2 class="title title--final fade-in" style="--delay: 0.5s">
-          Go make this chapter <em class="title-accent">your own story</em>.
+      <div class="screen__inner screen__inner--journey">
+        <p class="journey-line reveal-up" style="--d:0.1s">New beginning.</p>
+        <p class="journey-line reveal-up" style="--d:0.25s">New journey.</p>
+        <p class="journey-line reveal-up" style="--d:0.4s">Infinite possibilities.</p>
+        <h2 class="heading heading--serif reveal-up" style="--d:0.6s">
+          Go make this chapter <span class="serif-accent">your own story</span>.
         </h2>
-        <button class="btn btn--primary fade-in" style="--delay: 0.9s" id="btn-all-best">
-          All the best! <span aria-hidden="true">→</span>
+        <button class="btn btn--primary reveal-up" style="--d:0.9s" id="btn-all-best">
+          All the best <span aria-hidden="true">→</span>
         </button>
-        <p class="nickname-signoff fade-in" id="nickname-signoff" style="--delay: 1.1s"></p>
-        <button class="btn btn--text fade-in" style="--delay: 1.2s" id="btn-replay">
-          Replay the journey ↻
-        </button>
+      </div>
+    </section>
+
+    <!-- 8. FINALE -->
+    <section class="screen screen--sunrise" id="screen-finale" data-screen="finale" hidden>
+      <div class="screen__inner screen__inner--center">
+        <p class="eyebrow reveal-up" style="--d:0.1s">Chapter 01</p>
+        <h2 class="finale-title reveal-up" style="--d:0.35s">Go make it yours.</h2>
+        <p class="finale-sub reveal-up" style="--d:0.6s" id="finale-greeting">Happy First Day :)</p>
+        <p class="finale-note reveal-up" style="--d:0.85s">Now go be the main character.</p>
+        <div class="finale-star reveal-up" style="--d:1.1s" aria-hidden="true">✦</div>
+        <button class="btn btn--text reveal-up" style="--d:1.4s" id="btn-replay">Replay the journey ↻</button>
       </div>
     </section>
 
   </main>
 
-  <!-- Global Footer -->
   <footer class="site-footer" id="site-footer" hidden>
-    <div class="footer-left">
-      <span class="footer-icon" aria-hidden="true">✈</span>
-      <span>Day 1 is just the beginning. The best stories are the ones you write.</span>
-    </div>
-    <div class="footer-right">
-      <span class="footer-cheer" id="footer-cheer">I'm cheering for you, always.</span>
-      <span class="footer-swoosh" aria-hidden="true">〜</span>
-    </div>
+    <p class="footer-hand">Day 1 is just the beginning.<br>The best stories are the ones you write.</p>
+    <p class="footer-cheer" id="footer-cheer">I'm cheering for you, always.</p>
   </footer>
 
   <div class="unlock-flash" id="unlock-flash" aria-hidden="true"></div>
+  <canvas id="burst-canvas" aria-hidden="true"></canvas>
 
   <script src="script.js"></script>
 </body>
