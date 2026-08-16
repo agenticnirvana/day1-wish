@@ -18,6 +18,7 @@
     <div class="ambient__cloud ambient__cloud--1"></div>
     <div class="ambient__cloud ambient__cloud--2"></div>
     <div class="paper-plane">✈</div>
+    <div class="chocolate-field" id="chocolate-field"></div>
   </div>
 
   <div class="sun-icon" aria-hidden="true">☀</div>
@@ -147,6 +148,30 @@
       <p class="day1-burst__date" id="burst-date"></p>
       <h2 class="day1-burst__title">Day 1.</h2>
       <p class="day1-burst__line">Not just college… a whole new chapter.</p>
+    </div>
+
+    <!-- CHOCOLATE SURPRISE -->
+    <div class="chocolate-moment" id="chocolate-moment" hidden>
+      <div class="chocolate-moment__rain" id="chocolate-rain" aria-hidden="true"></div>
+      <div class="chocolate-moment__card">
+        <div class="chocolate-moment__icon" aria-hidden="true">
+          <svg class="choco-svg choco-svg--hero" viewBox="0 0 64 64" fill="none">
+            <rect x="8" y="16" width="48" height="32" rx="6" fill="#5D3A1A"/>
+            <rect x="8" y="16" width="48" height="32" rx="6" fill="url(#chocoGrad)" opacity="0.9"/>
+            <path d="M24 16v32M40 16v32M8 32h48" stroke="#3D2510" stroke-width="1.5" opacity="0.5"/>
+            <defs>
+              <linearGradient id="chocoGrad" x1="8" y1="16" x2="56" y2="48">
+                <stop offset="0%" stop-color="#8B5E3C"/>
+                <stop offset="100%" stop-color="#5D3A1A"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="chocolate-moment__tag">Important announcement</p>
+        <p class="chocolate-moment__text" id="chocolate-message"></p>
+        <p class="chocolate-moment__sub" id="chocolate-sub"></p>
+        <button class="btn btn--primary btn--sm" id="chocolate-dismiss">Fine, I'll take the chocolate →</button>
+      </div>
     </div>
 
     <div id="toast-container" class="toast-container" aria-live="polite"></div>

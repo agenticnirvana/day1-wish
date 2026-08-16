@@ -7,7 +7,9 @@ const CONFIG = {
   name: "FRIEND_NAME",
   nickname: "Ms.whywhywhy",
   password: "ms.maybe",
-  date: "August 17, 2026"
+  date: "August 17, 2026",
+  chocolateMessage: "Day 1 survival kit: backpack ✓ notes ✓ confidence ✓",
+  chocolateSub: "And chocolate. Always chocolate. Non-negotiable. 🍫"
 };
 
 const WISHES = [
@@ -111,7 +113,13 @@ const els = {
   musicEl: document.getElementById("music"),
   particlesCanvas: document.getElementById("particles-canvas"),
   burstCanvas: document.getElementById("burst-canvas"),
-  confettiCanvas: document.getElementById("confetti-canvas")
+  confettiCanvas: document.getElementById("confetti-canvas"),
+  chocolateField: document.getElementById("chocolate-field"),
+  chocolateMoment: document.getElementById("chocolate-moment"),
+  chocolateRain: document.getElementById("chocolate-rain"),
+  chocolateMessage: document.getElementById("chocolate-message"),
+  chocolateSub: document.getElementById("chocolate-sub"),
+  chocolateDismiss: document.getElementById("chocolate-dismiss")
 };
 
 let currentScreen = "landing";
@@ -121,7 +129,10 @@ let paradeSkipped = false;
 let paradeResolve = null;
 let confettiPieces = [];
 let confettiAnimating = false;
+let chocolateShown = false;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const CHOCO_SVG = `<svg viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" fill="#5D3A1A"/><rect x="4" y="8" width="24" height="16" rx="3" fill="#8B5E3C" opacity="0.85"/><path d="M12 8v16M20 8v16M4 16h24" stroke="#3D2510" stroke-width="1" opacity="0.4"/></svg>`;
 
 /* ============================================
    Navigation
@@ -192,6 +203,10 @@ function resetExperience() {
   els.day1Burst.classList.remove("is-open");
   els.day1Burst.hidden = true;
   els.toastContainer.innerHTML = "";
+  chocolateShown = false;
+  els.chocolateMoment.classList.remove("is-open");
+  els.chocolateMoment.hidden = true;
+  if (els.chocolateRain) els.chocolateRain.innerHTML = "";
 
   els.btnAllBest.textContent = "All the best! →";
   els.btnAllBest.disabled = false;
@@ -284,7 +299,6 @@ els.passwordForm.addEventListener("submit", (e) => {
     els.passwordError.classList.remove("is-visible");
     unlockExperience();
   } else {
-    passwordError.textContent = "Hmm… I think you know this one ;)";
     els.passwordError.textContent = "Hmm… I think you know this one ;)";
     els.passwordError.classList.add("is-visible");
     els.passwordInput.classList.add("shake");
@@ -416,8 +430,11 @@ function finishParade() {
 
   els.starsComplete.hidden = false;
   requestAnimationFrame(() => els.starsComplete.classList.add("is-visible"));
-  els.btnStarsContinue.hidden = false;
-  requestAnimationFrame(() => els.btnStarsContinue.classList.add("is-visible"));
+
+  showChocolateMoment().then(() => {
+    els.btnStarsContinue.hidden = false;
+    requestAnimationFrame(() => els.btnStarsContinue.classList.add("is-visible"));
+  });
 }
 
 /* ============================================
@@ -453,6 +470,69 @@ function showSurprise(data) {
 function closeSurprise() {
   els.surpriseOverlay.classList.remove("is-open");
   els.surpriseOverlay.hidden = true;
+}
+
+/* ============================================
+   Chocolate — floating bg + surprise moment
+   ============================================ */
+
+function initFloatingChocolate() {
+  if (!els.chocolateField || reducedMotion) return;
+
+  for (let i = 1; i <= 6; i++) {
+    const el = document.createElement("div");
+    el.className = `choco-float choco-float--${i} is-spin`;
+    el.innerHTML = CHOCO_SVG;
+    el.setAttribute("aria-hidden", "true");
+    els.chocolateField.appendChild(el);
+  }
+}
+
+function spawnChocolateRain(count = 20) {
+  if (!els.chocolateRain || reducedMotion) return;
+
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement("div");
+    piece.className = "choco-rain-piece";
+    piece.innerHTML = CHOCO_SVG;
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.width = `${14 + Math.random() * 18}px`;
+    piece.style.height = piece.style.width;
+    piece.style.setProperty("--fall-dur", `${2 + Math.random() * 2.5}s`);
+    piece.style.animationDelay = `${Math.random() * 1.5}s`;
+    els.chocolateRain.appendChild(piece);
+    timers.push(setTimeout(() => piece.remove(), 5000));
+  }
+}
+
+function showChocolateMoment() {
+  if (chocolateShown) return Promise.resolve();
+  chocolateShown = true;
+
+  return new Promise((resolve) => {
+    els.chocolateMessage.textContent = CONFIG.chocolateMessage;
+    els.chocolateSub.textContent = CONFIG.chocolateSub;
+
+    els.chocolateMoment.hidden = false;
+    requestAnimationFrame(() => els.chocolateMoment.classList.add("is-open"));
+
+    spawnChocolateRain(25);
+    fireConfetti(30);
+    showToast("🍫 Chocolate break incoming…", 2200);
+
+    function dismiss() {
+      els.chocolateDismiss.removeEventListener("click", dismiss);
+      els.chocolateMoment.classList.remove("is-open");
+      setTimeout(() => {
+        els.chocolateMoment.hidden = true;
+        if (els.chocolateRain) els.chocolateRain.innerHTML = "";
+        resolve();
+      }, 450);
+    }
+
+    els.chocolateDismiss.addEventListener("click", dismiss);
+    timers.push(setTimeout(dismiss, reducedMotion ? 3000 : 7000));
+  });
 }
 
 /* ============================================
@@ -734,3 +814,4 @@ els.btnReplay.addEventListener("click", resetExperience);
 
 applyPersonalization();
 createParticles();
+initFloatingChocolate();
