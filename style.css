@@ -16,9 +16,10 @@
   --glass-bg: rgba(255, 255, 255, 0.72);
   --glass-border: rgba(181, 138, 239, 0.2);
   --glass-blur: 18px;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-hand: 'Caveat', cursive;
+  --font-body: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-cursive: 'Dancing Script', 'Segoe Script', cursive;
+  --font-hand: 'Caveat', 'Segoe Script', cursive;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --transition-slow: 0.8s var(--ease-out);
@@ -33,8 +34,9 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
-  font-weight: 300;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1.05rem;
   color: var(--text-primary);
   background: var(--bg-deep);
   min-height: 100dvh;
@@ -282,8 +284,10 @@ body {
 
 /* ---- Typography ---- */
 .eyebrow {
-  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
-  letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--text-subtle); margin-bottom: 1.25rem;
 }
 
@@ -294,26 +298,26 @@ body {
 }
 
 .nickname-badge {
-  font-size: clamp(1.05rem, 3.8vw, 1.25rem);
+  font-size: clamp(1.2rem, 4.2vw, 1.45rem);
   margin-bottom: 0.5rem;
 }
 
 .nickname-whisper {
-  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  font-size: clamp(1.15rem, 4vw, 1.35rem);
   margin-bottom: 0.75rem;
 }
 
 .title {
-  font-family: var(--font-sans);
-  font-weight: 300;
-  font-size: clamp(2rem, 7vw, 3.25rem);
-  line-height: 1.15; letter-spacing: -0.02em;
+  font-family: var(--font-cursive);
+  font-weight: 600;
+  font-size: clamp(2.35rem, 8vw, 3.75rem);
+  line-height: 1.12; letter-spacing: 0.01em;
   margin-bottom: 1rem;
 }
 
 .title--large {
-  font-size: clamp(2.75rem, 10vw, 4.5rem);
-  font-weight: 300; letter-spacing: -0.03em;
+  font-size: clamp(3rem, 11vw, 5rem);
+  font-weight: 600; letter-spacing: 0.01em;
 }
 
 .title--glow {
@@ -322,33 +326,35 @@ body {
 }
 
 .heading {
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: clamp(1.25rem, 4.5vw, 1.75rem);
-  line-height: 1.35; margin-bottom: 1.5rem;
+  font-family: var(--font-cursive);
+  font-weight: 600;
+  font-size: clamp(1.55rem, 5.5vw, 2.15rem);
+  line-height: 1.3; margin-bottom: 1.5rem;
   color: var(--text-primary);
 }
 
 .subtitle {
-  font-size: clamp(0.95rem, 3.5vw, 1.125rem);
-  line-height: 1.65; color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 3.8vw, 1.28rem);
+  line-height: 1.6; color: var(--text-muted);
   max-width: 420px; margin: 0 auto 2rem;
 }
 
 .subtitle--tight { margin-bottom: 1rem; }
 
 .final-note {
-  font-size: clamp(0.9rem, 3vw, 1rem);
-  color: var(--text-subtle);
-  margin-top: 0.5rem; font-style: italic;
+  font-family: var(--font-cursive);
+  font-size: clamp(1.15rem, 4vw, 1.45rem);
+  color: var(--text-muted);
+  margin-top: 0.5rem;
 }
 
 /* ---- Buttons ---- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
-  font-family: var(--font-sans);
-  font-size: clamp(0.9rem, 3vw, 1rem);
-  font-weight: 400; letter-spacing: 0.02em;
+  font-family: var(--font-cursive);
+  font-size: clamp(1.05rem, 3.5vw, 1.2rem);
+  font-weight: 600; letter-spacing: 0.02em;
   border: none; cursor: pointer;
   transition: transform var(--transition-medium), box-shadow var(--transition-medium), background var(--transition-medium), border-color var(--transition-medium);
   -webkit-tap-highlight-color: transparent;
@@ -433,7 +439,7 @@ body {
   border: 1.5px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.9);
   color: var(--text-primary);
-  font-family: var(--font-sans); font-size: 1rem;
+  font-family: var(--font-body); font-size: 1.1rem;
   text-align: center; letter-spacing: 0.15em;
   outline: none; min-height: 48px;
   transition: border-color var(--transition-medium), box-shadow var(--transition-medium);
@@ -447,7 +453,8 @@ body {
 }
 
 .password-error {
-  margin-top: 1rem; font-size: 0.875rem;
+  margin-top: 1rem; font-size: 1rem;
+  font-family: var(--font-cursive);
   color: var(--accent-purple); min-height: 1.4em;
   opacity: 0; transition: opacity 0.3s;
 }
@@ -465,15 +472,16 @@ body {
 .moment-text { margin-top: 2rem; min-height: 5rem; }
 
 .moment-line {
-  font-size: clamp(1rem, 3.5vw, 1.2rem);
-  line-height: 1.7; color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+  line-height: 1.65; color: var(--text-muted);
   margin-bottom: 0.5rem;
 }
 
 .moment-line--accent {
-  font-family: var(--font-serif);
-  font-size: clamp(1.15rem, 4vw, 1.45rem);
-  font-style: italic; color: var(--text-primary);
+  font-family: var(--font-cursive);
+  font-size: clamp(1.45rem, 5vw, 1.85rem);
+  font-weight: 600; color: var(--text-primary);
   margin-top: 0.75rem;
 }
 
@@ -493,8 +501,9 @@ body {
 }
 
 .reveal-line {
-  font-size: clamp(0.95rem, 3.2vw, 1.1rem);
-  line-height: 1.65; color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 3.5vw, 1.22rem);
+  line-height: 1.6; color: var(--text-muted);
   opacity: 0; transform: translateY(18px); filter: blur(6px);
   transition: opacity 0.95s var(--ease-out), transform 0.95s var(--ease-out), filter 0.95s var(--ease-out);
   display: flex; align-items: flex-start; justify-content: center;
@@ -517,16 +526,17 @@ body {
 }
 
 .reveal-line--accent {
-  font-family: var(--font-serif); font-style: italic;
-  font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+  font-family: var(--font-cursive);
+  font-size: clamp(1.35rem, 4.5vw, 1.65rem);
+  font-weight: 600;
   color: var(--text-primary); margin-top: 0.5rem;
 }
 
 .reveal-line--highlight { margin-top: 1rem; }
 
 .glow-text {
-  font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+  font-family: var(--font-cursive);
+  font-size: clamp(1.5rem, 5.5vw, 2rem);
   font-weight: 600; color: var(--text-primary);
   display: inline-block;
   animation: glow-pulse 3s var(--ease-in-out) infinite;
@@ -561,7 +571,8 @@ body {
 }
 
 .memory-line {
-  font-size: clamp(0.95rem, 3.2vw, 1.05rem);
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 3.5vw, 1.2rem);
   line-height: 1.7; color: var(--text-muted);
   margin-bottom: 0.6rem;
   opacity: 0; transform: translateY(12px);
@@ -575,16 +586,18 @@ body {
 }
 
 .memory-line--large {
-  font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+  font-family: var(--font-cursive);
+  font-size: clamp(1.45rem, 5vw, 1.85rem);
   font-weight: 600; color: var(--text-primary);
   margin-top: 0.75rem; margin-bottom: 0;
 }
 
 /* ---- Final ---- */
 .final-eyebrow {
-  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
-  letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--text-subtle); margin-bottom: 1.5rem;
   opacity: 0; transform: translateY(12px);
   transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
@@ -642,8 +655,8 @@ body {
 
 .final-typewriter {
   font-family: var(--font-hand);
-  font-size: clamp(2.4rem, 10vw, 3.8rem);
-  font-weight: 600;
+  font-size: clamp(2.75rem, 11vw, 4.2rem);
+  font-weight: 700;
   line-height: 1.1;
   color: var(--accent-purple);
   min-height: 1.2em;
