@@ -7,107 +7,50 @@ const CONFIG = {
   name: "FRIEND_NAME",
   nickname: "Ms.whywhywhy",
   password: "ms.maybe",
-  date: "August 17, 2026",
-  chocolateMessage: "Day 1 kit: confidence ✓ chaos management ✓ chocolate ✓",
-  chocolateSub: "Non-negotiable. Science probably backs this. 🍫"
+  date: "August 17, 2026"
 };
-
-const WISHES = [
-  {
-    label: "01 · entrance energy",
-    text: "May you walk in like you own the place — because honestly, you kind of do.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`
-  },
-  {
-    label: "02 · your people",
-    text: "May you find your people — the ones who get your weird references.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
-  },
-  {
-    label: "03 · plot development",
-    text: "May the messy days still teach you something worth keeping.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`
-  },
-  {
-    label: "04 · stay you",
-    text: "May you level up without losing what makes you, <em>you</em>.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
-  },
-  {
-    label: "05 · the recap",
-    text: "May this year turn into stories you actually want to retell.",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
-  },
-  {
-    label: "06 · essential supplies",
-    text: CONFIG.chocolateMessage,
-    tag: CONFIG.chocolateSub,
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M9 8v10M15 8v10M3 13h18"/></svg>`,
-    isBonus: true
-  }
-];
 
 const screens = {
   landing: document.getElementById("screen-landing"),
   password: document.getElementById("screen-password"),
-  day1: document.getElementById("screen-day1"),
-  wishes: document.getElementById("screen-wishes"),
-  letter: document.getElementById("screen-letter"),
+  moment: document.getElementById("screen-moment"),
+  message: document.getElementById("screen-message"),
+  wish: document.getElementById("screen-wish"),
+  memory: document.getElementById("screen-memory"),
   final: document.getElementById("screen-final")
 };
 
-const els = {
-  btnOpen: document.getElementById("btn-open"),
-  passwordForm: document.getElementById("password-form"),
-  passwordInput: document.getElementById("password-input"),
-  passwordError: document.getElementById("password-error"),
-  lockIcon: document.getElementById("lock-icon"),
-  unlockFlash: document.getElementById("unlock-flash"),
-  day1Date: document.getElementById("day1-date"),
-  btnDay1Continue: document.getElementById("btn-day1-continue"),
-  wishesLabel: document.getElementById("wishes-label"),
-  wishDeckStage: document.getElementById("wish-deck-stage"),
-  wishDots: document.getElementById("wish-dots"),
-  btnWishPrev: document.getElementById("btn-wish-prev"),
-  btnWishNext: document.getElementById("btn-wish-next"),
-  btnWishesDone: document.getElementById("btn-wishes-done"),
-  btnLetterContinue: document.getElementById("btn-letter-continue"),
-  btnSendoff: document.getElementById("btn-sendoff"),
-  finaleNoteCard: document.getElementById("finale-note-card"),
-  finaleGreeting: document.getElementById("finale-greeting"),
-  finaleMessage: document.getElementById("finale-message"),
-  btnReplay: document.getElementById("btn-replay"),
-  siteFooter: document.getElementById("site-footer"),
-  footerCheer: document.getElementById("footer-cheer"),
-  nicknameBadge: document.getElementById("nickname-badge"),
-  nicknameWhisper: document.getElementById("nickname-whisper"),
-  journeyBar: document.getElementById("journey-bar"),
-  musicBtn: document.getElementById("music-btn"),
-  musicEl: document.getElementById("music"),
-  particlesCanvas: document.getElementById("particles-canvas"),
-  confettiCanvas: document.getElementById("confetti-canvas")
-};
+const btnOpen = document.getElementById("btn-open");
+const passwordForm = document.getElementById("password-form");
+const passwordInput = document.getElementById("password-input");
+const passwordError = document.getElementById("password-error");
+const lockIcon = document.getElementById("lock-icon");
+const unlockFlash = document.getElementById("unlock-flash");
+const momentDate = document.getElementById("moment-date");
+const momentLine1 = document.getElementById("moment-line-1");
+const momentLine2 = document.getElementById("moment-line-2");
+const btnLastThing = document.getElementById("btn-last-thing");
+const memoryCard = document.getElementById("memory-card");
+const btnReplay = document.getElementById("btn-replay");
+const musicBtn = document.getElementById("music-btn");
+const musicEl = document.getElementById("music");
+const particlesCanvas = document.getElementById("particles");
+const nicknameBadge = document.getElementById("nickname-badge");
+const nicknameWhisper = document.getElementById("nickname-whisper");
+const finalGreeting = document.getElementById("final-greeting");
 
 let currentScreen = "landing";
-let wishIndex = 0;
-let wishCardsBuilt = false;
-let timers = [];
-let confettiPieces = [];
-let confettiAnimating = false;
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let particleBoost = 1;
+let confettiCanvas = null;
+let animationTimers = [];
 
-const JOURNEY_MAP = {
-  day1: "open",
-  wishes: "wishes",
-  letter: "letter",
-  final: "finale"
-};
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ============================================
    Navigation
    ============================================ */
 
-function showSection(name) {
+function showScreen(name) {
   const prev = screens[currentScreen];
   const next = screens[name];
   if (!next || name === currentScreen) return;
@@ -125,404 +68,421 @@ function showSection(name) {
   requestAnimationFrame(() => next.classList.add("screen--active"));
   currentScreen = name;
 
-  updateJourneyBar(name);
-
-  if (name !== "landing" && name !== "password") {
-    els.siteFooter.hidden = false;
-  }
-
   switch (name) {
-    case "wishes":
-      if (!wishCardsBuilt) buildWishDeck();
-      updateWishView(false);
-      break;
-    case "day1":
-      replayScreenAnimations(screens.day1);
-      break;
-    case "final":
-      replayScreenAnimations(screens.final);
-      break;
+    case "moment": runMomentSequence(); break;
+    case "message": runRevealSequence(screens.message); break;
+    case "wish": runRevealSequence(screens.wish); break;
+    case "final": resetFinalAnimations(); break;
   }
 }
 
-function updateJourneyBar(screenName) {
-  const step = JOURNEY_MAP[screenName];
-  if (!step) {
-    els.journeyBar.hidden = screenName === "landing" || screenName === "password";
-    return;
-  }
-
-  els.journeyBar.hidden = false;
-  const order = ["open", "wishes", "letter", "finale"];
-  const currentIdx = order.indexOf(step);
-
-  els.journeyBar.querySelectorAll(".journey-bar__step").forEach((el) => {
-    const idx = order.indexOf(el.dataset.step);
-    el.classList.toggle("is-done", idx < currentIdx);
-    el.classList.toggle("is-active", idx === currentIdx);
+function resetAllScreens() {
+  clearTimers();
+  Object.values(screens).forEach((screen) => {
+    screen.hidden = screen !== screens.landing;
+    screen.classList.remove("screen--active", "is-leaving");
   });
-}
-
-function resetExperience() {
-  clearAllTimers();
-  stopConfetti();
-  wishIndex = 0;
-
-  Object.values(screens).forEach((s) => {
-    s.hidden = s !== screens.landing;
-    s.classList.remove("screen--active", "is-leaving");
-  });
-
   screens.landing.classList.add("screen--active");
   screens.landing.hidden = false;
   currentScreen = "landing";
 
-  els.journeyBar.hidden = true;
-  els.siteFooter.hidden = true;
-  els.passwordInput.value = "";
-  els.passwordError.textContent = "";
-  els.passwordError.classList.remove("is-visible");
-  els.lockIcon.classList.remove("is-unlocked");
+  passwordInput.value = "";
+  passwordError.textContent = "";
+  passwordError.classList.remove("is-visible");
+  lockIcon.classList.remove("is-unlocked");
 
-  els.btnWishPrev.hidden = true;
-  els.btnWishNext.hidden = false;
-  els.btnWishesDone.hidden = true;
-  els.finaleNoteCard.hidden = true;
-  els.btnSendoff.disabled = false;
-  els.btnSendoff.textContent = "Say less →";
-
-  replayScreenAnimations(screens.landing);
-}
-
-function clearAllTimers() {
-  timers.forEach(clearTimeout);
-  timers = [];
-}
-
-function wait(ms) {
-  return new Promise((resolve) => {
-    timers.push(setTimeout(resolve, ms));
+  memoryCard.hidden = true;
+  memoryCard.classList.remove("is-visible");
+  memoryCard.querySelectorAll(".memory-line").forEach((line) => {
+    line.classList.remove("is-visible");
   });
+
+  btnLastThing.hidden = false;
+  btnLastThing.style.opacity = "1";
+
+  resetRevealLines(screens.message);
+  resetRevealLines(screens.wish);
+
+  momentLine1.textContent = "";
+  momentLine2.textContent = "";
+  momentLine2.classList.remove("moment-line--accent");
+
+  particleBoost = 1;
+  replayLandingAnimations();
 }
 
-function replayScreenAnimations(screen) {
-  screen.querySelectorAll(".reveal-up").forEach((el) => {
+function replayLandingAnimations() {
+  screens.landing.querySelectorAll(".fade-in").forEach((el) => {
     el.style.animation = "none";
     el.offsetHeight;
     el.style.animation = "";
   });
 }
 
-/* ============================================
-   Password & unlock
-   ============================================ */
-
-async function unlockExperience() {
-  els.lockIcon.classList.add("is-unlocked");
-  els.unlockFlash.classList.add("is-active");
-  fireConfetti(18);
-
-  await wait(reducedMotion ? 300 : 700);
-  els.unlockFlash.classList.remove("is-active");
-
-  els.day1Date.textContent = CONFIG.date;
-  showSection("day1");
+function resetFinalAnimations() {
+  screens.final.querySelectorAll(".fade-in").forEach((el) => {
+    el.style.animation = "none";
+    el.offsetHeight;
+    el.style.animation = "";
+  });
 }
 
-els.passwordForm.addEventListener("submit", (e) => {
+function clearTimers() {
+  animationTimers.forEach(clearTimeout);
+  animationTimers = [];
+}
+
+function delay(ms) {
+  return new Promise((resolve) => {
+    animationTimers.push(setTimeout(resolve, ms));
+  });
+}
+
+/* ============================================
+   Password
+   ============================================ */
+
+passwordForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const val = els.passwordInput.value.trim().toLowerCase();
+  handlePasswordSubmit();
+});
 
-  if (val === CONFIG.password.toLowerCase()) {
-    els.passwordError.classList.remove("is-visible");
-    unlockExperience();
+function handlePasswordSubmit() {
+  const value = passwordInput.value.trim().toLowerCase();
+
+  if (value === CONFIG.password.toLowerCase()) {
+    passwordError.classList.remove("is-visible");
+    triggerUnlock();
   } else {
-    els.passwordError.textContent = "Nice try. You know this one.";
-    els.passwordError.classList.add("is-visible");
-    els.passwordInput.classList.add("shake");
-    setTimeout(() => els.passwordInput.classList.remove("shake"), 400);
+    passwordError.textContent = "Hmm… I think you know this one ;)";
+    passwordError.classList.add("is-visible");
+    passwordInput.classList.add("shake");
+    setTimeout(() => passwordInput.classList.remove("shake"), 400);
   }
-});
+}
 
-els.passwordInput.addEventListener("input", () => {
-  els.passwordError.classList.remove("is-visible");
+async function triggerUnlock() {
+  lockIcon.classList.add("is-unlocked");
+  unlockFlash.classList.add("is-active");
+  particleBoost = 2.2;
+
+  await delay(prefersReducedMotion ? 300 : 800);
+  unlockFlash.classList.remove("is-active");
+
+  await delay(prefersReducedMotion ? 200 : 500);
+  showScreen("moment");
+}
+
+passwordInput.addEventListener("input", () => {
+  passwordError.classList.remove("is-visible");
 });
 
 /* ============================================
-   Wish deck
+   Moment — typewriter
    ============================================ */
 
-function buildWishDeck() {
-  WISHES.forEach((wish, i) => {
-    const card = document.createElement("article");
-    card.className = `wish-card wish-card--${i + 1}`;
-    card.dataset.index = i;
-    card.innerHTML = `
-      <div class="wish-card__icon" aria-hidden="true">${wish.icon}</div>
-      <p class="wish-card__num">${wish.label || (wish.isBonus ? "06 · essential supplies" : `Wish ${i + 1}`)}</p>
-      <p class="wish-card__text">${wish.text}</p>
-      ${wish.tag ? `<p class="wish-card__tag">${wish.tag}</p>` : ""}
-    `;
-    els.wishDeckStage.appendChild(card);
+async function runMomentSequence() {
+  momentDate.textContent = CONFIG.date;
 
-    const dot = document.createElement("span");
-    dot.className = "wish-dot";
-    dot.dataset.index = i;
-    els.wishDots.appendChild(dot);
-  });
-
-  wishCardsBuilt = true;
+  await delay(prefersReducedMotion ? 100 : 600);
+  await typeText(momentLine1, "Not just the first day of college…");
+  await delay(prefersReducedMotion ? 200 : 900);
+  await typeText(momentLine2, "…but the first page of a completely new chapter.", true);
+  await delay(prefersReducedMotion ? 400 : 2200);
+  showScreen("message");
 }
 
-function updateWishView(animate = true) {
-  const cards = els.wishDeckStage.querySelectorAll(".wish-card");
-  const dots = els.wishDots.querySelectorAll(".wish-dot");
+function typeText(el, text, isAccent) {
+  if (prefersReducedMotion) {
+    el.textContent = text;
+    if (isAccent) el.classList.add("moment-line--accent");
+    return Promise.resolve();
+  }
 
-  cards.forEach((card, i) => {
-    card.classList.remove("is-active", "is-prev", "is-next");
-    if (i === wishIndex) card.classList.add("is-active");
-    else if (i < wishIndex) card.classList.add("is-prev");
-    else if (i === wishIndex + 1) card.classList.add("is-next");
+  return new Promise((resolve) => {
+    el.textContent = "";
+    let i = 0;
+    const speed = 38;
+
+    const cursor = document.createElement("span");
+    cursor.className = "cursor";
+    el.appendChild(cursor);
+
+    function tick() {
+      if (i < text.length) {
+        el.insertBefore(document.createTextNode(text[i]), cursor);
+        i++;
+        animationTimers.push(setTimeout(tick, speed));
+      } else {
+        cursor.remove();
+        if (isAccent) el.classList.add("moment-line--accent");
+        resolve();
+      }
+    }
+
+    tick();
   });
-
-  dots.forEach((dot, i) => {
-    dot.classList.toggle("is-active", i === wishIndex);
-    dot.classList.toggle("is-done", i < wishIndex);
-  });
-
-  els.btnWishPrev.hidden = wishIndex === 0;
-  const isLast = wishIndex === WISHES.length - 1;
-  els.btnWishNext.hidden = isLast;
-  els.btnWishesDone.hidden = !isLast;
-  els.btnWishNext.textContent = isLast ? "That's the vibe →" : "Next one →";
 }
-
-function goToWish(index) {
-  if (index < 0 || index >= WISHES.length) return;
-  wishIndex = index;
-  updateWishView();
-}
-
-els.btnWishNext.addEventListener("click", () => goToWish(wishIndex + 1));
-els.btnWishPrev.addEventListener("click", () => goToWish(wishIndex - 1));
-els.btnWishesDone.addEventListener("click", () => showSection("letter"));
-
-/* Swipe support on wish deck */
-let touchStartX = 0;
-
-els.wishDeckStage.addEventListener("touchstart", (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-}, { passive: true });
-
-els.wishDeckStage.addEventListener("touchend", (e) => {
-  const diff = e.changedTouches[0].screenX - touchStartX;
-  if (Math.abs(diff) < 50) return;
-  if (diff < 0 && wishIndex < WISHES.length - 1) goToWish(wishIndex + 1);
-  if (diff > 0 && wishIndex > 0) goToWish(wishIndex - 1);
-}, { passive: true });
 
 /* ============================================
-   Confetti (used sparingly)
+   Staggered reveal lines
    ============================================ */
 
-function fireConfetti(count) {
-  if (reducedMotion) return;
-  const canvas = els.confettiCanvas;
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function resetRevealLines(screen) {
+  screen.querySelectorAll(".reveal-line").forEach((line) => {
+    line.classList.remove("is-visible");
+  });
+}
+
+async function runRevealSequence(screen) {
+  const lines = screen.querySelectorAll(".reveal-line");
+  const baseDelay = prefersReducedMotion ? 80 : 500;
+  const stagger = prefersReducedMotion ? 120 : 700;
+
+  for (let i = 0; i < lines.length; i++) {
+    await delay(i === 0 ? baseDelay : stagger);
+    lines[i].classList.add("is-visible");
+
+    if (lines[i].classList.contains("reveal-line--pause")) {
+      await delay(prefersReducedMotion ? 200 : 1000);
+    }
+  }
+
+  const nextScreen = screen === screens.message ? "wish"
+    : screen === screens.wish ? "memory"
+    : null;
+
+  if (nextScreen) {
+    const extraWait = screen === screens.wish ? 2800 : 2200;
+    await delay(prefersReducedMotion ? 400 : extraWait);
+    showScreen(nextScreen);
+  }
+}
+
+/* ============================================
+   Memory moment
+   ============================================ */
+
+btnLastThing.addEventListener("click", async () => {
+  btnLastThing.style.opacity = "0";
+  btnLastThing.style.transition = "opacity 0.4s";
+  setTimeout(() => { btnLastThing.hidden = true; }, 400);
+
+  burstConfetti();
+  memoryCard.hidden = false;
+  requestAnimationFrame(() => memoryCard.classList.add("is-visible"));
+
+  const memoryLines = memoryCard.querySelectorAll(".memory-line");
+  for (let i = 0; i < memoryLines.length; i++) {
+    await delay(prefersReducedMotion ? 80 : 450);
+    memoryLines[i].classList.add("is-visible");
+  }
+
+  await delay(prefersReducedMotion ? 600 : 3500);
+  showScreen("final");
+});
+
+/* ============================================
+   Confetti
+   ============================================ */
+
+function burstConfetti() {
+  if (prefersReducedMotion) return;
+
+  if (!confettiCanvas) {
+    confettiCanvas = document.createElement("canvas");
+    confettiCanvas.id = "confetti-canvas";
+    document.body.appendChild(confettiCanvas);
+  }
+
+  const ctx = confettiCanvas.getContext("2d");
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
 
   const colors = ["#B58AEF", "#FF9DB8", "#F7C978", "#7EC8E3", "#E9DEFF"];
+  const pieces = [];
+  const count = 55;
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+
   for (let i = 0; i < count; i++) {
-    confettiPieces.push({
-      x: Math.random() * canvas.width,
-      y: -10 - Math.random() * 80,
-      w: 4 + Math.random() * 5,
-      h: 7 + Math.random() * 7,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      vx: (Math.random() - 0.5) * 2,
-      vy: 1.5 + Math.random() * 3,
-      rot: Math.random() * Math.PI * 2,
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+    const speed = 2 + Math.random() * 4;
+    pieces.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 2,
+      w: 3 + Math.random() * 5,
+      h: 6 + Math.random() * 6,
+      rot: Math.random() * Math.PI,
       vr: (Math.random() - 0.5) * 0.15,
-      life: 1
+      color: colors[Math.floor(Math.random() * colors.length)],
+      life: 1,
+      decay: 0.008 + Math.random() * 0.008
     });
   }
 
-  if (!confettiAnimating) {
-    confettiAnimating = true;
-    animateConfetti(ctx, canvas);
+  let frame = 0;
+  const maxFrames = 120;
+
+  function draw() {
+    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    let alive = false;
+
+    pieces.forEach((p) => {
+      if (p.life <= 0) return;
+      alive = true;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.06;
+      p.rot += p.vr;
+      p.life -= p.decay;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+
+    frame++;
+    if (alive && frame < maxFrames) {
+      requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    }
   }
-}
 
-function animateConfetti(ctx, canvas) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  confettiPieces = confettiPieces.filter((p) => {
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += 0.06;
-    p.rot += p.vr;
-    p.life -= 0.005;
-
-    if (p.y > canvas.height + 20 || p.life <= 0) return false;
-
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rot);
-    ctx.globalAlpha = Math.min(1, p.life * 2);
-    ctx.fillStyle = p.color;
-    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-    ctx.restore();
-    return true;
-  });
-
-  if (confettiPieces.length > 0) {
-    requestAnimationFrame(() => animateConfetti(ctx, canvas));
-  } else {
-    confettiAnimating = false;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-}
-
-function stopConfetti() {
-  confettiPieces = [];
-  if (els.confettiCanvas) {
-    const ctx = els.confettiCanvas.getContext("2d");
-    ctx.clearRect(0, 0, els.confettiCanvas.width, els.confettiCanvas.height);
-  }
-  confettiAnimating = false;
+  draw();
 }
 
 /* ============================================
-   Ambient particles
+   Particles
    ============================================ */
 
-function createParticles() {
-  const canvas = els.particlesCanvas;
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+(function initParticles() {
+  if (!particlesCanvas) return;
+
+  const ctx = particlesCanvas.getContext("2d");
   let particles = [];
   let w, h;
 
   function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+    w = particlesCanvas.width = window.innerWidth;
+    h = particlesCanvas.height = window.innerHeight;
   }
 
-  function spawn() {
-    const count = Math.min(40, Math.floor((w * h) / 20000));
-    particles = Array.from({ length: count }, () => ({
+  function createParticle() {
+    return {
       x: Math.random() * w,
       y: Math.random() * h,
-      r: Math.random() * 1.4 + 0.3,
-      vx: (Math.random() - 0.5) * 0.08,
-      vy: -(Math.random() * 0.12 + 0.02),
-      a: Math.random() * 0.25 + 0.08,
-      tw: Math.random() * Math.PI * 2
-    }));
+      size: Math.random() * 1.8 + 0.4,
+      speedX: (Math.random() - 0.5) * 0.15,
+      speedY: -(Math.random() * 0.25 + 0.05),
+      opacity: Math.random() * 0.4 + 0.12,
+      twinkle: Math.random() * Math.PI * 2
+    };
+  }
+
+  function init() {
+    resize();
+    const count = Math.min(70, Math.floor((w * h) / 14000));
+    particles = Array.from({ length: count }, createParticle);
   }
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
+    const boost = particleBoost;
+
     particles.forEach((p) => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.tw += 0.015;
-      if (p.y < 0) {
-        p.y = h;
-        p.x = Math.random() * w;
-      }
-      const alpha = p.a * (0.5 + 0.5 * Math.sin(p.tw));
+      p.x += p.speedX * boost;
+      p.y += p.speedY * boost;
+      p.twinkle += 0.02;
+
+      if (p.y < -5) { p.y = h + 5; p.x = Math.random() * w; }
+      if (p.x < -5) p.x = w + 5;
+      if (p.x > w + 5) p.x = -5;
+
+      const alpha = p.opacity * (0.55 + 0.45 * Math.sin(p.twinkle));
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(181, 138, 239, ${alpha})`;
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(139, 92, 246, ${alpha})`;
       ctx.fill();
     });
-    if (!reducedMotion) requestAnimationFrame(draw);
+
+    if (!prefersReducedMotion) requestAnimationFrame(draw);
   }
 
-  window.addEventListener("resize", () => { resize(); spawn(); });
-  resize();
-  spawn();
-  if (!reducedMotion) draw();
-}
+  window.addEventListener("resize", () => { resize(); init(); });
+  init();
+  if (!prefersReducedMotion) draw();
+})();
+
+/* ============================================
+   Music
+   ============================================ */
+
+let musicAvailable = false;
+
+musicEl.addEventListener("canplaythrough", () => { musicAvailable = true; });
+musicEl.addEventListener("error", () => { musicAvailable = false; });
+
+musicBtn.addEventListener("click", async () => {
+  if (!musicAvailable) {
+    try {
+      musicEl.load();
+      await musicEl.play();
+      musicAvailable = true;
+    } catch {
+      musicBtn.style.opacity = "0.4";
+      musicBtn.title = "No music file found";
+      return;
+    }
+  }
+
+  if (musicEl.paused) {
+    try {
+      await musicEl.play();
+      musicBtn.classList.add("is-playing");
+    } catch { /* blocked */ }
+  } else {
+    musicEl.pause();
+    musicBtn.classList.remove("is-playing");
+  }
+});
 
 /* ============================================
    Personalization
    ============================================ */
 
 function applyPersonalization() {
+  momentDate.textContent = CONFIG.date;
   const display = CONFIG.nickname || CONFIG.name;
 
-  if (els.nicknameBadge && display !== "FRIEND_NAME") {
-    els.nicknameBadge.textContent = `Yeah, this one's for ${display} ✦`;
+  if (nicknameBadge && display !== "FRIEND_NAME") {
+    nicknameBadge.textContent = `For ${display} ✦`;
   }
-  if (els.nicknameWhisper && CONFIG.nickname) {
-    els.nicknameWhisper.textContent = `Sup, ${CONFIG.nickname}.`;
+  if (nicknameWhisper && CONFIG.nickname) {
+    nicknameWhisper.textContent = `Hey, ${CONFIG.nickname}.`;
   }
-  if (els.wishesLabel && CONFIG.nickname) {
-    els.wishesLabel.textContent = `The good stuff — ${CONFIG.nickname} edition`;
-  }
-  if (CONFIG.name !== "FRIEND_NAME") {
-    const eyebrow = screens.landing.querySelector(".eyebrow");
-    if (eyebrow) eyebrow.textContent = `Low-key made this for ${CONFIG.name}`;
-    if (els.finaleGreeting) els.finaleGreeting.textContent = `Happy First Day, ${CONFIG.name} — go off :)`;
-  }
-  if (els.footerCheer && display !== "FRIEND_NAME") {
-    els.footerCheer.textContent = `Rooting for you, ${display}. Always.`;
-  }
-  if (els.finaleMessage && display !== "FRIEND_NAME") {
-    els.finaleMessage.textContent = `Showing up on Day 1 is already a W, ${display}. The rest is just bonus scenes.`;
-  }
-}
-
-/* ============================================
-   Music
-   ============================================ */
-
-let musicReady = false;
-
-els.musicEl.addEventListener("canplaythrough", () => { musicReady = true; });
-els.musicEl.addEventListener("error", () => { musicReady = false; });
-
-els.musicBtn.addEventListener("click", async () => {
-  if (!musicReady) {
-    try {
-      els.musicEl.load();
-      await els.musicEl.play();
-      musicReady = true;
-    } catch {
-      els.musicBtn.style.opacity = "0.4";
-      return;
+  if (CONFIG.name && CONFIG.name !== "FRIEND_NAME") {
+    const landingEyebrow = screens.landing.querySelector(".eyebrow");
+    if (landingEyebrow) {
+      landingEyebrow.textContent = `A little something for your Day 1, ${CONFIG.name}…`;
+    }
+    if (finalGreeting) {
+      finalGreeting.textContent = `Happy First Day, ${CONFIG.name} :)`;
     }
   }
-  if (els.musicEl.paused) {
-    try {
-      await els.musicEl.play();
-      els.musicBtn.classList.add("is-playing");
-    } catch { /* blocked */ }
-  } else {
-    els.musicEl.pause();
-    els.musicBtn.classList.remove("is-playing");
-  }
-});
+}
 
 /* ============================================
    Events
    ============================================ */
 
-els.btnOpen.addEventListener("click", () => showSection("password"));
-els.btnDay1Continue.addEventListener("click", () => showSection("wishes"));
-els.btnLetterContinue.addEventListener("click", () => showSection("final"));
-
-els.btnSendoff.addEventListener("click", () => {
-  fireConfetti(55);
-  els.finaleNoteCard.hidden = false;
-  els.btnSendoff.textContent = "Main character confirmed ✦";
-  els.btnSendoff.disabled = true;
-});
-
-els.btnReplay.addEventListener("click", resetExperience);
+btnOpen.addEventListener("click", () => showScreen("password"));
+btnReplay.addEventListener("click", resetAllScreens);
 
 applyPersonalization();
-createParticles();
