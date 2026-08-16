@@ -1134,10 +1134,10 @@ body {
 
 .final-girl-scene {
   position: absolute;
-  bottom: max(1rem, env(safe-area-inset-bottom));
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  width: min(240px, 58vw);
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  left: max(0.5rem, env(safe-area-inset-left));
+  transform: translateY(24px);
+  width: min(200px, 46vw);
   opacity: 0;
   transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
   z-index: 1;
@@ -1147,6 +1147,12 @@ body {
 .final-girl-scene.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.screen__inner--final {
+  position: relative;
+  z-index: 2;
+  padding-bottom: clamp(7rem, 22vh, 10rem);
 }
 
 .final-girl-svg {
@@ -1197,11 +1203,6 @@ body {
 @keyframes final-girl-blush {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 0.65; }
-}
-
-.screen__inner--final {
-  position: relative;
-  z-index: 2;
 }
 
 .final-eyebrow {
