@@ -21,7 +21,7 @@ Edit the top of `script.js`:
 ```javascript
 const CONFIG = {
   name: "FRIEND_NAME",   // Your friend's name
-  password: "ms",          // Secret unlock password
+  password: "ms.maybe",          // Secret unlock password
   date: "August 17, 2026"
 };
 ```
