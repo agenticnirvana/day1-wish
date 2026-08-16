@@ -198,7 +198,10 @@ function resetFinalState() {
     finalTypewriter.classList.remove("is-done");
   }
   if (finalGirlScene) finalGirlScene.classList.remove("is-visible");
-  if (finalChocolates) finalChocolates.innerHTML = "";
+  if (finalChocolates) {
+    finalChocolates.innerHTML = "";
+    finalChocolates.classList.remove("is-active");
+  }
   [finalGreeting, finalNote, finalStar, btnReplay].forEach((el) => {
     if (el) {
       el.hidden = true;
@@ -247,20 +250,30 @@ function initFinalChocolates() {
   if (!finalChocolates || prefersReducedMotion) return;
 
   finalChocolates.innerHTML = "";
-  const icons = ["🍫", "🍬", "🍫", "🍩", "🍫", "✨"];
-  const count = Math.min(28, Math.floor(window.innerWidth / 22));
+  finalChocolates.classList.add("is-active");
+  const icons = ["🍫", "🍬", "🍫", "🍩", "🍫", "🍫", "🍬", "🍫"];
+  const count = Math.min(52, Math.max(36, Math.floor(window.innerWidth / 14)));
 
   for (let i = 0; i < count; i++) {
-    const el = document.createElement("span");
-    el.className = "choco-float";
-    el.textContent = icons[i % icons.length];
+    const useBar = i % 4 === 0;
+    const el = document.createElement(useBar ? "div" : "span");
+    el.className = useBar ? "choco-float choco-bar" : "choco-float choco-emoji";
+    if (!useBar) el.textContent = icons[i % icons.length];
+
     el.style.left = `${Math.random() * 100}%`;
-    el.style.setProperty("--fall-dur", `${5 + Math.random() * 7}s`);
-    el.style.setProperty("--fall-delay", `-${Math.random() * 8}s`);
-    el.style.setProperty("--drift", `${(Math.random() - 0.5) * 60}px`);
-    el.style.setProperty("--spin", `${(Math.random() - 0.5) * 40}deg`);
-    el.style.fontSize = `${0.75 + Math.random() * 0.9}rem`;
-    el.style.opacity = `${0.35 + Math.random() * 0.45}`;
+    el.style.setProperty("--fall-dur", `${3.5 + Math.random() * 5}s`);
+    el.style.setProperty("--fall-delay", `-${Math.random() * 6}s`);
+    el.style.setProperty("--drift", `${(Math.random() - 0.5) * 90}px`);
+    el.style.setProperty("--spin", `${(Math.random() - 0.5) * 720}deg`);
+
+    if (useBar) {
+      el.style.setProperty("--bar-w", `${10 + Math.random() * 14}px`);
+      el.style.setProperty("--bar-h", `${6 + Math.random() * 10}px`);
+    } else {
+      el.style.fontSize = `${1.1 + Math.random() * 1.4}rem`;
+    }
+
+    el.style.opacity = `${0.55 + Math.random() * 0.4}`;
     finalChocolates.appendChild(el);
   }
 }

@@ -1234,23 +1234,52 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 3;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out);
+}
+
+.final-chocolates.is-active {
+  opacity: 1;
 }
 
 .choco-float {
   position: absolute;
-  top: -10%;
-  animation: choco-fall var(--fall-dur, 6s) linear infinite;
+  top: -12%;
+  animation: choco-fall var(--fall-dur, 5s) linear infinite;
   animation-delay: var(--fall-delay, 0s);
-  filter: drop-shadow(0 2px 4px rgba(92, 64, 51, 0.2));
+  will-change: transform, opacity;
+}
+
+.choco-emoji {
+  filter: drop-shadow(0 3px 6px rgba(92, 64, 51, 0.25));
+  line-height: 1;
+}
+
+.choco-bar {
+  width: var(--bar-w, 12px);
+  height: var(--bar-h, 7px);
+  background: linear-gradient(145deg, #6b4423 0%, #5c4033 45%, #8B6914 100%);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 2px 5px rgba(92, 64, 51, 0.3);
+}
+
+.choco-bar::after {
+  content: "";
+  position: absolute;
+  inset: 20% 30%;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 @keyframes choco-fall {
-  0% { transform: translateY(-5vh) translateX(0) rotate(0deg); opacity: 0; }
-  8% { opacity: 1; }
-  92% { opacity: 0.85; }
-  100% { transform: translateY(110vh) translateX(var(--drift, 20px)) rotate(var(--spin, 15deg)); opacity: 0; }
+  0% { transform: translateY(-8vh) translateX(0) rotate(0deg) scale(0.85); opacity: 0; }
+  5% { opacity: 1; }
+  90% { opacity: 0.9; }
+  100% { transform: translateY(115vh) translateX(var(--drift, 24px)) rotate(var(--spin, 180deg)) scale(1); opacity: 0; }
 }
 
 .final-girl-scene {
@@ -1272,7 +1301,7 @@ body {
 
 .screen__inner--final {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   padding-bottom: clamp(7rem, 22vh, 10rem);
 }
 
