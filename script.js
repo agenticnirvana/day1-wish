@@ -7,7 +7,8 @@ const CONFIG = {
   name: "FRIEND_NAME",
   nickname: "Ms.whywhywhy",
   password: "ms.maybe",
-  date: "August 17, 2026"
+  date: "August 17, 2026",
+  finaleWord: "ms.maybe"
 };
 
 const screens = {
@@ -38,6 +39,12 @@ const particlesCanvas = document.getElementById("particles");
 const nicknameBadge = document.getElementById("nickname-badge");
 const nicknameWhisper = document.getElementById("nickname-whisper");
 const finalGreeting = document.getElementById("final-greeting");
+const finalOldText = document.getElementById("final-old-text");
+const finalSlash = document.getElementById("final-slash");
+const finalTypewriter = document.getElementById("final-typewriter");
+const finalEyebrow = document.getElementById("final-eyebrow");
+const finalNote = document.getElementById("final-note");
+const finalStar = document.getElementById("final-star");
 
 let currentScreen = "landing";
 let particleBoost = 1;
@@ -86,7 +93,7 @@ function showScreen(name) {
     case "moment": runMomentSequence(); break;
     case "message": runRevealSequence(screens.message); break;
     case "wish": runRevealSequence(screens.wish); break;
-    case "final": resetFinalAnimations(); break;
+    case "final": runFinalSequence(); break;
   }
 }
 
@@ -127,6 +134,7 @@ function resetAllScreens() {
   musicBtn.classList.remove("is-playing");
   musicBtn.classList.add("music-btn--hint");
   replayLandingAnimations();
+  resetFinalState();
 }
 
 function replayLandingAnimations() {
@@ -137,12 +145,59 @@ function replayLandingAnimations() {
   });
 }
 
-function resetFinalAnimations() {
-  screens.final.querySelectorAll(".fade-in").forEach((el) => {
-    el.style.animation = "none";
-    el.offsetHeight;
-    el.style.animation = "";
+function resetFinalState() {
+  if (finalEyebrow) finalEyebrow.classList.remove("is-visible");
+  if (finalOldText) {
+    finalOldText.classList.remove("is-visible", "is-cut");
+    finalOldText.hidden = false;
+  }
+  if (finalSlash) finalSlash.classList.remove("is-active");
+  if (finalTypewriter) {
+    finalTypewriter.textContent = "";
+    finalTypewriter.hidden = true;
+    finalTypewriter.classList.remove("is-done");
+  }
+  [finalGreeting, finalNote, finalStar, btnReplay].forEach((el) => {
+    if (el) {
+      el.hidden = true;
+      el.classList.remove("is-visible");
+    }
   });
+}
+
+async function runFinalSequence() {
+  resetFinalState();
+
+  if (finalEyebrow) finalEyebrow.classList.add("is-visible");
+  await delay(prefersReducedMotion ? 150 : 600);
+
+  if (finalOldText) finalOldText.classList.add("is-visible");
+  await delay(prefersReducedMotion ? 300 : 2000);
+
+  if (finalSlash) finalSlash.classList.add("is-active");
+  if (finalOldText) finalOldText.classList.add("is-cut");
+  await delay(prefersReducedMotion ? 200 : 650);
+
+  if (finalOldText) finalOldText.hidden = true;
+  if (finalTypewriter) {
+    finalTypewriter.hidden = false;
+    await typeText(finalTypewriter, CONFIG.finaleWord || "ms.maybe", false, true);
+    finalTypewriter.classList.add("is-done");
+  }
+
+  await delay(prefersReducedMotion ? 200 : 900);
+
+  const reveals = [finalGreeting, finalNote, finalStar, btnReplay];
+  for (const el of reveals) {
+    if (!el) continue;
+    el.hidden = false;
+    await delay(prefersReducedMotion ? 80 : 450);
+    el.classList.add("is-visible");
+  }
+}
+
+function resetFinalAnimations() {
+  resetFinalState();
 }
 
 function clearTimers() {
@@ -211,7 +266,7 @@ async function runMomentSequence() {
   showScreen("message");
 }
 
-function typeText(el, text, isAccent) {
+function typeText(el, text, isAccent, isFinale) {
   if (prefersReducedMotion) {
     el.textContent = text;
     if (isAccent) el.classList.add("moment-line--accent");
@@ -221,7 +276,7 @@ function typeText(el, text, isAccent) {
   return new Promise((resolve) => {
     el.textContent = "";
     let i = 0;
-    const speed = TIMING.typeSpeed;
+    const speed = isFinale ? TIMING.typeSpeed + 18 : TIMING.typeSpeed;
 
     const cursor = document.createElement("span");
     cursor.className = "cursor";

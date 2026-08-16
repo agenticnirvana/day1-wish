@@ -188,16 +188,22 @@
     <!-- 7. Final -->
     <section class="screen" id="screen-final" hidden>
       <div class="screen__inner screen__inner--center">
-        <p class="eyebrow fade-in" style="--delay: 0.1s">Chapter 01 · unlocked</p>
-        <h2 class="title title--large fade-in" style="--delay: 0.4s">Go make it yours.</h2>
-        <p class="subtitle fade-in" style="--delay: 0.8s" id="final-greeting">Happy First Day :)</p>
-        <p class="final-note fade-in" style="--delay: 1.1s">Main character energy only from here.</p>
-        <div class="final-star fade-in" style="--delay: 1.5s" aria-hidden="true">
+        <p class="final-eyebrow" id="final-eyebrow">Chapter 01 · unlocked</p>
+
+        <div class="final-stage">
+          <h2 class="title title--large final-old-text" id="final-old-text">Go make it yours.</h2>
+          <div class="final-slash" id="final-slash" aria-hidden="true"></div>
+          <p class="final-typewriter" id="final-typewriter" hidden></p>
+        </div>
+
+        <p class="subtitle final-reveal" id="final-greeting" hidden>Happy First Day :)</p>
+        <p class="final-note final-reveal" id="final-note" hidden>Main character energy only from here.</p>
+        <div class="final-star final-reveal" id="final-star" hidden aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
             <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6L12 2z"/>
           </svg>
         </div>
-        <button class="btn btn--ghost fade-in" style="--delay: 1.9s" id="btn-replay">
+        <button class="btn btn--ghost final-reveal" id="btn-replay" hidden>
           Replay the journey ↻
         </button>
       </div>
