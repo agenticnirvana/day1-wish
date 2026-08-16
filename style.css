@@ -417,8 +417,9 @@ body {
 .wish-card__icon svg { width: 26px; height: 26px; }
 
 .wish-card__num {
-  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(74,61,92,0.55); margin-bottom: 0.65rem;
+  font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(74,61,92,0.5); margin-bottom: 0.65rem;
+  font-weight: 500;
 }
 
 .wish-card__text {
@@ -524,7 +525,9 @@ body {
 
 .finale-kicker {
   font-size: clamp(0.88rem, 3vw, 0.98rem);
-  color: var(--text-muted);
+  color: var(--purple-deep);
+  font-family: var(--font-hand);
+  font-weight: 600;
   margin-bottom: 0.35rem;
 }
 

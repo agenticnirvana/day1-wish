@@ -8,32 +8,38 @@ const CONFIG = {
   nickname: "Ms.whywhywhy",
   password: "ms.maybe",
   date: "August 17, 2026",
-  chocolateMessage: "Day 1 survival kit: curiosity ✓ courage ✓ chocolate ✓",
-  chocolateSub: "The third one is non-negotiable. 🍫"
+  chocolateMessage: "Day 1 kit: confidence ✓ chaos management ✓ chocolate ✓",
+  chocolateSub: "Non-negotiable. Science probably backs this. 🍫"
 };
 
 const WISHES = [
   {
-    text: "May you walk into every room knowing you <em>belong</em> there.",
+    label: "01 · entrance energy",
+    text: "May you walk in like you own the place — because honestly, you kind of do.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`
   },
   {
-    text: "May you find people who laugh at the same random things you do.",
+    label: "02 · your people",
+    text: "May you find your people — the ones who get your weird references.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
   },
   {
-    text: "May the confusing days teach you something the easy days never could.",
+    label: "03 · plot development",
+    text: "May the messy days still teach you something worth keeping.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`
   },
   {
-    text: "May you grow without losing the parts of you that make you <em>you</em>.",
+    label: "04 · stay you",
+    text: "May you level up without losing what makes you, <em>you</em>.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
   },
   {
-    text: "May this chapter become a story you're quietly proud to tell.",
+    label: "05 · the recap",
+    text: "May this year turn into stories you actually want to retell.",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
   },
   {
+    label: "06 · essential supplies",
     text: CONFIG.chocolateMessage,
     tag: CONFIG.chocolateSub,
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="10" rx="2"/><path d="M9 8v10M15 8v10M3 13h18"/></svg>`,
@@ -183,7 +189,7 @@ function resetExperience() {
   els.btnWishesDone.hidden = true;
   els.finaleNoteCard.hidden = true;
   els.btnSendoff.disabled = false;
-  els.btnSendoff.textContent = "All the best →";
+  els.btnSendoff.textContent = "Say less →";
 
   replayScreenAnimations(screens.landing);
 }
@@ -231,7 +237,7 @@ els.passwordForm.addEventListener("submit", (e) => {
     els.passwordError.classList.remove("is-visible");
     unlockExperience();
   } else {
-    els.passwordError.textContent = "Close — you know this one.";
+    els.passwordError.textContent = "Nice try. You know this one.";
     els.passwordError.classList.add("is-visible");
     els.passwordInput.classList.add("shake");
     setTimeout(() => els.passwordInput.classList.remove("shake"), 400);
@@ -253,7 +259,7 @@ function buildWishDeck() {
     card.dataset.index = i;
     card.innerHTML = `
       <div class="wish-card__icon" aria-hidden="true">${wish.icon}</div>
-      <p class="wish-card__num">${wish.isBonus ? "One more thing" : `Wish ${i + 1}`}</p>
+      <p class="wish-card__num">${wish.label || (wish.isBonus ? "06 · essential supplies" : `Wish ${i + 1}`)}</p>
       <p class="wish-card__text">${wish.text}</p>
       ${wish.tag ? `<p class="wish-card__tag">${wish.tag}</p>` : ""}
     `;
@@ -288,7 +294,7 @@ function updateWishView(animate = true) {
   const isLast = wishIndex === WISHES.length - 1;
   els.btnWishNext.hidden = isLast;
   els.btnWishesDone.hidden = !isLast;
-  els.btnWishNext.textContent = isLast ? "Continue →" : "Next wish →";
+  els.btnWishNext.textContent = isLast ? "That's the vibe →" : "Next one →";
 }
 
 function goToWish(index) {
@@ -449,24 +455,24 @@ function applyPersonalization() {
   const display = CONFIG.nickname || CONFIG.name;
 
   if (els.nicknameBadge && display !== "FRIEND_NAME") {
-    els.nicknameBadge.textContent = `For ${display} ✦`;
+    els.nicknameBadge.textContent = `Yeah, this one's for ${display} ✦`;
   }
   if (els.nicknameWhisper && CONFIG.nickname) {
-    els.nicknameWhisper.textContent = `Hey, ${CONFIG.nickname}.`;
+    els.nicknameWhisper.textContent = `Sup, ${CONFIG.nickname}.`;
   }
   if (els.wishesLabel && CONFIG.nickname) {
-    els.wishesLabel.textContent = `Wishes for ${CONFIG.nickname}'s new chapter`;
+    els.wishesLabel.textContent = `The good stuff — ${CONFIG.nickname} edition`;
   }
   if (CONFIG.name !== "FRIEND_NAME") {
     const eyebrow = screens.landing.querySelector(".eyebrow");
-    if (eyebrow) eyebrow.textContent = `Made with care, ${CONFIG.name}`;
-    if (els.finaleGreeting) els.finaleGreeting.textContent = `Happy First Day, ${CONFIG.name} :)`;
+    if (eyebrow) eyebrow.textContent = `Low-key made this for ${CONFIG.name}`;
+    if (els.finaleGreeting) els.finaleGreeting.textContent = `Happy First Day, ${CONFIG.name} — go off :)`;
   }
   if (els.footerCheer && display !== "FRIEND_NAME") {
-    els.footerCheer.textContent = `I'm cheering for you, ${display}. Always.`;
+    els.footerCheer.textContent = `Rooting for you, ${display}. Always.`;
   }
   if (els.finaleMessage && display !== "FRIEND_NAME") {
-    els.finaleMessage.textContent = `However today goes — showing up already counts. I'm cheering for you, ${display}.`;
+    els.finaleMessage.textContent = `Showing up on Day 1 is already a W, ${display}. The rest is just bonus scenes.`;
   }
 }
 
@@ -512,7 +518,7 @@ els.btnLetterContinue.addEventListener("click", () => showSection("final"));
 els.btnSendoff.addEventListener("click", () => {
   fireConfetti(55);
   els.finaleNoteCard.hidden = false;
-  els.btnSendoff.textContent = "You've got this ✦";
+  els.btnSendoff.textContent = "Main character confirmed ✦";
   els.btnSendoff.disabled = true;
 });
 
