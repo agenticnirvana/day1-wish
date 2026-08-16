@@ -96,8 +96,14 @@ function showScreen(name) {
   }
 
   next.hidden = false;
-  requestAnimationFrame(() => next.classList.add("screen--active"));
   currentScreen = name;
+
+  requestAnimationFrame(() => {
+    next.classList.add("screen--active");
+    if (name === "password") {
+      setTimeout(() => initPasswordScreen(), 100);
+    }
+  });
 
   switch (name) {
     case "moment": runMomentSequence(); break;
@@ -120,7 +126,8 @@ function resetAllScreens() {
   passwordInput.value = "";
   passwordError.textContent = "";
   passwordError.classList.remove("is-visible");
-  lockIcon.classList.remove("is-unlocked");
+  lockIcon.classList.remove("is-unlocked", "is-shake");
+  resetPasswordAnimations();
 
   memoryCard.hidden = true;
   memoryCard.classList.remove("is-visible");
@@ -155,15 +162,20 @@ function resetAllScreens() {
 
 function replayLandingAnimations() {
   resetLandingGreet();
+  kickLandingAnimations();
+  runLandingGreetSequence();
+}
+
+function kickLandingAnimations() {
+  if (prefersReducedMotion) return;
   const resetEls = screens.landing.querySelectorAll(
     ".landing-anim, .landing-greet, .landing-greet__arm--l, .landing-greet__arm--r, .hero-night, .hero-stars, .hero-moon, .hero-sun-rise, .hero-cloud"
   );
   resetEls.forEach((el) => {
     el.style.animation = "none";
-    el.offsetHeight;
+    void el.offsetHeight;
     el.style.animation = "";
   });
-  runLandingGreetSequence();
 }
 
 function resetLandingGreet() {
@@ -359,11 +371,18 @@ function handlePasswordSubmit() {
     passwordError.textContent = "Nice try. You know this one ;)";
     passwordError.classList.add("is-visible");
     passwordInput.classList.add("shake");
-    setTimeout(() => passwordInput.classList.remove("shake"), 400);
+    lockIcon.classList.remove("is-shake");
+    void lockIcon.offsetWidth;
+    lockIcon.classList.add("is-shake");
+    setTimeout(() => {
+      passwordInput.classList.remove("shake");
+      lockIcon.classList.remove("is-shake");
+    }, 450);
   }
 }
 
 async function triggerUnlock() {
+  lockIcon.classList.remove("is-shake");
   lockIcon.classList.add("is-unlocked");
   unlockFlash.classList.add("is-active");
   particleBoost = 2.2;
@@ -377,7 +396,24 @@ async function triggerUnlock() {
 
 passwordInput.addEventListener("input", () => {
   passwordError.classList.remove("is-visible");
+  lockIcon.classList.remove("is-shake");
 });
+
+function initPasswordScreen() {
+  resetPasswordAnimations();
+  const inner = screens.password.querySelector(".screen__inner--password");
+  if (inner) {
+    inner.classList.remove("password-enter-active");
+    void inner.offsetWidth;
+    inner.classList.add("password-enter-active");
+  }
+  lockIcon.classList.remove("is-unlocked", "is-shake");
+}
+
+function resetPasswordAnimations() {
+  const inner = screens.password?.querySelector(".screen__inner--password");
+  if (inner) inner.classList.remove("password-enter-active");
+}
 
 /* ============================================
    Moment — typewriter
@@ -838,6 +874,7 @@ btnReplay.addEventListener("click", resetAllScreens);
 
 applyPersonalization();
 initBgFloats();
+kickLandingAnimations();
 runLandingGreetSequence();
 
 /* ---- Floating background icons ---- */
