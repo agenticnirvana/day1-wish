@@ -40,6 +40,9 @@ const momentLine2 = document.getElementById("moment-line-2");
 const btnLastThing = document.getElementById("btn-last-thing");
 const memoryCard = document.getElementById("memory-card");
 const btnReplay = document.getElementById("btn-replay");
+const finalArcade = document.getElementById("final-arcade");
+const finalBucket = document.getElementById("final-bucket");
+const finalScore = document.getElementById("final-score");
 const musicBtn = document.getElementById("music-btn");
 const musicEl = document.getElementById("music");
 const particlesCanvas = document.getElementById("particles");
@@ -50,11 +53,10 @@ const finalConfusing = document.getElementById("final-confusing");
 const finalTypewriter = document.getElementById("final-typewriter");
 const finalEyebrow = document.getElementById("final-eyebrow");
 const finalNote = document.getElementById("final-note");
+const finalNoteLine2 = document.getElementById("final-note-2");
+const finalWishScene = document.getElementById("final-wish-scene");
 const finalStar = document.getElementById("final-star");
 const finalChocolates = document.getElementById("final-chocolates");
-const finalGirlScene = document.getElementById("final-girl-scene");
-
-let finalChocoCatchTimer = null;
 
 let currentScreen = "landing";
 let particleBoost = 1;
@@ -211,13 +213,27 @@ function resetFinalState() {
     finalTypewriter.hidden = true;
     finalTypewriter.classList.remove("is-done");
   }
-  if (finalGirlScene) finalGirlScene.classList.remove("is-visible");
+  [finalConfusing, finalTypewriter, finalGreeting, finalNote, finalNoteLine2].forEach((el) => {
+    if (el) {
+      el.style.color = "";
+      el.style.textShadow = "";
+    }
+  });
   if (finalChocolates) {
     finalChocolates.innerHTML = "";
     finalChocolates.classList.remove("is-active");
   }
+  if (finalBucket) {
+    finalBucket.style.left = "";
+    finalBucket.style.removeProperty("--bucket-x");
+    finalBucket.classList.remove("is-dragging", "is-catch", "is-crushing");
+    finalBucket.removeAttribute("data-fill");
+    resetBucketColor();
+  }
+  if (finalScore) finalScore.textContent = "SCORE 000";
   stopFinalChocoCatch();
-  [finalGreeting, finalNote, finalStar, btnReplay].forEach((el) => {
+  teardownFinalBucketControl();
+  [finalGreeting, finalTypewriter, finalWishScene, finalStar, finalArcade].forEach((el) => {
     if (el) {
       el.hidden = true;
       el.classList.remove("is-visible");
@@ -225,15 +241,13 @@ function resetFinalState() {
   });
 }
 
+let finalChocoEngine = null;
+
 async function runFinalSequence() {
   resetFinalState();
-  initFinalChocolates();
 
   if (finalEyebrow) finalEyebrow.classList.add("is-visible");
   await delay(prefersReducedMotion ? 150 : 600);
-
-  if (finalGirlScene) finalGirlScene.classList.add("is-visible");
-  startFinalChocoCatch();
 
   if (finalConfusing) {
     finalConfusing.hidden = false;
@@ -242,99 +256,481 @@ async function runFinalSequence() {
     finalConfusing.classList.add("is-struck");
     await delay(prefersReducedMotion ? 200 : 700);
     finalConfusing.classList.add("is-faded");
-    await delay(prefersReducedMotion ? 200 : 500);
+    await delay(prefersReducedMotion ? 400 : 800);
+    finalConfusing.hidden = true;
   }
+
+  if (finalGreeting) {
+    finalGreeting.hidden = false;
+    await delay(prefersReducedMotion ? 80 : 450);
+    finalGreeting.classList.add("is-visible");
+  }
+
+  await delay(prefersReducedMotion ? 200 : 700);
 
   if (finalTypewriter) {
     finalTypewriter.hidden = false;
+    finalTypewriter.classList.add("is-visible");
     await typeText(finalTypewriter, CONFIG.finaleWord || "ms.maybe", false, true);
     finalTypewriter.classList.add("is-done");
   }
 
   await delay(prefersReducedMotion ? 200 : 900);
 
-  const reveals = [finalGreeting, finalNote, finalStar, btnReplay];
+  const reveals = [finalWishScene, finalStar];
   for (const el of reveals) {
     if (!el) continue;
     el.hidden = false;
     await delay(prefersReducedMotion ? 80 : 450);
     el.classList.add("is-visible");
   }
+
+  await delay(prefersReducedMotion ? 150 : 500);
+  initFinalChocolates();
+  if (finalArcade) {
+    finalArcade.hidden = false;
+    finalArcade.classList.add("is-visible");
+  }
+  startFinalChocoEngine();
+  if (finalChocoEngine) initFinalBucketControl(finalChocoEngine);
 }
 
 function initFinalChocolates() {
   if (!finalChocolates || prefersReducedMotion) return;
-
   finalChocolates.innerHTML = "";
   finalChocolates.classList.add("is-active");
-  const icons = ["🍫", "🍬", "🍫", "🍩", "🍫", "🍫", "🍬", "🍫"];
-  const count = Math.min(52, Math.max(36, Math.floor(window.innerWidth / 14)));
-
-  for (let i = 0; i < count; i++) {
-    const useBar = i % 4 === 0;
-    const el = document.createElement(useBar ? "div" : "span");
-    el.className = useBar ? "choco-float choco-bar" : "choco-float choco-emoji";
-    if (!useBar) el.textContent = icons[i % icons.length];
-
-    el.style.left = `${Math.random() * 100}%`;
-    el.style.setProperty("--fall-dur", `${3.5 + Math.random() * 5}s`);
-    el.style.setProperty("--fall-delay", `-${Math.random() * 6}s`);
-    el.style.setProperty("--drift", `${(Math.random() - 0.5) * 90}px`);
-    el.style.setProperty("--spin", `${(Math.random() - 0.5) * 720}deg`);
-
-    if (useBar) {
-      el.style.setProperty("--bar-w", `${10 + Math.random() * 14}px`);
-      el.style.setProperty("--bar-h", `${6 + Math.random() * 10}px`);
-    } else {
-      el.style.fontSize = `${1.1 + Math.random() * 1.4}rem`;
-    }
-
-    el.style.opacity = `${0.55 + Math.random() * 0.4}`;
-    finalChocolates.appendChild(el);
-  }
 }
 
 function stopFinalChocoCatch() {
-  if (finalChocoCatchTimer) {
-    clearInterval(finalChocoCatchTimer);
-    finalChocoCatchTimer = null;
-  }
-  if (finalChocolates) {
-    finalChocolates.querySelectorAll(".choco-catch").forEach((el) => el.remove());
-  }
+  stopFinalChocoEngine();
 }
 
 function startFinalChocoCatch() {
-  stopFinalChocoCatch();
+  startFinalChocoEngine();
+}
+
+const CHOCO_ICONS = ["🍫", "🍬", "🍫", "🍩", "🍫", "🍬"];
+
+const TEXT_HIT_COLORS = [
+  "#EC4899",
+  "#8B5CF6",
+  "#3B82F6",
+  "#F59E0B",
+  "#10B981",
+  "#F472B6",
+  "#6366F1",
+  "#EF4444",
+  "#14B8A6"
+];
+
+const BUCKET_PALETTES = [
+  { light: "#FBCFE8", mid: "#EC4899", dark: "#BE185D", rim: "#F9A8D4", glow: "rgba(236, 72, 153, 0.62)" },
+  { light: "#DDD6FE", mid: "#8B5CF6", dark: "#6D28D9", rim: "#C4B5FD", glow: "rgba(139, 92, 246, 0.62)" },
+  { light: "#BFDBFE", mid: "#3B82F6", dark: "#1D4ED8", rim: "#93C5FD", glow: "rgba(59, 130, 246, 0.62)" },
+  { light: "#FDE68A", mid: "#F59E0B", dark: "#D97706", rim: "#FCD34D", glow: "rgba(245, 158, 11, 0.62)" },
+  { light: "#A7F3D0", mid: "#10B981", dark: "#059669", rim: "#6EE7B7", glow: "rgba(16, 185, 129, 0.62)" },
+  { light: "#FBCFE8", mid: "#F472B6", dark: "#DB2777", rim: "#F9A8D4", glow: "rgba(244, 114, 182, 0.62)" },
+  { light: "#C7D2FE", mid: "#6366F1", dark: "#4338CA", rim: "#A5B4FC", glow: "rgba(99, 102, 241, 0.62)" },
+  { light: "#FECACA", mid: "#EF4444", dark: "#DC2626", rim: "#FCA5A5", glow: "rgba(239, 68, 68, 0.62)" },
+  { light: "#99F6E4", mid: "#14B8A6", dark: "#0D9488", rim: "#5EEAD4", glow: "rgba(20, 184, 166, 0.62)" }
+];
+
+const textHitCounts = new WeakMap();
+
+function colorizeTextOnHit(el) {
+  if (!el) return;
+  const count = (textHitCounts.get(el) || 0) + 1;
+  textHitCounts.set(el, count);
+  const color = TEXT_HIT_COLORS[(count - 1) % TEXT_HIT_COLORS.length];
+  el.style.color = color;
+  el.style.textShadow = `0 0 18px ${color}44`;
+}
+
+function startFinalChocoEngine() {
+  stopFinalChocoEngine();
   if (!finalChocolates || prefersReducedMotion) return;
 
-  finalChocoCatchTimer = setInterval(spawnCaughtChoco, 900);
-  for (let i = 0; i < 4; i++) {
-    setTimeout(spawnCaughtChoco, i * 350);
+  finalChocoEngine = {
+    chocos: [],
+    raf: null,
+    spawnTimer: null,
+    running: true,
+    bucketX: window.innerWidth * 0.5,
+    bucketTargetX: window.innerWidth * 0.5,
+    score: 0,
+    keys: { left: false, right: false },
+    pointerActive: false
+  };
+
+  setBucketPosition(finalChocoEngine.bucketX);
+  updateScoreDisplay(0);
+
+  finalChocoEngine.spawnTimer = setInterval(spawnLiveChoco, 580);
+  for (let i = 0; i < 6; i++) setTimeout(spawnLiveChoco, i * 180);
+  finalChocoEngine.raf = requestAnimationFrame(() => tickFinalChocos(finalChocoEngine));
+}
+
+function stopFinalChocoEngine() {
+  if (!finalChocoEngine) return;
+
+  finalChocoEngine.running = false;
+  if (finalChocoEngine.raf) cancelAnimationFrame(finalChocoEngine.raf);
+  if (finalChocoEngine.spawnTimer) clearInterval(finalChocoEngine.spawnTimer);
+  finalChocoEngine.chocos.forEach((c) => c.el.remove());
+  finalChocoEngine = null;
+  teardownFinalBucketControl();
+}
+
+function setBucketPosition(x) {
+  if (!finalBucket) return;
+  const half = finalBucket.offsetWidth / 2;
+  const clamped = clamp(x, half + 10, window.innerWidth - half - 10);
+  finalBucket.style.setProperty("--bucket-x", `${clamped}px`);
+  if (finalChocoEngine) {
+    finalChocoEngine.bucketX = clamped;
+    finalChocoEngine.bucketTargetX = clamped;
   }
 }
 
-function spawnCaughtChoco() {
-  if (!finalChocolates || !finalChocolates.classList.contains("is-active")) return;
+function resetBucketColor() {
+  if (!finalBucket) return;
+  ["--bucket-light", "--bucket-mid", "--bucket-dark", "--bucket-rim", "--bucket-glow"].forEach((prop) => {
+    finalBucket.style.removeProperty(prop);
+  });
+}
 
-  const toMouth = Math.random() > 0.55;
-  const el = document.createElement("span");
-  el.className = `choco-catch choco-catch--${toMouth ? "mouth" : "bucket"}`;
-  el.textContent = Math.random() > 0.5 ? "🍫" : "🍬";
+function updateBucketColor(score) {
+  if (!finalBucket) return;
+  if (score < 1) {
+    resetBucketColor();
+    return;
+  }
+  const palette = BUCKET_PALETTES[(score - 1) % BUCKET_PALETTES.length];
+  finalBucket.style.setProperty("--bucket-light", palette.light);
+  finalBucket.style.setProperty("--bucket-mid", palette.mid);
+  finalBucket.style.setProperty("--bucket-dark", palette.dark);
+  finalBucket.style.setProperty("--bucket-rim", palette.rim);
+  finalBucket.style.setProperty("--bucket-glow", palette.glow);
+}
 
-  const leftPct = 15 + Math.random() * 70;
-  el.style.left = `${leftPct}%`;
-  el.style.fontSize = `${0.85 + Math.random() * 0.5}rem`;
-  el.style.setProperty("--catch-dx", `${(leftPct / 100) * window.innerWidth - (window.innerWidth * 0.14)}px`);
+function updateScoreDisplay(score) {
+  if (!finalScore) return;
+  finalScore.textContent = `SCORE ${String(score).padStart(3, "0")}`;
+  if (finalBucket) {
+    finalBucket.setAttribute("data-fill", String(Math.min(9, score)));
+    updateBucketColor(score);
+  }
+}
 
-  el.addEventListener("animationend", () => el.remove(), { once: true });
+function getPlayerBucketRect() {
+  if (!finalBucket || finalBucket.hidden || !finalArcade?.classList.contains("is-visible")) return null;
+  const rect = finalBucket.getBoundingClientRect();
+  if (rect.width < 1 || rect.height < 1) return null;
+  return rect;
+}
+
+function catchChocoArcade(choco, engine) {
+  if (choco.state === "caught" || choco.state === "done") return;
+  choco.state = "caught";
+
+  const bucket = getPlayerBucketRect();
+  if (bucket) {
+    choco.x = bucket.left + bucket.width * 0.5 - choco.r;
+    choco.y = bucket.top + bucket.height * 0.28 - choco.r;
+    choco.el.style.left = `${choco.x}px`;
+    choco.el.style.top = `${choco.y}px`;
+    choco.el.style.setProperty("--spin", `${choco.spin}deg`);
+  }
+
+  choco.el.classList.remove("choco-rolling");
+  choco.el.classList.add("choco-crushing");
+  engine.score += 1;
+  updateScoreDisplay(engine.score);
+
+  if (finalBucket) {
+    finalBucket.classList.remove("is-catch", "is-crushing");
+    void finalBucket.offsetWidth;
+    finalBucket.classList.add("is-catch", "is-crushing");
+    setTimeout(() => finalBucket.classList.remove("is-crushing"), 320);
+  }
+
+  setTimeout(() => {
+    choco.state = "done";
+    choco.el.remove();
+  }, 320);
+}
+
+function tryCatchWithBucket(choco, engine) {
+  if (choco.state !== "falling" && choco.state !== "rolling") return false;
+  const bucket = getPlayerBucketRect();
+  if (!bucket) return false;
+
+  const cx = choco.x + choco.r;
+  const cy = choco.y + (choco.r * 2);
+  const padX = 16;
+  const padY = 18;
+  const hit =
+    cx >= bucket.left - padX &&
+    cx <= bucket.right + padX &&
+    cy >= bucket.top - padY &&
+    cy <= bucket.bottom + padY;
+
+  if (hit) {
+    catchChocoArcade(choco, engine);
+    return true;
+  }
+  return false;
+}
+
+function updateBucketMovement(engine) {
+  if (!finalBucket || !engine) return;
+
+  const half = finalBucket.offsetWidth / 2;
+  const minX = half + 10;
+  const maxX = window.innerWidth - half - 10;
+  const keySpeed = 18;
+
+  if (engine.keys.left) engine.bucketTargetX -= keySpeed;
+  if (engine.keys.right) engine.bucketTargetX += keySpeed;
+  engine.bucketTargetX = clamp(engine.bucketTargetX, minX, maxX);
+
+  if (!engine.pointerActive) {
+    const ease = engine.keys.left || engine.keys.right ? 0.38 : 1;
+    engine.bucketX += (engine.bucketTargetX - engine.bucketX) * ease;
+  }
+
+  setBucketPosition(engine.bucketX);
+}
+
+let finalBucketHandlers = null;
+
+function initFinalBucketControl(engine) {
+  teardownFinalBucketControl();
+  if (!finalBucket || prefersReducedMotion) return;
+
+  engine.bucketX = window.innerWidth * 0.5;
+  engine.bucketTargetX = engine.bucketX;
+  setBucketPosition(engine.bucketX);
+
+  const onKeyDown = (e) => {
+    if (currentScreen !== "final" || !engine?.running) return;
+    if (e.key === "ArrowLeft") { engine.keys.left = true; e.preventDefault(); }
+    if (e.key === "ArrowRight") { engine.keys.right = true; e.preventDefault(); }
+  };
+
+  const onKeyUp = (e) => {
+    if (e.key === "ArrowLeft") engine.keys.left = false;
+    if (e.key === "ArrowRight") engine.keys.right = false;
+  };
+
+  const moveToClientX = (clientX) => {
+    if (!engine?.running || currentScreen !== "final") return;
+    engine.bucketTargetX = clientX;
+    engine.bucketX = clientX;
+    setBucketPosition(clientX);
+  };
+
+  const onPointerDown = (e) => {
+    if (!engine?.running || currentScreen !== "final") return;
+    if (e.target.closest(".final-bucket-player__replay")) return;
+    const inArcade = finalArcade?.contains(e.target);
+    const inLowerZone = e.clientY > window.innerHeight * 0.52;
+    if (!inArcade && !inLowerZone) return;
+    engine.pointerActive = true;
+    finalBucket?.classList.add("is-dragging");
+    finalBucket?.setPointerCapture?.(e.pointerId);
+    moveToClientX(e.clientX);
+    e.preventDefault();
+  };
+
+  const onPointerMove = (e) => {
+    if (!engine?.running || currentScreen !== "final") return;
+    if (!engine.pointerActive) return;
+    moveToClientX(e.clientX);
+    e.preventDefault();
+  };
+
+  const onPointerUp = (e) => {
+    if (!engine.pointerActive) return;
+    engine.pointerActive = false;
+    finalBucket?.classList.remove("is-dragging");
+    if (e?.pointerId != null) {
+      try { finalBucket?.releasePointerCapture?.(e.pointerId); } catch (_) { /* noop */ }
+    }
+  };
+
+  const onResize = () => setBucketPosition(engine.bucketX);
+
+  window.addEventListener("keydown", onKeyDown);
+  window.addEventListener("keyup", onKeyUp);
+  window.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+  window.addEventListener("pointercancel", onPointerUp);
+  window.addEventListener("resize", onResize);
+
+  finalBucketHandlers = { onKeyDown, onKeyUp, onPointerDown, onPointerMove, onPointerUp, onResize };
+}
+
+function teardownFinalBucketControl() {
+  if (!finalBucketHandlers) return;
+  window.removeEventListener("keydown", finalBucketHandlers.onKeyDown);
+  window.removeEventListener("keyup", finalBucketHandlers.onKeyUp);
+  window.removeEventListener("pointerdown", finalBucketHandlers.onPointerDown);
+  window.removeEventListener("pointermove", finalBucketHandlers.onPointerMove);
+  window.removeEventListener("pointerup", finalBucketHandlers.onPointerUp);
+  window.removeEventListener("pointercancel", finalBucketHandlers.onPointerUp);
+  window.removeEventListener("resize", finalBucketHandlers.onResize);
+  finalBucketHandlers = null;
+  finalBucket?.classList.remove("is-dragging", "is-crushing");
+}
+
+function spawnLiveChoco() {
+  if (!finalChocoEngine?.running || !finalChocolates) return;
+
+  const useBar = Math.random() > 0.72;
+  const el = document.createElement(useBar ? "div" : "span");
+  el.className = useBar ? "choco-float choco-bar choco-live" : "choco-float choco-emoji choco-live";
+  if (!useBar) el.textContent = CHOCO_ICONS[Math.floor(Math.random() * CHOCO_ICONS.length)];
+
+  const size = useBar ? 12 + Math.random() * 10 : 22 + Math.random() * 10;
+  if (useBar) {
+    el.style.width = `${size}px`;
+    el.style.height = `${Math.max(6, size * 0.55)}px`;
+  } else {
+    el.style.fontSize = `${0.95 + Math.random() * 0.7}rem`;
+  }
+
   finalChocolates.appendChild(el);
 
-  if (finalGirlScene) {
-    finalGirlScene.classList.remove("is-catching", "is-eating");
-    void finalGirlScene.offsetWidth;
-    finalGirlScene.classList.add(toMouth ? "is-eating" : "is-catching");
+  const startX = 8 + Math.random() * (window.innerWidth - size - 16);
+  finalChocoEngine.chocos.push({
+    el,
+    x: startX,
+    y: -size - 8,
+    vx: (Math.random() - 0.5) * 0.9,
+    vy: 1.1 + Math.random() * 0.9,
+    r: size * 0.5,
+    spin: Math.random() * 360,
+    spinSpeed: (Math.random() - 0.5) * 6,
+    state: "falling",
+    rollDir: 0,
+    rollFrames: 0,
+    obstacleEl: null,
+    passedObstacles: new Set()
+  });
+}
+
+function getFinalObstacles() {
+  return [finalTypewriter, finalGreeting, finalNote, finalNoteLine2]
+    .filter((el) => el && !el.hidden && el.offsetParent !== null && el.textContent.trim())
+    .map((el) => ({ el, rect: el.getBoundingClientRect() }));
+}
+
+function tickFinalChocos(engine) {
+  if (!engine.running) return;
+
+  updateBucketMovement(engine);
+
+  const obstacles = getFinalObstacles();
+
+  engine.chocos = engine.chocos.filter((choco) => {
+    if (!tryCatchWithBucket(choco, engine)) {
+      updateLiveChoco(choco, obstacles);
+      tryCatchWithBucket(choco, engine);
+    }
+    if (choco.state === "done") {
+      choco.el.remove();
+      return false;
+    }
+    return true;
+  });
+
+  engine.raf = requestAnimationFrame(() => tickFinalChocos(engine));
+}
+
+function releaseFromObstacle(choco, rect) {
+  if (choco.obstacleEl) choco.passedObstacles.add(choco.obstacleEl);
+  choco.state = "falling";
+  choco.obstacleEl = null;
+  choco.rollFrames = 0;
+  choco.y = rect.bottom + 4;
+  choco.vy = 1.1 + Math.random() * 0.9;
+  choco.vx = choco.rollDir * (0.4 + Math.random() * 0.5);
+  choco.el.classList.remove("choco-rolling");
+}
+
+function updateLiveChoco(choco, obstacles) {
+  if (choco.state === "falling") {
+    choco.y += choco.vy;
+    choco.x += choco.vx;
+    choco.spin += choco.spinSpeed;
+    choco.vy = Math.min(choco.vy + 0.022, 3.2);
+
+    for (const obs of obstacles) {
+      if (choco.passedObstacles.has(obs.el)) continue;
+      if (hitsObstacle(choco, obs.rect)) {
+        choco.state = "rolling";
+        choco.obstacleEl = obs.el;
+        choco.rollFrames = 0;
+        choco.y = obs.rect.top - choco.r - 2;
+        choco.x = clamp(choco.x, obs.rect.left + choco.r, obs.rect.right - choco.r);
+        choco.rollDir = choco.x < obs.rect.left + obs.rect.width * 0.5 ? -1 : 1;
+        choco.vx = choco.rollDir * (2.8 + Math.random() * 2);
+        choco.vy = 0;
+        choco.el.classList.add("choco-rolling");
+        colorizeTextOnHit(obs.el);
+        obs.el.classList.add("final-text-hit");
+        setTimeout(() => obs.el.classList.remove("final-text-hit"), 350);
+        break;
+      }
+    }
+
+    if (choco.y > window.innerHeight + 60) choco.state = "done";
+  } else if (choco.state === "rolling") {
+    const rect = choco.obstacleEl?.getBoundingClientRect();
+    if (!rect || rect.width < 1) {
+      choco.state = "falling";
+      choco.vy = 1.2;
+      choco.obstacleEl = null;
+      choco.rollFrames = 0;
+      choco.el.classList.remove("choco-rolling");
+      return;
+    }
+
+    choco.rollFrames += 1;
+    choco.x += choco.vx;
+    choco.y = rect.top - choco.r - 2;
+    choco.spin += choco.spinSpeed * 1.4;
+
+    const fellOffLeft = choco.rollDir < 0 && choco.x <= rect.left - choco.r * 0.5;
+    const fellOffRight = choco.rollDir > 0 && choco.x + choco.r * 2 >= rect.right + choco.r * 0.5;
+    const rollTimedOut = choco.rollFrames > 48;
+
+    if (fellOffLeft || fellOffRight || rollTimedOut) {
+      releaseFromObstacle(choco, rect);
+    }
   }
+
+  choco.el.style.left = `${choco.x}px`;
+  choco.el.style.top = `${choco.y}px`;
+  choco.el.style.transform = `rotate(${choco.spin}deg)`;
+}
+
+function hitsObstacle(choco, rect) {
+  const cx = choco.x + choco.r;
+  const cy = choco.y + choco.r * 2;
+  return (
+    cy >= rect.top - 4 &&
+    cy <= rect.top + 22 &&
+    cx >= rect.left + choco.r * 0.25 &&
+    cx <= rect.right - choco.r * 0.25 &&
+    choco.y + choco.r < rect.bottom + 4
+  );
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
 
 function resetFinalAnimations() {
@@ -898,4 +1294,13 @@ function initBgFloats() {
     el.style.opacity = `${0.15 + Math.random() * 0.25}`;
     container.appendChild(el);
   }
+}
+
+if (new URLSearchParams(window.location.search).get("screen") === "final") {
+  Object.values(screens).forEach((screen) => {
+    screen.hidden = screen !== screens.final;
+    screen.classList.toggle("screen--active", screen === screens.final);
+  });
+  currentScreen = "final";
+  runFinalSequence();
 }
