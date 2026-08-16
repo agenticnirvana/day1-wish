@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
 </head>
 <body>
 
@@ -94,42 +94,8 @@
             <ellipse class="hero-cloud hero-cloud--1" cx="100" cy="85" rx="75" ry="28" fill="white" opacity="0"/>
             <ellipse class="hero-cloud hero-cloud--2" cx="500" cy="105" rx="90" ry="32" fill="white" opacity="0"/>
 
-            <g class="hero-campus">
-              <rect x="470" y="195" width="55" height="85" fill="#c4b5d8" rx="2"/>
-              <rect x="540" y="175" width="65" height="105" fill="#b8a8cc" rx="2"/>
-              <polygon points="572,175 572,155 605,175" fill="#a898c0"/>
-              <rect x="488" y="215" width="10" height="14" fill="#ddd6eb" rx="1" opacity="0.7"/>
-              <rect x="508" y="215" width="10" height="14" fill="#ddd6eb" rx="1" opacity="0.7"/>
-              <rect x="558" y="200" width="12" height="16" fill="#ddd6eb" rx="1" opacity="0.7"/>
-            </g>
-
-            <circle class="hero-tree" cx="340" cy="245" r="26" fill="#a8d5b5" opacity="0"/>
-            <rect class="hero-tree-trunk" x="336" y="245" width="8" height="28" fill="#86b894" opacity="0"/>
             <rect x="0" y="305" width="800" height="115" fill="#E9DEFF" opacity="0.55"/>
             <line x1="0" y1="305" x2="800" y2="305" stroke="#d4c4e8" stroke-width="1" opacity="0.5"/>
-
-            <!-- Girl walks to college during sunrise -->
-            <g class="hero-girl-track">
-              <g class="hero-girl-scale">
-                <ellipse class="hero-girl__shadow" cx="0" cy="36" rx="16" ry="5" fill="#8B5CF6" opacity="0.2"/>
-                <g class="hero-girl__figure">
-                  <rect x="-8" y="-18" width="12" height="16" rx="3" fill="#8B5CF6" opacity="0.9"/>
-                  <rect x="-6" y="-16" width="8" height="3" rx="1" fill="#B58AEF"/>
-                  <g class="hero-girl__legs">
-                    <rect class="hero-girl__leg hero-girl__leg--a" x="-5" y="8" width="5" height="14" rx="2" fill="#6b7280"/>
-                    <rect class="hero-girl__leg hero-girl__leg--b" x="1" y="8" width="5" height="14" rx="2" fill="#7a8290"/>
-                  </g>
-                  <path d="M-10 8 L10 8 L8 -6 L-8 -6 Z" fill="#FF9DB8"/>
-                  <rect x="8" y="-4" width="10" height="3" rx="1.5" fill="#FF9DB8" transform="rotate(15 8 -4)"/>
-                  <rect x="16" y="-8" width="8" height="10" rx="1" fill="#7EC8E3"/>
-                  <circle cx="0" cy="-14" r="9" fill="#F5D0C5"/>
-                  <path d="M-9 -16 Q0 -26 9 -16 Q8 -10 -8 -10 Z" fill="#5c4033"/>
-                  <circle cx="-3" cy="-15" r="1.2" fill="#4A3D5C" opacity="0.7"/>
-                  <circle cx="3" cy="-15" r="1.2" fill="#4A3D5C" opacity="0.7"/>
-                  <path d="M-2 -11 Q0 -9 2 -11" stroke="#4A3D5C" stroke-width="0.8" fill="none" opacity="0.55"/>
-                </g>
-              </g>
-            </g>
 
             <rect width="800" height="420" fill="url(#heroFade)" opacity="0.72"/>
           </svg>
@@ -143,10 +109,10 @@
         </div>
         <div class="landing-body">
           <div class="screen__inner screen__inner--landing">
-            <p class="eyebrow landing-anim landing-anim--fade" style="--delay: 3.8s">Low-key made this for you</p>
-            <p class="nickname-badge landing-anim landing-anim--pop" id="nickname-badge" style="--delay: 4.1s"></p>
-            <h1 class="title landing-anim landing-anim--rise" style="--delay: 4.4s">Ready for a new chapter?</h1>
-            <p class="subtitle landing-anim landing-anim--slide" style="--delay: 4.8s">
+            <p class="eyebrow landing-anim landing-anim--fade" style="--delay: 0.7s">Low-key made this for you</p>
+            <p class="nickname-badge landing-anim landing-anim--pop" id="nickname-badge" style="--delay: 0.95s"></p>
+            <h1 class="title landing-anim landing-anim--rise" style="--delay: 1.2s">Ready for a new chapter?</h1>
+            <p class="subtitle landing-anim landing-anim--slide" style="--delay: 1.5s">
               Campus chaos can wait — there's something here first.
             </p>
             <div class="landing-sparkles" aria-hidden="true">
@@ -156,7 +122,7 @@
             </div>
             <div class="landing-btn-zone">
               <div class="landing-greet" id="landing-greet" aria-hidden="true">
-                <p class="landing-greet__hi">hii</p>
+                <p class="landing-greet__hi" id="landing-greet-text"></p>
                 <svg class="landing-greet__girl" viewBox="0 0 120 140" aria-hidden="true">
                   <ellipse cx="60" cy="128" rx="22" ry="6" fill="#b8a8cc" opacity="0.2"/>
                   <rect x="46" y="98" width="9" height="20" rx="3" fill="#6b7280"/>
@@ -178,8 +144,8 @@
                   </g>
                 </svg>
               </div>
-              <button class="btn btn--primary btn--slide-tilt landing-anim" style="--delay: 9.2s" id="btn-open">
-                Bet. Open it <span class="btn-arrow" aria-hidden="true">→</span>
+              <button class="btn btn--primary btn--slide-tilt landing-anim" style="--delay: 2.4s" id="btn-open">
+                Something amazing waiting… <span class="btn-arrow" aria-hidden="true">→</span>
               </button>
             </div>
           </div>
@@ -341,6 +307,6 @@
 
   </main>
 
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=8"></script>
 </body>
 </html>

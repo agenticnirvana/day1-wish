@@ -12,7 +12,8 @@ const CONFIG = {
   finaleWord: "ms.maybe",
   musicVolume: 0.45,
   bonusMusic: "assets/ishq-mubarak.mp3",
-  bonusMusicStart: 15
+  bonusMusicStart: 15,
+  landingGreet: "hii, good morning"
 };
 
 const screens = {
@@ -26,6 +27,8 @@ const screens = {
 };
 
 const btnOpen = document.getElementById("btn-open");
+const landingGreet = document.getElementById("landing-greet");
+const landingGreetText = document.getElementById("landing-greet-text");
 const passwordForm = document.getElementById("password-form");
 const passwordInput = document.getElementById("password-input");
 const passwordError = document.getElementById("password-error");
@@ -149,14 +152,37 @@ function resetAllScreens() {
 }
 
 function replayLandingAnimations() {
+  resetLandingGreet();
   const resetEls = screens.landing.querySelectorAll(
-    ".landing-anim, .landing-greet, .landing-greet__arm--l, .landing-greet__arm--r, .landing-greet__hi, .hero-girl-track, .hero-night, .hero-stars, .hero-moon, .hero-sun-rise, .hero-cloud, .hero-tree, .hero-tree-trunk"
+    ".landing-anim, .landing-greet, .landing-greet__arm--l, .landing-greet__arm--r, .hero-night, .hero-stars, .hero-moon, .hero-sun-rise, .hero-cloud"
   );
   resetEls.forEach((el) => {
     el.style.animation = "none";
     el.offsetHeight;
     el.style.animation = "";
   });
+  runLandingGreetSequence();
+}
+
+function resetLandingGreet() {
+  if (landingGreetText) landingGreetText.textContent = "";
+  if (landingGreet) landingGreet.classList.remove("is-visible");
+}
+
+async function runLandingGreetSequence() {
+  if (!landingGreet || !landingGreetText) return;
+
+  resetLandingGreet();
+  await delay(prefersReducedMotion ? 150 : 2200);
+
+  landingGreet.classList.add("is-visible");
+
+  if (prefersReducedMotion) {
+    landingGreetText.textContent = CONFIG.landingGreet || "hii, good morning";
+    return;
+  }
+
+  await typeText(landingGreetText, CONFIG.landingGreet || "hii, good morning", false, false);
 }
 
 function resetFinalState() {
@@ -752,6 +778,7 @@ btnReplay.addEventListener("click", resetAllScreens);
 
 applyPersonalization();
 initBgFloats();
+runLandingGreetSequence();
 
 /* ---- Floating background icons ---- */
 function initBgFloats() {
