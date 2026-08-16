@@ -470,46 +470,54 @@ body {
 .landing-btn-zone {
   position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.15rem;
   margin-top: 0.25rem;
-  min-height: 11rem;
+  min-height: 9rem;
+  width: 100%;
 }
 
 .landing-greet {
-  --greet-offset: -4.5rem;
-  position: absolute;
-  bottom: calc(100% - 0.5rem);
-  left: 50%;
-  transform: translateX(calc(-50% + var(--greet-offset))) translateY(12px) scale(0.85);
+  position: relative;
+  flex: 0 0 auto;
+  transform: translateY(12px) scale(0.85);
   opacity: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   pointer-events: none;
+  margin-bottom: 0.15rem;
   animation: greet-appear 0.8s var(--ease-out) 9s forwards,
              greet-bounce 2.2s var(--ease-in-out) 9.8s infinite;
 }
 
 .landing-greet__hi {
   font-family: var(--font-hand);
-  font-size: clamp(1.5rem, 5.5vw, 1.85rem);
-  font-weight: 700;
+  font-size: clamp(1.35rem, 4.8vw, 1.65rem);
+  font-weight: 600;
   color: var(--accent-purple);
   background: white;
   border: 2px solid var(--glass-border);
   border-radius: 18px 18px 4px 18px;
-  padding: 0.25rem 0.85rem;
+  padding: 0.2rem 0.75rem;
   margin-bottom: -0.35rem;
-  margin-left: 1.5rem;
+  margin-right: 0.25rem;
   box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
   animation: hi-wiggle 1.4s var(--ease-in-out) 9.5s infinite;
 }
 
 .landing-greet__girl {
-  width: clamp(72px, 22vw, 96px);
+  width: clamp(68px, 20vw, 88px);
   height: auto;
   filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.2));
+}
+
+.landing-btn-zone .btn--primary {
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .landing-greet__arm--l {
@@ -527,12 +535,12 @@ body {
 }
 
 @keyframes greet-appear {
-  to { opacity: 1; transform: translateX(calc(-50% + var(--greet-offset))) translateY(0) scale(1); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes greet-bounce {
-  0%, 100% { transform: translateX(calc(-50% + var(--greet-offset))) translateY(0) scale(1); }
-  50% { transform: translateX(calc(-50% + var(--greet-offset))) translateY(-5px) scale(1.02); }
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.02); }
 }
 
 @keyframes hi-wiggle {
@@ -990,27 +998,28 @@ body {
 
 #screen-message .heading,
 #screen-wish .heading {
-  font-family: var(--font-hand);
-  font-size: clamp(1.85rem, 6.5vw, 2.5rem);
-  font-weight: 700;
+  font-family: var(--font-cursive);
+  font-size: clamp(1.75rem, 6vw, 2.35rem);
+  font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--accent-purple);
 }
 
 #screen-message .reveal-line,
 #screen-wish .reveal-line {
-  font-family: var(--font-hand);
-  font-size: clamp(1.2rem, 4.2vw, 1.45rem);
-  font-weight: 600;
-  line-height: 1.55;
-  color: var(--text-primary);
+  font-family: var(--font-cursive);
+  font-size: clamp(1.15rem, 4vw, 1.38rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 #screen-message .reveal-line--accent,
 #screen-wish .reveal-line--accent {
   font-family: var(--font-cursive);
-  font-size: clamp(1.45rem, 5vw, 1.75rem);
-  color: var(--accent-purple);
+  font-size: clamp(1.35rem, 4.8vw, 1.65rem);
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .reveal-line {
@@ -1615,19 +1624,8 @@ body {
   .landing-hero { height: clamp(200px, 40vh, 320px); }
   .landing-body { margin-top: -18px; border-radius: 22px 22px 0 0; }
   .reveal-line { font-size: 0.92rem; }
-  .landing-greet {
-    transform: translateX(calc(-50% - 2rem)) translateY(12px) scale(0.8);
-  }
-  .landing-greet, .landing-greet.is-visible {
-    animation-name: greet-appear-mobile, greet-bounce-mobile;
-  }
-  @keyframes greet-appear-mobile {
-    to { opacity: 1; transform: translateX(calc(-50% - 2rem)) translateY(0) scale(0.92); }
-  }
-  @keyframes greet-bounce-mobile {
-    0%, 100% { transform: translateX(calc(-50% - 2rem)) translateY(0) scale(0.92); }
-    50% { transform: translateX(calc(-50% - 2rem)) translateY(-4px) scale(0.95); }
-  }
+  .landing-greet__girl { width: clamp(58px, 18vw, 72px); }
+  .landing-btn-zone { min-height: 8.5rem; gap: 0.05rem; }
 }
 
 @media (max-width: 380px) {
