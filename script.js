@@ -46,6 +46,20 @@ let animationTimers = [];
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const TIMING = {
+  typeSpeed: 54,
+  momentBefore: 900,
+  momentBetween: 1400,
+  momentAfter: 3400,
+  revealBase: 900,
+  revealStagger: 1100,
+  revealPause: 1800,
+  waitMessage: 3200,
+  waitWish: 4000,
+  memoryStagger: 700,
+  memoryWait: 4500
+};
+
 /* ============================================
    Navigation
    ============================================ */
@@ -189,11 +203,11 @@ passwordInput.addEventListener("input", () => {
 async function runMomentSequence() {
   momentDate.textContent = CONFIG.date;
 
-  await delay(prefersReducedMotion ? 100 : 600);
+  await delay(prefersReducedMotion ? 100 : TIMING.momentBefore);
   await typeText(momentLine1, "Not just Day 1 of college…");
-  await delay(prefersReducedMotion ? 200 : 900);
+  await delay(prefersReducedMotion ? 200 : TIMING.momentBetween);
   await typeText(momentLine2, "…the first page of a story that's actually yours.", true);
-  await delay(prefersReducedMotion ? 400 : 2200);
+  await delay(prefersReducedMotion ? 400 : TIMING.momentAfter);
   showScreen("message");
 }
 
@@ -207,7 +221,7 @@ function typeText(el, text, isAccent) {
   return new Promise((resolve) => {
     el.textContent = "";
     let i = 0;
-    const speed = 38;
+    const speed = TIMING.typeSpeed;
 
     const cursor = document.createElement("span");
     cursor.className = "cursor";
@@ -241,8 +255,8 @@ function resetRevealLines(screen) {
 
 async function runRevealSequence(screen) {
   const lines = screen.querySelectorAll(".reveal-line");
-  const baseDelay = prefersReducedMotion ? 80 : 500;
-  const stagger = prefersReducedMotion ? 120 : 700;
+  const baseDelay = prefersReducedMotion ? 80 : TIMING.revealBase;
+  const stagger = prefersReducedMotion ? 120 : TIMING.revealStagger;
 
   for (let i = 0; i < lines.length; i++) {
     await delay(i === 0 ? baseDelay : stagger);
@@ -250,7 +264,7 @@ async function runRevealSequence(screen) {
     if (i > 0 && i % 2 === 0) playRevealPing();
 
     if (lines[i].classList.contains("reveal-line--pause")) {
-      await delay(prefersReducedMotion ? 200 : 1000);
+      await delay(prefersReducedMotion ? 200 : TIMING.revealPause);
     }
   }
 
@@ -259,7 +273,7 @@ async function runRevealSequence(screen) {
     : null;
 
   if (nextScreen) {
-    const extraWait = screen === screens.wish ? 2800 : 2200;
+    const extraWait = screen === screens.wish ? TIMING.waitWish : TIMING.waitMessage;
     await delay(prefersReducedMotion ? 400 : extraWait);
     showScreen(nextScreen);
   }
@@ -281,11 +295,11 @@ btnLastThing.addEventListener("click", async () => {
 
   const memoryLines = memoryCard.querySelectorAll(".memory-line");
   for (let i = 0; i < memoryLines.length; i++) {
-    await delay(prefersReducedMotion ? 80 : 450);
+    await delay(prefersReducedMotion ? 80 : TIMING.memoryStagger);
     memoryLines[i].classList.add("is-visible");
   }
 
-  await delay(prefersReducedMotion ? 600 : 3500);
+  await delay(prefersReducedMotion ? 600 : TIMING.memoryWait);
   showScreen("final");
 });
 
@@ -395,7 +409,7 @@ function burstConfetti() {
 
   function init() {
     resize();
-    const count = Math.min(70, Math.floor((w * h) / 14000));
+    const count = Math.min(95, Math.floor((w * h) / 11000));
     particles = Array.from({ length: count }, createParticle);
   }
 
@@ -655,3 +669,27 @@ btnOpen.addEventListener("click", () => showScreen("password"));
 btnReplay.addEventListener("click", resetAllScreens);
 
 applyPersonalization();
+initBgFloats();
+
+/* ---- Floating background icons ---- */
+function initBgFloats() {
+  const container = document.getElementById("bg-floats");
+  if (!container || prefersReducedMotion) return;
+
+  const icons = ["✨", "☁", "🍃", "✈", "📚", "🌸", "⭐", "🎒", "☀", "💫", "🌿", "📖"];
+  const count = Math.min(18, Math.floor(window.innerWidth / 28));
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("span");
+    el.className = "float-icon";
+    el.textContent = icons[i % icons.length];
+    el.style.left = `${Math.random() * 100}%`;
+    el.style.top = `${Math.random() * 100}%`;
+    el.style.setProperty("--dur", `${14 + Math.random() * 18}s`);
+    el.style.setProperty("--delay", `-${Math.random() * 20}s`);
+    el.style.setProperty("--drift-x", `${(Math.random() - 0.5) * 80}px`);
+    el.style.fontSize = `${0.85 + Math.random() * 0.9}rem`;
+    el.style.opacity = `${0.15 + Math.random() * 0.25}`;
+    container.appendChild(el);
+  }
+}
