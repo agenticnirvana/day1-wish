@@ -6,7 +6,7 @@
 const CONFIG = {
   name: "FRIEND_NAME",
   nickname: "Ms.whywhywhy",
-  password: "ms",
+  password: "ms.maybe",
   date: "August 17, 2026"
 };
 
