@@ -24,12 +24,10 @@
 
   <div class="unlock-flash" id="unlock-flash" aria-hidden="true"></div>
 
-  <button class="music-btn music-btn--hint" id="music-btn" aria-label="Play ambient sound" title="Tap for sound">
+  <button class="music-btn music-btn--hint" id="music-btn" aria-label="Play music" title="Tap for music">
     <span class="music-btn__icon" aria-hidden="true">♪</span>
   </button>
-  <audio id="music" preload="none" loop>
-    <source src="assets/music.mp3" type="audio/mpeg" />
-  </audio>
+  <audio id="music" preload="auto" loop src="assets/gehra-hua.mp3"></audio>
 
   <main id="app" class="app">
 
@@ -45,26 +43,76 @@
                 <stop offset="80%" stop-color="#FFF1E8"/>
                 <stop offset="100%" stop-color="#FFF9F8"/>
               </linearGradient>
+              <linearGradient id="heroSkyWarm" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FFE8C8" stop-opacity="0"/>
+                <stop offset="100%" stop-color="#FFD4A8" stop-opacity="0.45"/>
+              </linearGradient>
               <linearGradient id="heroFade" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="white" stop-opacity="0"/>
                 <stop offset="100%" stop-color="#FFF9F8" stop-opacity="1"/>
               </linearGradient>
             </defs>
             <rect width="800" height="420" fill="url(#heroSky)"/>
-            <circle cx="680" cy="75" r="42" fill="#F7C978" opacity="0.9"/>
-            <circle cx="680" cy="75" r="62" fill="#F7C978" opacity="0.2"/>
+            <rect class="hero-sky-warm" width="800" height="420" fill="url(#heroSkyWarm)" opacity="0"/>
+
+            <!-- Sun rising from horizon -->
+            <g class="hero-sun-rise">
+              <circle class="hero-sun-glow" cx="620" cy="310" r="62" fill="#F7C978" opacity="0"/>
+              <circle class="hero-sun" cx="620" cy="310" r="42" fill="#F7C978" opacity="0"/>
+              <g class="hero-sun-rays" opacity="0">
+                <line x1="620" y1="248" x2="620" y2="228" stroke="#F7C978" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+                <line x1="668" y1="262" x2="682" y2="248" stroke="#F7C978" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+                <line x1="572" y1="262" x2="558" y2="248" stroke="#F7C978" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+                <line x1="682" y1="310" x2="702" y2="310" stroke="#F7C978" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+              </g>
+            </g>
+
             <ellipse cx="100" cy="85" rx="75" ry="28" fill="white" opacity="0.7"/>
             <ellipse cx="500" cy="105" rx="90" ry="32" fill="white" opacity="0.55"/>
-            <rect x="470" y="195" width="55" height="85" fill="#c4b5d8" rx="2"/>
-            <rect x="540" y="175" width="65" height="105" fill="#b8a8cc" rx="2"/>
-            <polygon points="572,175 572,155 605,175" fill="#a898c0"/>
+
+            <!-- Campus buildings -->
+            <g class="hero-campus">
+              <rect x="470" y="195" width="55" height="85" fill="#c4b5d8" rx="2"/>
+              <rect x="540" y="175" width="65" height="105" fill="#b8a8cc" rx="2"/>
+              <polygon points="572,175 572,155 605,175" fill="#a898c0"/>
+              <rect x="488" y="215" width="10" height="14" fill="#ddd6eb" rx="1" opacity="0.7"/>
+              <rect x="508" y="215" width="10" height="14" fill="#ddd6eb" rx="1" opacity="0.7"/>
+              <rect x="558" y="200" width="12" height="16" fill="#ddd6eb" rx="1" opacity="0.7"/>
+            </g>
+
             <circle cx="340" cy="245" r="26" fill="#a8d5b5" opacity="0.8"/>
             <rect x="336" y="245" width="8" height="28" fill="#86b894"/>
             <rect x="0" y="305" width="800" height="115" fill="#E9DEFF" opacity="0.55"/>
-            <ellipse cx="270" cy="262" rx="20" ry="24" fill="#5c4033"/>
-            <path d="M250 288 Q270 275 290 288 L296 330 Q270 338 244 330 Z" fill="#FFF9F8"/>
-            <rect x="256" y="326" width="28" height="32" fill="#9ca3af" rx="3"/>
-            <rect x="278" y="295" width="16" height="24" fill="#b0b8c4" rx="3" transform="rotate(12 286 307)"/>
+            <line x1="0" y1="305" x2="800" y2="305" stroke="#d4c4e8" stroke-width="1" opacity="0.5"/>
+
+            <!-- Girl walking to college -->
+            <g class="hero-girl">
+              <ellipse class="hero-girl__shadow" cx="0" cy="302" rx="14" ry="4" fill="#b8a8cc" opacity="0.25"/>
+              <g class="hero-girl__figure">
+                <!-- backpack -->
+                <rect x="-8" y="-18" width="12" height="16" rx="3" fill="#8B5CF6" opacity="0.85"/>
+                <rect x="-6" y="-16" width="8" height="3" rx="1" fill="#B58AEF"/>
+                <!-- legs -->
+                <g class="hero-girl__legs">
+                  <rect class="hero-girl__leg hero-girl__leg--a" x="-5" y="8" width="5" height="14" rx="2" fill="#6b7280"/>
+                  <rect class="hero-girl__leg hero-girl__leg--b" x="1" y="8" width="5" height="14" rx="2" fill="#7a8290"/>
+                </g>
+                <!-- body -->
+                <path d="M-10 8 L10 8 L8 -6 L-8 -6 Z" fill="#FF9DB8"/>
+                <!-- arm with book -->
+                <rect x="8" y="-4" width="10" height="3" rx="1.5" fill="#FF9DB8" transform="rotate(15 8 -4)"/>
+                <rect x="16" y="-8" width="8" height="10" rx="1" fill="#7EC8E3" opacity="0.9"/>
+                <!-- head -->
+                <circle cx="0" cy="-14" r="9" fill="#F5D0C5"/>
+                <!-- hair -->
+                <path d="M-9 -16 Q0 -26 9 -16 Q8 -10 -8 -10 Z" fill="#5c4033"/>
+                <!-- face -->
+                <circle cx="-3" cy="-15" r="1" fill="#4A3D5C" opacity="0.6"/>
+                <circle cx="3" cy="-15" r="1" fill="#4A3D5C" opacity="0.6"/>
+                <path d="M-2 -11 Q0 -9 2 -11" stroke="#4A3D5C" stroke-width="0.8" fill="none" opacity="0.5"/>
+              </g>
+            </g>
+
             <rect width="800" height="420" fill="url(#heroFade)" opacity="0.85"/>
           </svg>
           <div class="landing-hero__shimmer"></div>
@@ -77,14 +125,19 @@
         </div>
         <div class="landing-body">
           <div class="screen__inner screen__inner--landing">
-            <p class="eyebrow fade-in" style="--delay: 0.2s">Low-key made this for you</p>
-            <p class="nickname-badge fade-in" id="nickname-badge" style="--delay: 0.4s"></p>
-            <h1 class="title fade-in" style="--delay: 0.6s">Ready for a new chapter?</h1>
-            <p class="subtitle fade-in" style="--delay: 1s">
+            <p class="eyebrow landing-anim landing-anim--fade" style="--delay: 0.2s">Low-key made this for you</p>
+            <p class="nickname-badge landing-anim landing-anim--pop" id="nickname-badge" style="--delay: 0.45s"></p>
+            <h1 class="title landing-anim landing-anim--rise" style="--delay: 0.65s">Ready for a new chapter?</h1>
+            <p class="subtitle landing-anim landing-anim--slide" style="--delay: 1s">
               Campus chaos can wait — there's something here first.
             </p>
-            <button class="btn btn--primary fade-in" style="--delay: 1.45s" id="btn-open">
-              Bet. Open it <span aria-hidden="true">→</span>
+            <div class="landing-sparkles" aria-hidden="true">
+              <span class="landing-spark landing-spark--1">✦</span>
+              <span class="landing-spark landing-spark--2">✧</span>
+              <span class="landing-spark landing-spark--3">★</span>
+            </div>
+            <button class="btn btn--primary btn--slide-tilt landing-anim" style="--delay: 1.45s" id="btn-open">
+              Bet. Open it <span class="btn-arrow" aria-hidden="true">→</span>
             </button>
           </div>
         </div>
@@ -116,7 +169,7 @@
             inputmode="text"
             aria-describedby="password-error"
           />
-          <button type="submit" class="btn btn--unlock" id="btn-unlock" aria-label="Unlock">
+          <button type="submit" class="btn btn--unlock btn--dance-sway" id="btn-unlock" aria-label="Unlock">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20" aria-hidden="true">
               <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
               <rect x="5" y="11" width="14" height="10" rx="2"/>
@@ -142,15 +195,15 @@
     <!-- 4. The Message -->
     <section class="screen" id="screen-message" hidden>
       <div class="screen__inner screen__inner--center">
-        <h2 class="heading reveal-line" data-reveal="0">Real talk for a second…</h2>
+        <h2 class="heading reveal-line reveal-line--fx-drop" data-reveal="0">Real talk for a second…</h2>
         <div class="message-lines" id="message-lines">
-          <p class="reveal-line" data-reveal="1"><span class="line-icon" aria-hidden="true">🌿</span> You're stepping into a new place.</p>
-          <p class="reveal-line" data-reveal="2"><span class="line-icon" aria-hidden="true">👋</span> New people.</p>
-          <p class="reveal-line" data-reveal="3"><span class="line-icon" aria-hidden="true">📖</span> New stories.</p>
-          <p class="reveal-line" data-reveal="4"><span class="line-icon" aria-hidden="true">✨</span> New memories.</p>
-          <p class="reveal-line" data-reveal="5"><span class="line-icon" aria-hidden="true">😅</span> And yeah — a few moments that'll make you go "what did I sign up for?"</p>
-          <p class="reveal-line reveal-line--pause" data-reveal="6"><span class="line-icon" aria-hidden="true">💪</span> But you'll figure it out. You always do.</p>
-          <p class="reveal-line reveal-line--accent" data-reveal="7"><span class="line-icon" aria-hidden="true">🏡</span> Because you have a way of making new places feel like they were always meant for you.</p>
+          <p class="reveal-line reveal-line--fx-left" data-reveal="1"><span class="line-icon line-icon--pop" aria-hidden="true">🌿</span> You're stepping into a new place.</p>
+          <p class="reveal-line reveal-line--fx-pop" data-reveal="2"><span class="line-icon line-icon--wave" aria-hidden="true">👋</span> New people.</p>
+          <p class="reveal-line reveal-line--fx-right" data-reveal="3"><span class="line-icon line-icon--tilt" aria-hidden="true">📖</span> New stories.</p>
+          <p class="reveal-line reveal-line--fx-sparkle" data-reveal="4"><span class="line-icon line-icon--spin" aria-hidden="true">✨</span> New memories.</p>
+          <p class="reveal-line reveal-line--fx-swing" data-reveal="5"><span class="line-icon line-icon--shake" aria-hidden="true">😅</span> And yeah — a few moments that'll make you go "what did I sign up for?"</p>
+          <p class="reveal-line reveal-line--fx-rise reveal-line--pause" data-reveal="6"><span class="line-icon line-icon--punch" aria-hidden="true">💪</span> But you'll figure it out. You always do.</p>
+          <p class="reveal-line reveal-line--fx-glow reveal-line--accent" data-reveal="7"><span class="line-icon line-icon--glow" aria-hidden="true">🏡</span> Because you have a way of making new places feel like they were always meant for you.</p>
         </div>
       </div>
     </section>
@@ -158,14 +211,14 @@
     <!-- 5. First Day Wish -->
     <section class="screen" id="screen-wish" hidden>
       <div class="screen__inner screen__inner--center">
-        <h2 class="heading reveal-line" data-reveal="0">Alright — wishes incoming…</h2>
+        <h2 class="heading reveal-line reveal-line--fx-drop" data-reveal="0">Alright — wishes incoming…</h2>
         <div class="wish-lines" id="wish-lines">
-          <p class="reveal-line" data-reveal="1"><span class="line-icon" aria-hidden="true">😂</span> I hope you find people who make you laugh until your stomach hurts.</p>
-          <p class="reveal-line" data-reveal="2"><span class="line-icon" aria-hidden="true">🎬</span> I hope you collect stories you'll still talk about years from now.</p>
-          <p class="reveal-line" data-reveal="3"><span class="line-icon" aria-hidden="true">🌟</span> I hope you surprise yourself.</p>
-          <p class="reveal-line" data-reveal="4"><span class="line-icon" aria-hidden="true">🔄</span> I hope you fail at something, learn from it, and come back stronger.</p>
-          <p class="reveal-line" data-reveal="5"><span class="line-icon" aria-hidden="true">☁</span> And most importantly…</p>
-          <p class="reveal-line reveal-line--highlight" data-reveal="6">
+          <p class="reveal-line reveal-line--fx-pop" data-reveal="1"><span class="line-icon line-icon--bounce" aria-hidden="true">😂</span> I hope you find people who make you laugh until your stomach hurts.</p>
+          <p class="reveal-line reveal-line--fx-left" data-reveal="2"><span class="line-icon line-icon--slide" aria-hidden="true">🎬</span> I hope you collect stories you'll still talk about years from now.</p>
+          <p class="reveal-line reveal-line--fx-sparkle" data-reveal="3"><span class="line-icon line-icon--spin" aria-hidden="true">🌟</span> I hope you surprise yourself.</p>
+          <p class="reveal-line reveal-line--fx-swing" data-reveal="4"><span class="line-icon line-icon--tilt" aria-hidden="true">🔄</span> I hope you fail at something, learn from it, and come back stronger.</p>
+          <p class="reveal-line reveal-line--fx-rise" data-reveal="5"><span class="line-icon line-icon--float" aria-hidden="true">☁</span> And most importantly…</p>
+          <p class="reveal-line reveal-line--fx-glow reveal-line--highlight" data-reveal="6">
             <span class="glow-text">I hope this chapter becomes one of your favourites.</span>
           </p>
         </div>
@@ -175,7 +228,7 @@
     <!-- 6. Memory Moment -->
     <section class="screen" id="screen-memory" hidden>
       <div class="screen__inner screen__inner--center">
-        <button class="btn btn--ghost btn--pulse" id="btn-last-thing">Fine. One last thing…</button>
+        <button class="btn btn--ghost btn--pulse btn--dance" id="btn-last-thing">Fine. One last thing…</button>
         <div class="memory-card" id="memory-card" hidden>
           <p class="memory-line" data-memory="0"><span class="line-icon" aria-hidden="true">🌅</span> Whatever tomorrow looks like…</p>
           <p class="memory-line" data-memory="1"><span class="line-icon" aria-hidden="true">😊</span> Walk in with that same smile.</p>
@@ -203,7 +256,7 @@
             <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6L12 2z"/>
           </svg>
         </div>
-        <button class="btn btn--ghost final-reveal" id="btn-replay" hidden>
+        <button class="btn btn--ghost btn--dance-sway final-reveal" id="btn-replay" hidden>
           Replay the journey ↻
         </button>
       </div>

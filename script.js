@@ -8,7 +8,8 @@ const CONFIG = {
   nickname: "Ms.whywhywhy",
   password: "ms.maybe",
   date: "August 17, 2026",
-  finaleWord: "ms.maybe"
+  finaleWord: "ms.maybe",
+  musicVolume: 0.45
 };
 
 const screens = {
@@ -129,8 +130,7 @@ function resetAllScreens() {
   momentLine2.classList.remove("moment-line--accent");
 
   particleBoost = 1;
-  stopAmbient();
-  if (!musicEl.paused) musicEl.pause();
+  pauseMusic();
   musicBtn.classList.remove("is-playing");
   musicBtn.classList.add("music-btn--hint");
   replayLandingAnimations();
@@ -138,7 +138,7 @@ function resetAllScreens() {
 }
 
 function replayLandingAnimations() {
-  screens.landing.querySelectorAll(".fade-in").forEach((el) => {
+  screens.landing.querySelectorAll(".landing-anim").forEach((el) => {
     el.style.animation = "none";
     el.offsetHeight;
     el.style.animation = "";
@@ -238,7 +238,6 @@ async function triggerUnlock() {
   lockIcon.classList.add("is-unlocked");
   unlockFlash.classList.add("is-active");
   particleBoost = 2.2;
-  playUnlockChime();
 
   await delay(prefersReducedMotion ? 300 : 800);
   unlockFlash.classList.remove("is-active");
@@ -316,7 +315,6 @@ async function runRevealSequence(screen) {
   for (let i = 0; i < lines.length; i++) {
     await delay(i === 0 ? baseDelay : stagger);
     lines[i].classList.add("is-visible");
-    if (i > 0 && i % 2 === 0) playRevealPing();
 
     if (lines[i].classList.contains("reveal-line--pause")) {
       await delay(prefersReducedMotion ? 200 : TIMING.revealPause);
@@ -344,7 +342,6 @@ btnLastThing.addEventListener("click", async () => {
   setTimeout(() => { btnLastThing.hidden = true; }, 400);
 
   burstConfetti();
-  playUnlockChime();
   memoryCard.hidden = false;
   requestAnimationFrame(() => memoryCard.classList.add("is-visible"));
 
@@ -497,199 +494,115 @@ function burstConfetti() {
 })();
 
 /* ============================================
-   Audio — ambient + sfx (no mp3 required)
+   Audio — Gehra Hua instrumental (mp3 only)
    ============================================ */
 
-let audioCtx = null;
-let ambientPlaying = false;
-let ambientNodes = null;
+const MUSIC_SRC = "assets/gehra-hua.mp3";
+
 let musicAvailable = false;
-let usingMp3 = false;
+let musicStarted = false;
+let musicInitDone = false;
 
-function getAudioContext() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  return audioCtx;
+musicEl.volume = CONFIG.musicVolume ?? 0.45;
+
+function markMusicReady() {
+  musicAvailable = true;
+  musicInitDone = true;
+  updateMusicBtnState();
 }
 
-async function resumeAudio() {
-  const ctx = getAudioContext();
-  if (ctx.state === "suspended") await ctx.resume();
-  return ctx;
+function markMusicMissing() {
+  musicAvailable = false;
+  musicInitDone = true;
+  updateMusicBtnState();
 }
 
-function playTone(freq, duration, volume = 0.08, type = "sine") {
-  if (prefersReducedMotion) return;
-  resumeAudio().then((ctx) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.04);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + duration + 0.05);
-  }).catch(() => {});
-}
-
-function playUnlockChime() {
-  playTone(523.25, 0.35, 0.06);
-  setTimeout(() => playTone(659.25, 0.45, 0.05), 120);
-  setTimeout(() => playTone(783.99, 0.6, 0.045), 240);
-}
-
-function playRevealPing() {
-  playTone(880, 0.25, 0.025, "triangle");
-}
-
-function startAmbient() {
-  resumeAudio().then((ctx) => {
-    if (ambientPlaying) return;
-
-    const master = ctx.createGain();
-    master.gain.setValueAtTime(0, ctx.currentTime);
-    master.gain.linearRampToValueAtTime(0.055, ctx.currentTime + 2.5);
-    master.connect(ctx.destination);
-
-    const filter = ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = 900;
-    filter.connect(master);
-
-    const padFreqs = [261.63, 329.63, 392, 493.88];
-    const padNodes = padFreqs.map((freq, i) => {
-      const osc = ctx.createOscillator();
-      osc.type = "sine";
-      osc.frequency.value = freq;
-      const gain = ctx.createGain();
-      gain.gain.value = 0.045;
-      const lfo = ctx.createOscillator();
-      lfo.frequency.value = 0.06 + i * 0.012;
-      const lfoGain = ctx.createGain();
-      lfoGain.gain.value = 0.018;
-      lfo.connect(lfoGain);
-      lfoGain.connect(gain.gain);
-      osc.connect(gain);
-      gain.connect(filter);
-      osc.start();
-      lfo.start();
-      return { osc, lfo, gain };
-    });
-
-    const arpOsc = ctx.createOscillator();
-    arpOsc.type = "triangle";
-    const arpGain = ctx.createGain();
-    arpGain.gain.value = 0;
-    arpOsc.connect(arpGain);
-    arpGain.connect(filter);
-    arpOsc.start();
-
-    const arpNotes = [392, 493.88, 587.33, 659.25, 783.99];
-    let arpIdx = 0;
-
-    function tickArp() {
-      if (!ambientPlaying) return;
-      const freq = arpNotes[arpIdx % arpNotes.length];
-      arpOsc.frequency.setValueAtTime(freq, ctx.currentTime);
-      arpGain.gain.cancelScheduledValues(ctx.currentTime);
-      arpGain.gain.setValueAtTime(0, ctx.currentTime);
-      arpGain.gain.linearRampToValueAtTime(0.035, ctx.currentTime + 0.06);
-      arpGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
-      arpIdx++;
-    }
-
-    tickArp();
-    const arpInterval = setInterval(tickArp, 2400);
-
-    ambientNodes = { master, padNodes, arpOsc, arpGain, arpInterval };
-    ambientPlaying = true;
-  }).catch(() => {});
-}
-
-function stopAmbient() {
-  if (!ambientNodes || !audioCtx) return;
-  const ctx = audioCtx;
-  ambientPlaying = false;
-
-  ambientNodes.master.gain.cancelScheduledValues(ctx.currentTime);
-  ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ctx.currentTime);
-  ambientNodes.master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1);
-
-  setTimeout(() => {
-    if (!ambientNodes) return;
-    ambientNodes.padNodes.forEach(({ osc, lfo }) => {
-      try { osc.stop(); lfo.stop(); } catch { /* already stopped */ }
-    });
-    try { ambientNodes.arpOsc.stop(); } catch { /* noop */ }
-    clearInterval(ambientNodes.arpInterval);
-    ambientNodes = null;
-  }, 1100);
-}
-
-async function checkMp3Available() {
-  try {
-    const res = await fetch("assets/music.mp3", { method: "HEAD" });
-    if (res.ok) {
-      musicEl.load();
-      musicAvailable = true;
-      usingMp3 = true;
-    }
-  } catch {
-    musicAvailable = false;
-  }
-}
-
-async function toggleMusic() {
-  musicBtn.classList.remove("music-btn--hint");
-
-  if (usingMp3 && musicAvailable) {
-    if (musicEl.paused) {
-      try {
-        await musicEl.play();
-        musicBtn.classList.add("is-playing");
-        musicBtn.title = "Pause music";
-      } catch {
-        usingMp3 = false;
-        startAmbient();
-        musicBtn.classList.add("is-playing");
-        musicBtn.title = "Pause ambient";
-      }
-    } else {
-      musicEl.pause();
-      musicBtn.classList.remove("is-playing");
-      musicBtn.title = "Play music";
-    }
+function updateMusicBtnState() {
+  if (!musicInitDone) {
+    musicBtn.title = "Loading music…";
     return;
   }
 
-  if (ambientPlaying) {
-    stopAmbient();
-    musicBtn.classList.remove("is-playing");
-    musicBtn.title = "Play ambient sound";
-  } else {
-    startAmbient();
-    musicBtn.classList.add("is-playing");
-    musicBtn.title = "Pause ambient sound";
+  if (!musicAvailable) {
+    musicBtn.classList.add("is-unavailable");
+    musicBtn.title = "Music file missing";
+    musicBtn.setAttribute("aria-label", "Music unavailable");
+    return;
+  }
+
+  musicBtn.classList.remove("is-unavailable");
+  musicBtn.setAttribute("aria-label", musicEl.paused ? "Play music" : "Pause music");
+  musicBtn.title = musicEl.paused ? "Play Gehra Hua" : "Pause music";
+}
+
+async function initMusic() {
+  musicEl.src = MUSIC_SRC;
+
+  try {
+    const res = await fetch(MUSIC_SRC, { method: "HEAD" });
+    if (!res.ok) {
+      markMusicMissing();
+      return;
+    }
+  } catch {
+    /* fetch may fail locally with file:// — still try audio element */
+  }
+
+  musicEl.load();
+
+  if (musicEl.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+    markMusicReady();
   }
 }
 
-musicEl.addEventListener("canplaythrough", () => {
-  musicAvailable = true;
-  usingMp3 = true;
-});
+async function playMusic() {
+  if (!musicAvailable || musicEl.paused === false) return false;
+
+  try {
+    await musicEl.play();
+    musicStarted = true;
+    musicBtn.classList.add("is-playing");
+    musicBtn.classList.remove("music-btn--hint");
+    updateMusicBtnState();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function pauseMusic() {
+  if (!musicEl.paused) musicEl.pause();
+  musicBtn.classList.remove("is-playing");
+  updateMusicBtnState();
+}
+
+async function toggleMusic() {
+  if (!musicAvailable) return;
+
+  musicBtn.classList.remove("music-btn--hint");
+
+  if (musicEl.paused) {
+    await playMusic();
+  } else {
+    pauseMusic();
+  }
+}
+
+function tryStartMusicOnGesture() {
+  if (musicStarted || !musicAvailable) return;
+  playMusic();
+}
+
+musicEl.addEventListener("loadeddata", markMusicReady);
+musicEl.addEventListener("canplaythrough", markMusicReady);
 
 musicEl.addEventListener("error", () => {
-  musicAvailable = false;
-  usingMp3 = false;
+  markMusicMissing();
 });
 
 musicBtn.addEventListener("click", toggleMusic);
-
-checkMp3Available();
+initMusic();
+updateMusicBtnState();
 
 /* ============================================
    Personalization
@@ -720,7 +633,10 @@ function applyPersonalization() {
    Events
    ============================================ */
 
-btnOpen.addEventListener("click", () => showScreen("password"));
+btnOpen.addEventListener("click", () => {
+  tryStartMusicOnGesture();
+  showScreen("password");
+});
 btnReplay.addEventListener("click", resetAllScreens);
 
 applyPersonalization();
