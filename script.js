@@ -149,7 +149,10 @@ function resetAllScreens() {
 }
 
 function replayLandingAnimations() {
-  screens.landing.querySelectorAll(".landing-anim").forEach((el) => {
+  const resetEls = screens.landing.querySelectorAll(
+    ".landing-anim, .landing-greet, .landing-greet__arm--l, .landing-greet__arm--r, .landing-greet__hi, .hero-girl-track, .hero-night, .hero-stars, .hero-moon, .hero-sun-rise, .hero-cloud, .hero-tree, .hero-tree-trunk"
+  );
+  resetEls.forEach((el) => {
     el.style.animation = "none";
     el.offsetHeight;
     el.style.animation = "";

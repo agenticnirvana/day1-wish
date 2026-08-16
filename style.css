@@ -263,61 +263,98 @@ body {
   50% { transform: translateY(-14px) rotate(10deg); }
 }
 
+.hero-night {
+  animation: night-to-day 4s var(--ease-out) 0s forwards;
+}
+
+.hero-stars {
+  animation: stars-fade 3.5s var(--ease-out) 0.5s forwards;
+}
+
+.hero-moon {
+  animation: moon-set 3.5s var(--ease-out) 0.8s forwards;
+}
+
+.hero-cloud {
+  animation: clouds-in 2s var(--ease-out) 3.2s forwards;
+}
+
+.hero-tree, .hero-tree-trunk {
+  animation: tree-in 1.5s var(--ease-out) 3.5s forwards;
+}
+
+@keyframes night-to-day {
+  0%, 15% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes stars-fade {
+  0%, 40% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+@keyframes moon-set {
+  0% { opacity: 0.9; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(30px); }
+}
+
+@keyframes clouds-in {
+  to { opacity: 0.65; }
+}
+
+@keyframes tree-in {
+  to { opacity: 0.85; }
+}
+
 .hero-sun-rise {
-  transform-origin: 620px 310px;
-  animation: sun-rise 3.5s var(--ease-out) 0.3s both;
+  transform-origin: 150px 310px;
+  animation: sun-rise-east 4s var(--ease-out) 1s both;
 }
 
 .hero-sun {
-  animation: sun-fade-in 3.5s var(--ease-out) 0.3s both,
-             sun-pulse 4s var(--ease-in-out) 3.8s infinite;
+  animation: sun-fade-in 4s var(--ease-out) 1s both,
+             sun-pulse 4s var(--ease-in-out) 5.5s infinite;
 }
 
 .hero-sun-glow {
-  animation: sun-glow-rise 3.5s var(--ease-out) 0.3s both,
-             sun-glow 4s var(--ease-in-out) 3.8s infinite;
+  animation: sun-glow-rise 4s var(--ease-out) 1s both,
+             sun-glow 4s var(--ease-in-out) 5.5s infinite;
 }
 
 @keyframes sun-fade-in {
   0% { opacity: 0; }
-  35% { opacity: 0.4; }
-  100% { opacity: 0.92; }
+  35% { opacity: 0.35; }
+  100% { opacity: 0.95; }
 }
 
 .hero-sun-rays {
-  transform-origin: 620px 310px;
-  animation: sun-rays-rise 3.5s var(--ease-out) 0.3s both,
-             sun-rays-spin 12s linear 3.8s infinite;
+  transform-origin: 150px 310px;
+  animation: sun-rays-rise-east 4s var(--ease-out) 1s both,
+             sun-rays-spin-east 14s linear 5.5s infinite;
 }
 
 .hero-sky-warm {
-  animation: sky-warm 3.5s var(--ease-out) 0.3s both;
+  animation: sky-warm 4s var(--ease-out) 1.2s both;
 }
 
-@keyframes sun-rise {
+@keyframes sun-rise-east {
   0% {
-    transform: translateY(0);
+    transform: translate(0, 0);
   }
   100% {
-    transform: translateY(-235px);
+    transform: translate(80px, -240px);
   }
 }
 
-@keyframes sun-glow-rise {
-  0% { opacity: 0; }
-  40% { opacity: 0.15; }
-  100% { opacity: 0.28; }
+@keyframes sun-rays-rise-east {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+  55% { opacity: 0; }
+  100% { opacity: 1; transform: translate(80px, -240px) scale(1); }
 }
 
-@keyframes sun-rays-rise {
-  0% { opacity: 0; transform: translateY(0) scale(0.6); }
-  60% { opacity: 0; }
-  100% { opacity: 1; transform: translateY(-235px) scale(1); }
-}
-
-@keyframes sun-rays-spin {
-  from { transform: translateY(-235px) rotate(0deg); }
-  to { transform: translateY(-235px) rotate(360deg); }
+@keyframes sun-rays-spin-east {
+  from { transform: translate(80px, -240px) rotate(0deg); }
+  to { transform: translate(80px, -240px) rotate(360deg); }
 }
 
 @keyframes sky-warm {
@@ -335,12 +372,13 @@ body {
   50% { transform: scale(1.12); opacity: 0.4; }
 }
 
-/* Girl walking toward campus */
+/* Girl walks to college once, then greets at button */
 .hero-girl-track {
   transform: translate(30px, 248px);
   transform-box: fill-box;
   transform-origin: 0 0;
-  animation: girl-walk-path 7s var(--ease-in-out) 0.6s infinite;
+  opacity: 0;
+  animation: girl-walk-to-campus 5.5s var(--ease-in-out) 4.2s forwards;
   filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.25));
 }
 
@@ -369,12 +407,11 @@ body {
   animation: girl-leg-b 0.45s var(--ease-in-out) infinite;
 }
 
-@keyframes girl-walk-path {
+@keyframes girl-walk-to-campus {
   0% { transform: translate(30px, 248px); opacity: 0; }
-  4% { opacity: 1; }
-  82% { transform: translate(360px, 248px); opacity: 1; }
-  94% { transform: translate(385px, 246px); opacity: 0.3; }
-  100% { transform: translate(30px, 248px); opacity: 0; }
+  8% { opacity: 1; }
+  88% { transform: translate(360px, 248px); opacity: 1; }
+  100% { transform: translate(375px, 246px); opacity: 0; }
 }
 
 @keyframes girl-bob {
@@ -427,6 +464,95 @@ body {
   position: relative;
   height: 0;
   pointer-events: none;
+}
+
+/* Girl greets + points at Open button */
+.landing-btn-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.25rem;
+  min-height: 11rem;
+}
+
+.landing-greet {
+  --greet-offset: -4.5rem;
+  position: absolute;
+  bottom: calc(100% - 0.5rem);
+  left: 50%;
+  transform: translateX(calc(-50% + var(--greet-offset))) translateY(12px) scale(0.85);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  animation: greet-appear 0.8s var(--ease-out) 9s forwards,
+             greet-bounce 2.2s var(--ease-in-out) 9.8s infinite;
+}
+
+.landing-greet__hi {
+  font-family: var(--font-hand);
+  font-size: clamp(1.5rem, 5.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--accent-purple);
+  background: white;
+  border: 2px solid var(--glass-border);
+  border-radius: 18px 18px 4px 18px;
+  padding: 0.25rem 0.85rem;
+  margin-bottom: -0.35rem;
+  margin-left: 1.5rem;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
+  animation: hi-wiggle 1.4s var(--ease-in-out) 9.5s infinite;
+}
+
+.landing-greet__girl {
+  width: clamp(72px, 22vw, 96px);
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.2));
+}
+
+.landing-greet__arm--l {
+  transform-origin: 39px 75px;
+  animation: arm-point-l 1.1s var(--ease-in-out) 9.6s infinite;
+}
+
+.landing-greet__arm--r {
+  transform-origin: 82px 75px;
+  animation: arm-point-r 1.1s var(--ease-in-out) 9.6s infinite;
+}
+
+.landing-greet__smile {
+  animation: greet-smile 2s var(--ease-in-out) 9.5s infinite;
+}
+
+@keyframes greet-appear {
+  to { opacity: 1; transform: translateX(calc(-50% + var(--greet-offset))) translateY(0) scale(1); }
+}
+
+@keyframes greet-bounce {
+  0%, 100% { transform: translateX(calc(-50% + var(--greet-offset))) translateY(0) scale(1); }
+  50% { transform: translateX(calc(-50% + var(--greet-offset))) translateY(-5px) scale(1.02); }
+}
+
+@keyframes hi-wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(3deg) scale(1.05); }
+}
+
+@keyframes arm-point-l {
+  0%, 100% { transform: rotate(-35deg); }
+  50% { transform: rotate(-48deg); }
+}
+
+@keyframes arm-point-r {
+  0%, 100% { transform: rotate(28deg); }
+  50% { transform: rotate(42deg); }
+}
+
+@keyframes greet-smile {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.15); }
 }
 
 .landing-spark {
@@ -556,11 +682,53 @@ body {
 }
 
 .btn--slide-tilt {
-  transform: rotate(-3deg);
+  transform: rotate(-7deg);
+  box-shadow: 0 6px 28px rgba(139, 92, 246, 0.4);
 }
 
 .btn--slide-tilt:hover, .btn--slide-tilt:focus-visible {
-  transform: translateY(-2px) rotate(0deg);
+  transform: translateY(-3px) rotate(-2deg) scale(1.04);
+}
+
+#btn-open.landing-anim {
+  opacity: 0;
+  animation-name: btn-slide-in, btn-tilt-wobble, btn-glow-pulse;
+  animation-duration: 1.15s, 2s, 1.8s;
+  animation-timing-function: var(--ease-out), var(--ease-in-out), var(--ease-in-out);
+  animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 1.15s), calc(var(--delay, 0s) + 1.15s);
+  animation-fill-mode: both, none, none;
+  animation-iteration-count: 1, infinite, infinite;
+}
+
+@keyframes btn-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-140px) rotate(-14deg) scale(0.9);
+  }
+  55% {
+    opacity: 1;
+    transform: translateX(18px) rotate(-9deg) scale(1.03);
+  }
+  75% {
+    transform: translateX(-6px) rotate(-6deg) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(-7deg) scale(1);
+  }
+}
+
+@keyframes btn-tilt-wobble {
+  0%, 100% { transform: translateX(0) rotate(-7deg); }
+  20% { transform: translateX(8px) rotate(-3deg); }
+  40% { transform: translateX(-4px) rotate(7deg); }
+  60% { transform: translateX(6px) rotate(4deg); }
+  80% { transform: translateX(-6px) rotate(-5deg); }
+}
+
+@keyframes btn-glow-pulse {
+  0%, 100% { box-shadow: 0 6px 28px rgba(139, 92, 246, 0.4), 0 0 0 0 rgba(255, 157, 184, 0.35); }
+  50% { box-shadow: 0 10px 36px rgba(139, 92, 246, 0.55), 0 0 0 10px rgba(255, 157, 184, 0); }
 }
 
 .btn--dance {
@@ -1374,41 +1542,6 @@ body {
 
 .landing-anim--slide { animation-name: landing-slide-in; }
 
-#btn-open.landing-anim {
-  opacity: 0;
-  animation-name: btn-slide-in, btn-tilt-wobble;
-  animation-duration: 1.1s, 2.4s;
-  animation-timing-function: var(--ease-out), var(--ease-in-out);
-  animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 1.1s);
-  animation-fill-mode: both, none;
-  animation-iteration-count: 1, infinite;
-}
-
-@keyframes btn-slide-in {
-  0% {
-    opacity: 0;
-    transform: translateX(-120px) rotate(-10deg);
-  }
-  60% {
-    opacity: 1;
-    transform: translateX(14px) rotate(-5deg);
-  }
-  80% {
-    transform: translateX(-4px) rotate(-3.5deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) rotate(-3deg);
-  }
-}
-
-@keyframes btn-tilt-wobble {
-  0%, 100% { transform: translateX(0) rotate(-3deg); }
-  25% { transform: translateX(5px) rotate(-1deg); }
-  50% { transform: translateX(0) rotate(3deg); }
-  75% { transform: translateX(-5px) rotate(0deg); }
-}
-
 @keyframes landing-fade-up {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1466,8 +1599,9 @@ body {
   .choco-float, .final-girl, .final-girl__arm, .final-girl__cheek, .final-girl-scene,
   .landing-hero__svg, .landing-hero__shimmer, .orbit-item, .float-icon, .landing-spark,
   .hero-sun-rise, .hero-sun, .hero-sun-glow, .hero-sun-rays, .hero-sky-warm,
+  .hero-night, .hero-stars, .hero-moon, .hero-cloud, .hero-tree, .hero-tree-trunk,
   .hero-girl-track, .hero-girl-scale, .hero-girl__figure, .hero-girl__shadow, .hero-girl__leg--a, .hero-girl__leg--b,
-  .hero-campus,
+  .hero-campus, .landing-greet, .landing-greet__hi, .landing-greet__arm--l, .landing-greet__arm--r,
   .landing-body, .landing-anim, .btn-arrow, #btn-open, .btn--slide-tilt { animation: none; transform: none; opacity: 1; }
   .reveal-line, .reveal-line.is-visible { filter: none; opacity: 1; transform: none; animation: none; }
   .reveal-line.is-visible .line-icon { animation: none; }
@@ -1481,6 +1615,19 @@ body {
   .landing-hero { height: clamp(200px, 40vh, 320px); }
   .landing-body { margin-top: -18px; border-radius: 22px 22px 0 0; }
   .reveal-line { font-size: 0.92rem; }
+  .landing-greet {
+    transform: translateX(calc(-50% - 2rem)) translateY(12px) scale(0.8);
+  }
+  .landing-greet, .landing-greet.is-visible {
+    animation-name: greet-appear-mobile, greet-bounce-mobile;
+  }
+  @keyframes greet-appear-mobile {
+    to { opacity: 1; transform: translateX(calc(-50% - 2rem)) translateY(0) scale(0.92); }
+  }
+  @keyframes greet-bounce-mobile {
+    0%, 100% { transform: translateX(calc(-50% - 2rem)) translateY(0) scale(0.92); }
+    50% { transform: translateX(calc(-50% - 2rem)) translateY(-4px) scale(0.95); }
+  }
 }
 
 @media (max-width: 380px) {
