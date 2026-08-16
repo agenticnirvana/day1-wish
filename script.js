@@ -5,6 +5,7 @@
 
 const CONFIG = {
   name: "FRIEND_NAME",
+  nickname: "Ms.whywhywhy",
   password: "ms",
   date: "August 17, 2026"
 };
@@ -44,6 +45,10 @@ const btnAllBest = document.getElementById("btn-all-best");
 const btnReplay = document.getElementById("btn-replay");
 const siteFooter = document.getElementById("site-footer");
 const footerCheer = document.getElementById("footer-cheer");
+const nicknameBadge = document.getElementById("nickname-badge");
+const nicknameWhisper = document.getElementById("nickname-whisper");
+const nicknameSignoff = document.getElementById("nickname-signoff");
+const starsSectionLabel = document.querySelector("#screen-stars .section-label");
 const musicBtn = document.getElementById("music-btn");
 const musicEl = document.getElementById("music");
 
@@ -272,15 +277,33 @@ btnAllBest.addEventListener("click", () => {
 
 /* ---- Personalization ---- */
 function applyPersonalization() {
+  const displayName = CONFIG.nickname || CONFIG.name;
+
+  if (nicknameBadge && displayName && displayName !== "FRIEND_NAME") {
+    nicknameBadge.textContent = `For ${displayName} ✦`;
+  }
+
+  if (nicknameWhisper && CONFIG.nickname) {
+    nicknameWhisper.textContent = `Hey, ${CONFIG.nickname}.`;
+  }
+
+  if (nicknameSignoff && CONFIG.nickname) {
+    nicknameSignoff.textContent = `— always, ${CONFIG.nickname}`;
+  }
+
+  if (starsSectionLabel && CONFIG.nickname) {
+    starsSectionLabel.textContent = `A few wishes for ${CONFIG.nickname}'s new chapter…`;
+  }
+
   if (CONFIG.name && CONFIG.name !== "FRIEND_NAME") {
     const landingEyebrow = screens.landing.querySelector(".eyebrow");
     if (landingEyebrow) {
       landingEyebrow.textContent = `A little something for your Day 1, ${CONFIG.name}…`;
     }
+  }
 
-    if (footerCheer) {
-      footerCheer.textContent = `I'm cheering for you, ${CONFIG.name}. Always.`;
-    }
+  if (footerCheer && displayName && displayName !== "FRIEND_NAME") {
+    footerCheer.textContent = `I'm cheering for you, ${displayName}. Always.`;
   }
 }
 

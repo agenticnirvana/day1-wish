@@ -202,6 +202,33 @@ body {
   margin-bottom: 0.75rem;
 }
 
+.nickname-badge,
+.nickname-whisper,
+.nickname-signoff {
+  font-family: var(--font-hand);
+  color: var(--purple);
+}
+
+.nickname-badge {
+  font-size: clamp(1.1rem, 4vw, 1.35rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.nickname-whisper {
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  margin-bottom: 0.75rem;
+  opacity: 0.85;
+}
+
+.nickname-signoff {
+  font-size: clamp(1rem, 3.2vw, 1.1rem);
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  opacity: 0.8;
+}
+
 .title {
   font-family: var(--font-sans);
   font-weight: 600;
