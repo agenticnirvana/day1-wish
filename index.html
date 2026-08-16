@@ -91,33 +91,65 @@
       </div>
     </section>
 
-    <!-- 3. STARS -->
+    <!-- 3. WISH SHOW -->
     <section class="screen screen--lavender" id="screen-stars" hidden>
       <div class="screen__inner">
         <p class="section-label" id="stars-label">A few wishes for your new chapter…</p>
-        <h2 class="heading heading--center">Tap a star to reveal a wish ✨</h2>
-        <div class="stars-hint" aria-hidden="true">〜</div>
-        <div class="stars-arc" id="stars-arc" role="group" aria-label="Wish stars"></div>
-        <p class="stars-footer">
-          <span class="leaf-deco" aria-hidden="true">🌿</span>
-          Each one is for you.
-          <span class="leaf-deco" aria-hidden="true">🌿</span>
-        </p>
-        <p class="stars-complete" id="stars-complete" hidden>You found them all ✨</p>
+        <h2 class="heading heading--center" id="stars-heading">Something's about to happen ✨</h2>
+        <p class="subtitle subtitle--center subtitle--tight" id="stars-sub">Hold on — this is going to be fun.</p>
+
+        <div class="constellation" id="constellation" aria-hidden="true">
+          <span class="c-star c-star--1">★</span>
+          <span class="c-star c-star--2">★</span>
+          <span class="c-star c-star--3">★</span>
+          <span class="c-star c-star--4">★</span>
+          <span class="c-star c-star--5">★</span>
+        </div>
+
+        <div class="wish-progress" id="wish-progress" hidden>
+          <div class="wish-progress__bar" id="wish-progress-bar"></div>
+          <span class="wish-progress__label" id="wish-progress-label">Wish 1 of 5</span>
+        </div>
+
+        <button class="btn btn--primary btn--mega breathe" id="btn-release-wishes">
+          Release the wishes ✨
+        </button>
+        <button class="btn btn--text" id="btn-skip-parade" hidden>Skip ahead →</button>
+        <p class="stars-complete" id="stars-complete" hidden>You survived all the feelings ✨</p>
         <button class="btn btn--primary" id="btn-stars-continue" hidden>Continue <span aria-hidden="true">→</span></button>
       </div>
     </section>
 
-    <!-- WISH MODAL -->
-    <div class="modal" id="wish-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wish-modal-text">
-      <div class="modal__card">
-        <button class="modal__close" id="modal-close" aria-label="Close">&times;</button>
-        <div class="modal__star" aria-hidden="true">★</div>
-        <p class="modal__wish" id="wish-modal-text"></p>
-        <p class="modal__tag">Keep shining ✨</p>
-        <div class="modal__flowers" aria-hidden="true"><span>🌸</span><span>🌷</span></div>
+    <!-- WISH PARADE (fullscreen) -->
+    <div class="wish-parade" id="wish-parade" hidden>
+      <div class="wish-parade__glow" aria-hidden="true"></div>
+      <div class="wish-parade__card" id="wish-parade-card">
+        <div class="wish-parade__star" id="wish-parade-star">★</div>
+        <p class="wish-parade__num" id="wish-parade-num">Wish 1</p>
+        <p class="wish-parade__text" id="wish-parade-text"></p>
+        <p class="wish-parade__hint" id="wish-parade-hint">tap anywhere to continue</p>
       </div>
     </div>
+
+    <!-- SURPRISE CARD -->
+    <div class="surprise-overlay" id="surprise-overlay" hidden>
+      <div class="surprise-card" id="surprise-card">
+        <span class="surprise-card__emoji" id="surprise-emoji">😭</span>
+        <p class="surprise-card__tag" id="surprise-tag">Party pooper moment</p>
+        <p class="surprise-card__text" id="surprise-text"></p>
+        <p class="surprise-card__sub" id="surprise-sub"></p>
+        <button class="btn btn--primary btn--sm" id="surprise-dismiss">Okay fine, continue →</button>
+      </div>
+    </div>
+
+    <!-- DAY 1 BURST -->
+    <div class="day1-burst" id="day1-burst" hidden>
+      <p class="day1-burst__date" id="burst-date"></p>
+      <h2 class="day1-burst__title">Day 1.</h2>
+      <p class="day1-burst__line">Not just college… a whole new chapter.</p>
+    </div>
+
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
     <!-- 4. WISH LIST -->
     <section class="screen screen--white" id="screen-wishlist" hidden>
@@ -208,6 +240,7 @@
 
   <div class="unlock-flash" id="unlock-flash" aria-hidden="true"></div>
   <canvas id="burst-canvas" aria-hidden="true"></canvas>
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
 
   <script src="script.js"></script>
 </body>
