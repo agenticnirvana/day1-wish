@@ -108,6 +108,10 @@ function resetAllScreens() {
   momentLine2.classList.remove("moment-line--accent");
 
   particleBoost = 1;
+  stopAmbient();
+  if (!musicEl.paused) musicEl.pause();
+  musicBtn.classList.remove("is-playing");
+  musicBtn.classList.add("music-btn--hint");
   replayLandingAnimations();
 }
 
@@ -154,7 +158,7 @@ function handlePasswordSubmit() {
     passwordError.classList.remove("is-visible");
     triggerUnlock();
   } else {
-    passwordError.textContent = "Hmm… I think you know this one ;)";
+    passwordError.textContent = "Nice try. You know this one ;)";
     passwordError.classList.add("is-visible");
     passwordInput.classList.add("shake");
     setTimeout(() => passwordInput.classList.remove("shake"), 400);
@@ -165,6 +169,7 @@ async function triggerUnlock() {
   lockIcon.classList.add("is-unlocked");
   unlockFlash.classList.add("is-active");
   particleBoost = 2.2;
+  playUnlockChime();
 
   await delay(prefersReducedMotion ? 300 : 800);
   unlockFlash.classList.remove("is-active");
@@ -185,9 +190,9 @@ async function runMomentSequence() {
   momentDate.textContent = CONFIG.date;
 
   await delay(prefersReducedMotion ? 100 : 600);
-  await typeText(momentLine1, "Not just the first day of college…");
+  await typeText(momentLine1, "Not just Day 1 of college…");
   await delay(prefersReducedMotion ? 200 : 900);
-  await typeText(momentLine2, "…but the first page of a completely new chapter.", true);
+  await typeText(momentLine2, "…the first page of a story that's actually yours.", true);
   await delay(prefersReducedMotion ? 400 : 2200);
   showScreen("message");
 }
@@ -242,6 +247,7 @@ async function runRevealSequence(screen) {
   for (let i = 0; i < lines.length; i++) {
     await delay(i === 0 ? baseDelay : stagger);
     lines[i].classList.add("is-visible");
+    if (i > 0 && i % 2 === 0) playRevealPing();
 
     if (lines[i].classList.contains("reveal-line--pause")) {
       await delay(prefersReducedMotion ? 200 : 1000);
@@ -269,6 +275,7 @@ btnLastThing.addEventListener("click", async () => {
   setTimeout(() => { btnLastThing.hidden = true; }, 400);
 
   burstConfetti();
+  playUnlockChime();
   memoryCard.hidden = false;
   requestAnimationFrame(() => memoryCard.classList.add("is-visible"));
 
@@ -421,37 +428,199 @@ function burstConfetti() {
 })();
 
 /* ============================================
-   Music
+   Audio — ambient + sfx (no mp3 required)
    ============================================ */
 
+let audioCtx = null;
+let ambientPlaying = false;
+let ambientNodes = null;
 let musicAvailable = false;
+let usingMp3 = false;
 
-musicEl.addEventListener("canplaythrough", () => { musicAvailable = true; });
-musicEl.addEventListener("error", () => { musicAvailable = false; });
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
 
-musicBtn.addEventListener("click", async () => {
-  if (!musicAvailable) {
-    try {
-      musicEl.load();
-      await musicEl.play();
-      musicAvailable = true;
-    } catch {
-      musicBtn.style.opacity = "0.4";
-      musicBtn.title = "No music file found";
-      return;
+async function resumeAudio() {
+  const ctx = getAudioContext();
+  if (ctx.state === "suspended") await ctx.resume();
+  return ctx;
+}
+
+function playTone(freq, duration, volume = 0.08, type = "sine") {
+  if (prefersReducedMotion) return;
+  resumeAudio().then((ctx) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration + 0.05);
+  }).catch(() => {});
+}
+
+function playUnlockChime() {
+  playTone(523.25, 0.35, 0.06);
+  setTimeout(() => playTone(659.25, 0.45, 0.05), 120);
+  setTimeout(() => playTone(783.99, 0.6, 0.045), 240);
+}
+
+function playRevealPing() {
+  playTone(880, 0.25, 0.025, "triangle");
+}
+
+function startAmbient() {
+  resumeAudio().then((ctx) => {
+    if (ambientPlaying) return;
+
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0.055, ctx.currentTime + 2.5);
+    master.connect(ctx.destination);
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 900;
+    filter.connect(master);
+
+    const padFreqs = [261.63, 329.63, 392, 493.88];
+    const padNodes = padFreqs.map((freq, i) => {
+      const osc = ctx.createOscillator();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      const gain = ctx.createGain();
+      gain.gain.value = 0.045;
+      const lfo = ctx.createOscillator();
+      lfo.frequency.value = 0.06 + i * 0.012;
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.value = 0.018;
+      lfo.connect(lfoGain);
+      lfoGain.connect(gain.gain);
+      osc.connect(gain);
+      gain.connect(filter);
+      osc.start();
+      lfo.start();
+      return { osc, lfo, gain };
+    });
+
+    const arpOsc = ctx.createOscillator();
+    arpOsc.type = "triangle";
+    const arpGain = ctx.createGain();
+    arpGain.gain.value = 0;
+    arpOsc.connect(arpGain);
+    arpGain.connect(filter);
+    arpOsc.start();
+
+    const arpNotes = [392, 493.88, 587.33, 659.25, 783.99];
+    let arpIdx = 0;
+
+    function tickArp() {
+      if (!ambientPlaying) return;
+      const freq = arpNotes[arpIdx % arpNotes.length];
+      arpOsc.frequency.setValueAtTime(freq, ctx.currentTime);
+      arpGain.gain.cancelScheduledValues(ctx.currentTime);
+      arpGain.gain.setValueAtTime(0, ctx.currentTime);
+      arpGain.gain.linearRampToValueAtTime(0.035, ctx.currentTime + 0.06);
+      arpGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
+      arpIdx++;
     }
+
+    tickArp();
+    const arpInterval = setInterval(tickArp, 2400);
+
+    ambientNodes = { master, padNodes, arpOsc, arpGain, arpInterval };
+    ambientPlaying = true;
+  }).catch(() => {});
+}
+
+function stopAmbient() {
+  if (!ambientNodes || !audioCtx) return;
+  const ctx = audioCtx;
+  ambientPlaying = false;
+
+  ambientNodes.master.gain.cancelScheduledValues(ctx.currentTime);
+  ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ctx.currentTime);
+  ambientNodes.master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1);
+
+  setTimeout(() => {
+    if (!ambientNodes) return;
+    ambientNodes.padNodes.forEach(({ osc, lfo }) => {
+      try { osc.stop(); lfo.stop(); } catch { /* already stopped */ }
+    });
+    try { ambientNodes.arpOsc.stop(); } catch { /* noop */ }
+    clearInterval(ambientNodes.arpInterval);
+    ambientNodes = null;
+  }, 1100);
+}
+
+async function checkMp3Available() {
+  try {
+    const res = await fetch("assets/music.mp3", { method: "HEAD" });
+    if (res.ok) {
+      musicEl.load();
+      musicAvailable = true;
+      usingMp3 = true;
+    }
+  } catch {
+    musicAvailable = false;
+  }
+}
+
+async function toggleMusic() {
+  musicBtn.classList.remove("music-btn--hint");
+
+  if (usingMp3 && musicAvailable) {
+    if (musicEl.paused) {
+      try {
+        await musicEl.play();
+        musicBtn.classList.add("is-playing");
+        musicBtn.title = "Pause music";
+      } catch {
+        usingMp3 = false;
+        startAmbient();
+        musicBtn.classList.add("is-playing");
+        musicBtn.title = "Pause ambient";
+      }
+    } else {
+      musicEl.pause();
+      musicBtn.classList.remove("is-playing");
+      musicBtn.title = "Play music";
+    }
+    return;
   }
 
-  if (musicEl.paused) {
-    try {
-      await musicEl.play();
-      musicBtn.classList.add("is-playing");
-    } catch { /* blocked */ }
-  } else {
-    musicEl.pause();
+  if (ambientPlaying) {
+    stopAmbient();
     musicBtn.classList.remove("is-playing");
+    musicBtn.title = "Play ambient sound";
+  } else {
+    startAmbient();
+    musicBtn.classList.add("is-playing");
+    musicBtn.title = "Pause ambient sound";
   }
+}
+
+musicEl.addEventListener("canplaythrough", () => {
+  musicAvailable = true;
+  usingMp3 = true;
 });
+
+musicEl.addEventListener("error", () => {
+  musicAvailable = false;
+  usingMp3 = false;
+});
+
+musicBtn.addEventListener("click", toggleMusic);
+
+checkMp3Available();
 
 /* ============================================
    Personalization
@@ -462,18 +631,18 @@ function applyPersonalization() {
   const display = CONFIG.nickname || CONFIG.name;
 
   if (nicknameBadge && display !== "FRIEND_NAME") {
-    nicknameBadge.textContent = `For ${display} ✦`;
+    nicknameBadge.textContent = `Yeah, this one's for ${display} ✦`;
   }
   if (nicknameWhisper && CONFIG.nickname) {
-    nicknameWhisper.textContent = `Hey, ${CONFIG.nickname}.`;
+    nicknameWhisper.textContent = `Sup, ${CONFIG.nickname}.`;
   }
   if (CONFIG.name && CONFIG.name !== "FRIEND_NAME") {
     const landingEyebrow = screens.landing.querySelector(".eyebrow");
     if (landingEyebrow) {
-      landingEyebrow.textContent = `A little something for your Day 1, ${CONFIG.name}…`;
+      landingEyebrow.textContent = `Low-key made this for ${CONFIG.name}`;
     }
     if (finalGreeting) {
-      finalGreeting.textContent = `Happy First Day, ${CONFIG.name} :)`;
+      finalGreeting.textContent = `Happy First Day, ${CONFIG.name} — go off :)`;
     }
   }
 }

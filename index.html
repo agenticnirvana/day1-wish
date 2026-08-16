@@ -23,7 +23,7 @@
 
   <div class="unlock-flash" id="unlock-flash" aria-hidden="true"></div>
 
-  <button class="music-btn" id="music-btn" aria-label="Toggle music" title="Toggle music">
+  <button class="music-btn music-btn--hint" id="music-btn" aria-label="Play ambient sound" title="Tap for sound">
     <span class="music-btn__icon" aria-hidden="true">♪</span>
   </button>
   <audio id="music" preload="none" loop>
@@ -35,14 +35,14 @@
     <!-- 1. Landing -->
     <section class="screen screen--active" id="screen-landing">
       <div class="screen__inner">
-        <p class="eyebrow fade-in" style="--delay: 0.2s">A little something for your Day 1…</p>
+        <p class="eyebrow fade-in" style="--delay: 0.2s">Low-key made this for you</p>
         <p class="nickname-badge fade-in" id="nickname-badge" style="--delay: 0.35s"></p>
         <h1 class="title fade-in" style="--delay: 0.5s">Ready for a new chapter?</h1>
         <p class="subtitle fade-in" style="--delay: 0.9s">
-          Before you step into your new journey, there's something waiting for you.
+          Campus chaos can wait — there's something here first.
         </p>
         <button class="btn btn--primary fade-in" style="--delay: 1.3s" id="btn-open">
-          Open it <span aria-hidden="true">→</span>
+          Bet. Open it <span aria-hidden="true">→</span>
         </button>
       </div>
     </section>
@@ -57,8 +57,8 @@
             <path d="M8 11V7a4 4 0 0 1 8 0v4" class="lock-shackle"/>
           </svg>
         </div>
-        <h2 class="heading">This is just between us.</h2>
-        <p class="subtitle subtitle--tight">You know the password.</p>
+        <h2 class="heading">VIP access only.</h2>
+        <p class="subtitle subtitle--tight">You literally know the password.</p>
         <form class="password-form" id="password-form" autocomplete="off">
           <label for="password-input" class="sr-only">Password</label>
           <input
@@ -98,14 +98,14 @@
     <!-- 4. The Message -->
     <section class="screen" id="screen-message" hidden>
       <div class="screen__inner screen__inner--center">
-        <h2 class="heading reveal-line" data-reveal="0">And I hope you know something…</h2>
+        <h2 class="heading reveal-line" data-reveal="0">Real talk for a second…</h2>
         <div class="message-lines" id="message-lines">
           <p class="reveal-line" data-reveal="1">You're stepping into a new place.</p>
           <p class="reveal-line" data-reveal="2">New people.</p>
           <p class="reveal-line" data-reveal="3">New stories.</p>
           <p class="reveal-line" data-reveal="4">New memories.</p>
-          <p class="reveal-line" data-reveal="5">And probably a few moments that will make you question what you signed up for.</p>
-          <p class="reveal-line reveal-line--pause" data-reveal="6">But I know you'll figure it out.</p>
+          <p class="reveal-line" data-reveal="5">And yeah — a few moments that'll make you go "what did I sign up for?"</p>
+          <p class="reveal-line reveal-line--pause" data-reveal="6">But you'll figure it out. You always do.</p>
           <p class="reveal-line reveal-line--accent" data-reveal="7">Because you have a way of making new places feel like they were always meant for you.</p>
         </div>
       </div>
@@ -114,7 +114,7 @@
     <!-- 5. First Day Wish -->
     <section class="screen" id="screen-wish" hidden>
       <div class="screen__inner screen__inner--center">
-        <h2 class="heading reveal-line" data-reveal="0">So here's my wish for you…</h2>
+        <h2 class="heading reveal-line" data-reveal="0">Alright — wishes incoming…</h2>
         <div class="wish-lines" id="wish-lines">
           <p class="reveal-line" data-reveal="1">I hope you find people who make you laugh until your stomach hurts.</p>
           <p class="reveal-line" data-reveal="2">I hope you collect stories you'll still talk about years from now.</p>
@@ -131,7 +131,7 @@
     <!-- 6. Memory Moment -->
     <section class="screen" id="screen-memory" hidden>
       <div class="screen__inner screen__inner--center">
-        <button class="btn btn--ghost btn--pulse" id="btn-last-thing">Okay, one last thing…</button>
+        <button class="btn btn--ghost btn--pulse" id="btn-last-thing">Fine. One last thing…</button>
         <div class="memory-card" id="memory-card" hidden>
           <p class="memory-line" data-memory="0">Whatever tomorrow looks like…</p>
           <p class="memory-line" data-memory="1">Walk in with that same smile.</p>
@@ -145,10 +145,10 @@
     <!-- 7. Final -->
     <section class="screen" id="screen-final" hidden>
       <div class="screen__inner screen__inner--center">
-        <p class="eyebrow fade-in" style="--delay: 0.1s">Chapter 01</p>
+        <p class="eyebrow fade-in" style="--delay: 0.1s">Chapter 01 · unlocked</p>
         <h2 class="title title--large fade-in" style="--delay: 0.4s">Go make it yours.</h2>
         <p class="subtitle fade-in" style="--delay: 0.8s" id="final-greeting">Happy First Day :)</p>
-        <p class="final-note fade-in" style="--delay: 1.1s">Now go be the main character.</p>
+        <p class="final-note fade-in" style="--delay: 1.1s">Main character energy only from here.</p>
         <div class="final-star fade-in" style="--delay: 1.5s" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
             <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6L12 2z"/>
