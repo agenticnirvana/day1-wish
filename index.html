@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
 
@@ -85,35 +85,30 @@
             <rect x="0" y="305" width="800" height="115" fill="#E9DEFF" opacity="0.55"/>
             <line x1="0" y1="305" x2="800" y2="305" stroke="#d4c4e8" stroke-width="1" opacity="0.5"/>
 
-            <!-- Girl walking to college -->
-            <g class="hero-girl">
-              <ellipse class="hero-girl__shadow" cx="0" cy="302" rx="14" ry="4" fill="#b8a8cc" opacity="0.25"/>
-              <g class="hero-girl__figure">
-                <!-- backpack -->
-                <rect x="-8" y="-18" width="12" height="16" rx="3" fill="#8B5CF6" opacity="0.85"/>
-                <rect x="-6" y="-16" width="8" height="3" rx="1" fill="#B58AEF"/>
-                <!-- legs -->
-                <g class="hero-girl__legs">
-                  <rect class="hero-girl__leg hero-girl__leg--a" x="-5" y="8" width="5" height="14" rx="2" fill="#6b7280"/>
-                  <rect class="hero-girl__leg hero-girl__leg--b" x="1" y="8" width="5" height="14" rx="2" fill="#7a8290"/>
+            <!-- Girl walking to college (drawn above fade so she's visible) -->
+            <g class="hero-girl-track">
+              <g class="hero-girl-scale">
+                <ellipse class="hero-girl__shadow" cx="0" cy="36" rx="16" ry="5" fill="#8B5CF6" opacity="0.2"/>
+                <g class="hero-girl__figure">
+                  <rect x="-8" y="-18" width="12" height="16" rx="3" fill="#8B5CF6" opacity="0.9"/>
+                  <rect x="-6" y="-16" width="8" height="3" rx="1" fill="#B58AEF"/>
+                  <g class="hero-girl__legs">
+                    <rect class="hero-girl__leg hero-girl__leg--a" x="-5" y="8" width="5" height="14" rx="2" fill="#6b7280"/>
+                    <rect class="hero-girl__leg hero-girl__leg--b" x="1" y="8" width="5" height="14" rx="2" fill="#7a8290"/>
+                  </g>
+                  <path d="M-10 8 L10 8 L8 -6 L-8 -6 Z" fill="#FF9DB8"/>
+                  <rect x="8" y="-4" width="10" height="3" rx="1.5" fill="#FF9DB8" transform="rotate(15 8 -4)"/>
+                  <rect x="16" y="-8" width="8" height="10" rx="1" fill="#7EC8E3"/>
+                  <circle cx="0" cy="-14" r="9" fill="#F5D0C5"/>
+                  <path d="M-9 -16 Q0 -26 9 -16 Q8 -10 -8 -10 Z" fill="#5c4033"/>
+                  <circle cx="-3" cy="-15" r="1.2" fill="#4A3D5C" opacity="0.7"/>
+                  <circle cx="3" cy="-15" r="1.2" fill="#4A3D5C" opacity="0.7"/>
+                  <path d="M-2 -11 Q0 -9 2 -11" stroke="#4A3D5C" stroke-width="0.8" fill="none" opacity="0.55"/>
                 </g>
-                <!-- body -->
-                <path d="M-10 8 L10 8 L8 -6 L-8 -6 Z" fill="#FF9DB8"/>
-                <!-- arm with book -->
-                <rect x="8" y="-4" width="10" height="3" rx="1.5" fill="#FF9DB8" transform="rotate(15 8 -4)"/>
-                <rect x="16" y="-8" width="8" height="10" rx="1" fill="#7EC8E3" opacity="0.9"/>
-                <!-- head -->
-                <circle cx="0" cy="-14" r="9" fill="#F5D0C5"/>
-                <!-- hair -->
-                <path d="M-9 -16 Q0 -26 9 -16 Q8 -10 -8 -10 Z" fill="#5c4033"/>
-                <!-- face -->
-                <circle cx="-3" cy="-15" r="1" fill="#4A3D5C" opacity="0.6"/>
-                <circle cx="3" cy="-15" r="1" fill="#4A3D5C" opacity="0.6"/>
-                <path d="M-2 -11 Q0 -9 2 -11" stroke="#4A3D5C" stroke-width="0.8" fill="none" opacity="0.5"/>
               </g>
             </g>
 
-            <rect width="800" height="420" fill="url(#heroFade)" opacity="0.85"/>
+            <rect width="800" height="420" fill="url(#heroFade)" opacity="0.72"/>
           </svg>
           <div class="landing-hero__shimmer"></div>
           <div class="landing-orbit">
@@ -264,6 +259,6 @@
 
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
